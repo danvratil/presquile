@@ -17,20 +17,19 @@
  *
  */
 
-#include <QtGui/QApplication>
+#ifndef PQSLIDEPROPERTIESPANEL_H
+#define PQSLIDEPROPERTIESPANEL_H
 
-#include "mainwindow.h"
+#include <QDockWidget>
 
-int main(int argc, char** argv)
+class PQSlidePropertiesPanel : public QDockWidget
 {
-    QApplication app(argc, argv);
-    app.setApplicationName(QLatin1String("Presquile"));
-    app.setApplicationVersion(QLatin1String("0.1.0"));
-    app.setOrganizationDomain("progdan.cz");
-    app.setOrganizationName("Dan Vrátil");
+    Q_OBJECT
 
-    MainWindow window;
-    window.show();
+public:
+    explicit PQSlidePropertiesPanel(QWidget* parent = 0, Qt::WindowFlags flags = 0);
+    virtual ~PQSlidePropertiesPanel();
 
-    return app.exec();
-}
+};
+
+#endif // PQSLIDEPROPERTIESPANEL_H

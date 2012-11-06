@@ -17,20 +17,19 @@
  *
  */
 
-#include <QtGui/QApplication>
+#ifndef PQCOMPONENTSANIMATIONSPANEL_H
+#define PQCOMPONENTSANIMATIONSPANEL_H
 
-#include "mainwindow.h"
+#include <QDockWidget>
 
-int main(int argc, char** argv)
+class PQComponentsAnimationsPanel : public QDockWidget
 {
-    QApplication app(argc, argv);
-    app.setApplicationName(QLatin1String("Presquile"));
-    app.setApplicationVersion(QLatin1String("0.1.0"));
-    app.setOrganizationDomain("progdan.cz");
-    app.setOrganizationName("Dan Vrátil");
+    Q_OBJECT
 
-    MainWindow window;
-    window.show();
+public:
+    explicit PQComponentsAnimationsPanel(QWidget* parent = 0, Qt::WindowFlags flags = 0);
+    virtual ~PQComponentsAnimationsPanel();
 
-    return app.exec();
-}
+};
+
+#endif // PQCOMPONENTSANIMATIONSPANEL_H

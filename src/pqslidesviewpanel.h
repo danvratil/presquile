@@ -17,20 +17,34 @@
  *
  */
 
-#include <QtGui/QApplication>
+#ifndef PQSLIDESVIEWPANEL_H
+#define PQSLIDESVIEWPANEL_H
 
-#include "mainwindow.h"
+#include <QDockWidget>
+#include <QMap>
 
-int main(int argc, char** argv)
+class QListWidget;
+class PQSlidePreview;
+
+class PQSlidesViewPanel : public QDockWidget
 {
-    QApplication app(argc, argv);
-    app.setApplicationName(QLatin1String("Presquile"));
-    app.setApplicationVersion(QLatin1String("0.1.0"));
-    app.setOrganizationDomain("progdan.cz");
-    app.setOrganizationName("Dan Vrátil");
+    Q_OBJECT
 
-    MainWindow window;
-    window.show();
+public:
+    explicit PQSlidesViewPanel(QWidget* parent = 0, Qt::WindowFlags flags = 0);
+    virtual ~PQSlidesViewPanel();
 
-    return app.exec();
-}
+    void load(const QString &filePath);
+    void reset();
+    void close();
+
+Q_SIGNALS:
+    void slideCreated(int slideId);
+    void slideActivated(int slideId);
+
+private:
+    QListWidget *mSlidesListwidget;
+
+};
+
+#endif // PQSLIDESVIEWPANEL_H

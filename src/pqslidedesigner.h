@@ -17,20 +17,19 @@
  *
  */
 
-#include <QtGui/QApplication>
+#ifndef PQSLIDEDESIGNER_H
+#define PQSLIDEDESIGNER_H
 
-#include "mainwindow.h"
+#include <QGraphicsView>
 
-int main(int argc, char** argv)
+class PQSlideDesigner : public QGraphicsView
 {
-    QApplication app(argc, argv);
-    app.setApplicationName(QLatin1String("Presquile"));
-    app.setApplicationVersion(QLatin1String("0.1.0"));
-    app.setOrganizationDomain("progdan.cz");
-    app.setOrganizationName("Dan Vrátil");
+    Q_OBJECT
 
-    MainWindow window;
-    window.show();
+public:
+    explicit PQSlideDesigner(QWidget* parent = 0);
+    virtual ~PQSlideDesigner();
 
-    return app.exec();
-}
+};
+
+#endif // PQSLIDEDESIGNER_H

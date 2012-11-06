@@ -17,20 +17,25 @@
  *
  */
 
-#include <QtGui/QApplication>
+#ifndef PQCOMPONENTSPANEL_H
+#define PQCOMPONENTSPANEL_H
 
-#include "mainwindow.h"
+#include <QDockWidget>
 
-int main(int argc, char** argv)
+class QTreeWidget;
+
+class PQComponentsPanel : public QDockWidget
 {
-    QApplication app(argc, argv);
-    app.setApplicationName(QLatin1String("Presquile"));
-    app.setApplicationVersion(QLatin1String("0.1.0"));
-    app.setOrganizationDomain("progdan.cz");
-    app.setOrganizationName("Dan Vrátil");
+    Q_OBJECT
 
-    MainWindow window;
-    window.show();
+public:
+    explicit PQComponentsPanel(QWidget* parent = 0, Qt::WindowFlags flags = 0);
+    virtual ~PQComponentsPanel();
 
-    return app.exec();
-}
+private:
+    void loadSystemComponents();
+
+    QTreeWidget *mTreeWidget;
+};
+
+#endif // PQCOMPONENTSPANEL_H

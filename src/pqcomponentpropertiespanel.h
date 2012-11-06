@@ -17,20 +17,19 @@
  *
  */
 
-#include <QtGui/QApplication>
+#ifndef PQCOMPONENTPROPERTIESPANEL_H
+#define PQCOMPONENTPROPERTIESPANEL_H
 
-#include "mainwindow.h"
+#include <QDockWidget>
 
-int main(int argc, char** argv)
+class PQComponentPropertiesPanel : public QDockWidget
 {
-    QApplication app(argc, argv);
-    app.setApplicationName(QLatin1String("Presquile"));
-    app.setApplicationVersion(QLatin1String("0.1.0"));
-    app.setOrganizationDomain("progdan.cz");
-    app.setOrganizationName("Dan Vrátil");
+    Q_OBJECT
 
-    MainWindow window;
-    window.show();
+public:
+    explicit PQComponentPropertiesPanel(QWidget* parent = 0, Qt::WindowFlags flags = 0);
+    virtual ~PQComponentPropertiesPanel();
 
-    return app.exec();
-}
+};
+
+#endif // PQCOMPONENTPROPERTIESPANEL_H

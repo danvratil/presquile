@@ -17,20 +17,41 @@
  *
  */
 
-#include <QtGui/QApplication>
+#include "pqslidesviewpanel.h"
 
-#include "mainwindow.h"
+#include <QListWidget>
+#include <QVBoxLayout>
 
-int main(int argc, char** argv)
+PQSlidesViewPanel::PQSlidesViewPanel(QWidget* parent, Qt::WindowFlags flags)
+  : QDockWidget(tr("Slides"), parent, flags)
 {
-    QApplication app(argc, argv);
-    app.setApplicationName(QLatin1String("Presquile"));
-    app.setApplicationVersion(QLatin1String("0.1.0"));
-    app.setOrganizationDomain("progdan.cz");
-    app.setOrganizationName("Dan Vrátil");
+  mSlidesListwidget = new QListWidget(this);
+  mSlidesListwidget->setDragDropMode(QAbstractItemView::InternalMove);
+  mSlidesListwidget->setDragEnabled(true);
+  mSlidesListwidget->setSelectionMode(QAbstractItemView::SingleSelection);
 
-    MainWindow window;
-    window.show();
-
-    return app.exec();
+  setWidget(mSlidesListwidget);
 }
+
+PQSlidesViewPanel::~PQSlidesViewPanel()
+{
+
+}
+
+void PQSlidesViewPanel::load(const QString& filePath)
+{
+
+}
+
+void PQSlidesViewPanel::close()
+{
+
+}
+
+void PQSlidesViewPanel::reset()
+{
+
+}
+
+
+#include "pqslidesviewpanel.moc"

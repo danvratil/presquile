@@ -1,4 +1,10 @@
 set(presquile_SRCS
+    pqcomponentpropertiespanel.cpp
+    pqcomponentsanimationspanel.cpp
+    pqslidedesigner.cpp
+    pqslidesviewpanel.cpp
+    pqslidepropertiespanel.cpp
+    pqcomponentspanel.cpp
     main.cpp
     mainwindow.cpp)
 
