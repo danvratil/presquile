@@ -26,6 +26,8 @@
 #include "pqslidepropertiespanel.h"
 #include "pqslidedesigner.h"
 
+#include "editors/animationsequenceeditor.h"
+
 #include <QStatusBar>
 #include <QAction>
 #include <QMenu>
@@ -113,6 +115,22 @@ void MainWindow::setupActions()
     action = menu->addAction(tr("&Quit Presquile"), this, SLOT(slotQuitPresquile()), QKeySequence(Qt::CTRL + Qt::Key_Q));
     action->setIcon(QIcon::fromTheme(QLatin1String("application-exit")));
 
+    toolBar = addToolBar(tr("Presentation Toolbar"));
+    toolBar->setObjectName(QLatin1String("PresentationToolBar"));
+
+    menu = menuBar()->addMenu(tr("&Presentation"));
+    action = menu->addAction(tr("&Run Presentation"), this, SLOT(slotRunPresentation()), QKeySequence(Qt::Key_F5));
+    toolBar->addAction(action);
+    action = menu->addAction(tr("Run From &Current Slide"), this, SLOT(slotRunFromCurrentSlide()), QKeySequence(Qt::SHIFT + Qt::Key_F5));
+    toolBar->addAction(action);
+    menu->addSeparator();
+    toolBar->addSeparator();
+    action = menu->addAction(tr("&Add Slide"), this, SLOT(slotAddSlide()), QKeySequence(Qt::CTRL + Qt::Key_N));
+    toolBar->addAction(action);
+    action = menu->addAction(tr("&Delete Slide"), this, SLOT(slotDeleteSlide()), QKeySequence(Qt::CTRL + Qt::Key_D));
+    toolBar->addAction(action);
+
+
     menu = menuBar()->addMenu(tr("&Help"));
     menu->addAction(tr("&Help"), this, SLOT(slotHelp()), QKeySequence(Qt::Key_F1));
     menu->addSeparator();
@@ -180,5 +198,26 @@ void MainWindow::slotAboutQt()
 {
     QMessageBox::aboutQt(this, tr("About Qt"));
 }
+
+void MainWindow::slotRunPresentation()
+{
+    /* TODO: Run Presentation */
+}
+
+void MainWindow::slotRunFromCurrentSlide()
+{
+    /* TODO: Run From Current Slide */
+}
+
+void MainWindow::slotAddSlide()
+{
+    /* TODO: Add Slide */
+}
+
+void MainWindow::slotDeleteSlide()
+{
+    /* TODO: Remove Slide */
+}
+
 
 #include "mainwindow.moc"

@@ -47,6 +47,10 @@ private Q_SLOTS:
     void slotHelp();
     void slotAboutPresquile();
     void slotAboutQt();
+    void slotRunPresentation();
+    void slotRunFromCurrentSlide();
+    void slotAddSlide();
+    void slotDeleteSlide();
 
 private:
     void setupActions();
