@@ -18,46 +18,18 @@
  */
 
 #include "pqcomponentspanel.h"
-
-#include <QTreeWidget>
+#include "../pqcomponentstreewidget.h"
 
 PQComponentsPanel::PQComponentsPanel(QWidget* parent, Qt::WindowFlags flags)
   : QDockWidget(tr("Components"), parent, flags)
 {
-    mTreeWidget = new QTreeWidget(this);
-    setWidget(mTreeWidget);
-
-    mTreeWidget->setColumnCount(1);
-    mTreeWidget->setHeaderHidden(true);
-
-    loadSystemComponents();
+    mComponentsTree = new PQComponentsTreeWidget(this);
+    setWidget(mComponentsTree);
 }
 
 PQComponentsPanel::~PQComponentsPanel()
 {
 
 }
-
-void PQComponentsPanel::loadSystemComponents()
-{
-    QTreeWidgetItem *item, *category;
-
-    category = new QTreeWidgetItem(mTreeWidget);
-    category->setText(0, tr("Basic"));
-    mTreeWidget->addTopLevelItem(category);
-
-    item = new QTreeWidgetItem(category);
-    item->setText(0, tr("Label"));
-    category->addChild(item);
-
-    item = new QTreeWidgetItem(category);
-    item->setText(0, tr("Button"));
-    category->addChild(item);
-
-    item = new QTreeWidgetItem(category);
-    item->setText(0, tr("Image"));
-    category->addChild(item);
-}
-
 
 #include "pqcomponentspanel.moc"

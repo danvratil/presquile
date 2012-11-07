@@ -19,11 +19,11 @@
 
 #include "mainwindow.h"
 
-#include "pqcomponentspanel.h"
-#include "pqcomponentpropertiespanel.h"
-#include "pqcomponentsanimationspanel.h"
-#include "pqslidesviewpanel.h"
-#include "pqslidepropertiespanel.h"
+#include "panels/pqcomponentspanel.h"
+#include "panels/pqcomponentpropertiespanel.h"
+#include "panels/pqcomponentsanimationspanel.h"
+#include "panels/pqslidesviewpanel.h"
+#include "panels/pqslidepropertiespanel.h"
 #include "pqslidedesigner.h"
 
 #include "editors/animationsequenceeditor.h"

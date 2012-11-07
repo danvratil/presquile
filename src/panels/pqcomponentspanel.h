@@ -22,7 +22,7 @@
 
 #include <QDockWidget>
 
-class QTreeWidget;
+class PQComponentsTreeWidget;
 
 class PQComponentsPanel : public QDockWidget
 {
@@ -33,9 +33,7 @@ public:
     virtual ~PQComponentsPanel();
 
 private:
-    void loadSystemComponents();
-
-    QTreeWidget *mTreeWidget;
+    PQComponentsTreeWidget *mComponentsTree;
 };
 
 #endif // PQCOMPONENTSPANEL_H

@@ -1,18 +1,20 @@
 set(presquile_SRCS
     animationselectdialog.cpp
     coreutils.cpp
-    pqcomponentpropertiespanel.cpp
-    pqcomponentsanimationspanel.cpp
+    pqcomponentstreewidget.cpp
     pqslidedesigner.cpp
-    pqslidesviewpanel.cpp
-    pqslidepropertiespanel.cpp
-    pqcomponentspanel.cpp
     propertieseditor.cpp
     main.cpp
     mainwindow.cpp
 
     editors/animationsequenceeditor.cpp
     editors/easingcurveeditor.cpp
+
+    panels/pqcomponentpropertiespanel.cpp
+    panels/pqcomponentsanimationspanel.cpp
+    panels/pqslidesviewpanel.cpp
+    panels/pqslidepropertiespanel.cpp
+    panels/pqcomponentspanel.cpp
 )
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
