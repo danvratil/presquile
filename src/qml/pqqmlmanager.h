@@ -1,4 +1,5 @@
 /*
+ * <one line to give the program's name and a brief idea of what it does.>
  * Copyright (C) 2012  Dan Vratil <dan@progdan.cz>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -17,29 +18,28 @@
  *
  */
 
-#ifndef PQSLIDEDESIGNER_H
-#define PQSLIDEDESIGNER_H
+#ifndef PQQMLMANAGER_H
+#define PQQMLMANAGER_H
 
-#include <QDeclarativeView>
+#include <QObject>
 
-class QDragEnterEvent;
-class QDragMoveEvent;
-class QDropEvent;
+class QDeclarativeItem;
+class QDeclarativeEngine;
 
-class PQSlideDesigner : public QDeclarativeView
+class PQQMLManager : public QObject
 {
     Q_OBJECT
-
 public:
-    explicit PQSlideDesigner(QWidget* parent = 0);
-    virtual ~PQSlideDesigner();
+    static PQQMLManager* instance();
+
+    QDeclarativeItem* componentInstance(QDeclarativeEngine *engine, const QString &componentName);
 
 
-protected:
-    virtual void dragEnterEvent(QDragEnterEvent* event);
-    virtual void dragMoveEvent(QDragMoveEvent* event);
-    virtual void dropEvent(QDropEvent* event);
+private:
+    explicit PQQMLManager();
+    virtual ~PQQMLManager();
 
+    static PQQMLManager *mInstance;
 };
 
-#endif // PQSLIDEDESIGNER_H
+#endif // PQQMLMANAGER_H

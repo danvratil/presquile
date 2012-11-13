@@ -17,29 +17,33 @@
  *
  */
 
-#ifndef PQSLIDEDESIGNER_H
-#define PQSLIDEDESIGNER_H
+#ifndef PQCOMPONENTSTREEWIDGET_H
+#define PQCOMPONENTSTREEWIDGET_H
 
-#include <QDeclarativeView>
+#include <QTreeWidget>
+#include <QPoint>
 
-class QDragEnterEvent;
-class QDragMoveEvent;
-class QDropEvent;
 
-class PQSlideDesigner : public QDeclarativeView
+class PQComponentsTreeWidget : public QTreeWidget
 {
     Q_OBJECT
 
 public:
-    explicit PQSlideDesigner(QWidget* parent = 0);
-    virtual ~PQSlideDesigner();
+    enum Roles {
+	ComponentNameRole = Qt::UserRole + 1,
+    };
 
+    explicit PQComponentsTreeWidget(QWidget* parent = 0);
+    virtual ~PQComponentsTreeWidget();
 
 protected:
-    virtual void dragEnterEvent(QDragEnterEvent* event);
-    virtual void dragMoveEvent(QDragMoveEvent* event);
-    virtual void dropEvent(QDropEvent* event);
+    virtual void mousePressEvent(QMouseEvent* event);
+    virtual void mouseMoveEvent(QMouseEvent* event);
 
+
+private:
+    QPoint mLastClickPos;
+    bool mDragActive;
 };
 
-#endif // PQSLIDEDESIGNER_H
+#endif // PQCOMPONENTSTREEWIDGET_H

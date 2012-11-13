@@ -17,29 +17,34 @@
  *
  */
 
-#ifndef PQSLIDEDESIGNER_H
-#define PQSLIDEDESIGNER_H
+#ifndef PQMLRICHTEXTEDITOR_H
+#define PQMLRICHTEXTEDITOR_H
 
-#include <QDeclarativeView>
+#include <QMainWindow>
+#include <QMap>
 
-class QDragEnterEvent;
-class QDragMoveEvent;
-class QDropEvent;
+class QGridLayout;
+class QTextEditor;
+class QAction;
+class QToolBar;
 
-class PQSlideDesigner : public QDeclarativeView
+class PQMLRichTextEditor : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    explicit PQSlideDesigner(QWidget* parent = 0);
-    virtual ~PQSlideDesigner();
+    explicit PQMLRichTextEditor(QWidget* parent = 0);
+    virtual ~PQMLRichTextEditor();
 
+private:
+    QAction* addAction(QToolBar *toolbar, const QString &name, const QString &icon,
+		       const QString &text, const QKeySequence &shortcut,
+		       QObject *receiver, const char *member);
 
-protected:
-    virtual void dragEnterEvent(QDragEnterEvent* event);
-    virtual void dragMoveEvent(QDragMoveEvent* event);
-    virtual void dropEvent(QDropEvent* event);
+    QGridLayout *mLayout;
 
+    QTextEditor *mEditor;
+    QMap<QString, QAction*> mActions;
 };
 
-#endif // PQSLIDEDESIGNER_H
+#endif // PQMLRICHTEXTEDITOR_H

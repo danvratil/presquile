@@ -17,29 +17,39 @@
  *
  */
 
-#ifndef PQSLIDEDESIGNER_H
-#define PQSLIDEDESIGNER_H
+import QtQuick 1.0
 
-#include <QDeclarativeView>
+Item {
+    id: root;
 
-class QDragEnterEvent;
-class QDragMoveEvent;
-class QDropEvent;
+    SystemPalette {
+	id: palette;
+    }
 
-class PQSlideDesigner : public QDeclarativeView
-{
-    Q_OBJECT
+    Rectangle {
+	id: slideRoot;
+	objectName: "slideRoot";
 
-public:
-    explicit PQSlideDesigner(QWidget* parent = 0);
-    virtual ~PQSlideDesigner();
+	width: 800;
+	height: 600;
+	radius: 10;
+
+	anchors.centerIn: parent;
+
+	color: palette.light;
 
 
-protected:
-    virtual void dragEnterEvent(QDragEnterEvent* event);
-    virtual void dragMoveEvent(QDragMoveEvent* event);
-    virtual void dropEvent(QDropEvent* event);
+	function updateScale() {
+	    /* "Real" size (including margin) is 880x680.
+	     * Scale the slideRectangle so that it always fits into root with
+	     * the margin
+	     * TODO: The margin should be scaled as well - the smaller the scale,
+	     * the smaller margin */
 
-};
+	    slideRoot.scale = Math.min(root.width / 880, root.height / 680);
+	}
+    }
 
-#endif // PQSLIDEDESIGNER_H
+    onHeightChanged: slideRoot.updateScale();
+    onWidthChanged: slideRoot.updateScale();
+}

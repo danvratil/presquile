@@ -18,17 +18,79 @@
  */
 
 #include "pqslidedesigner.h"
+#include "coreutils.h"
+#include "qml/pqqmlmanager.h"
+
+#include <QDragEnterEvent>
+#include <QDragMoveEvent>
+#include <QDropEvent>
+#include <QStringBuilder>
+#include <QDeclarativeItem>
+#include <QDeclarativeEngine>
+#include <QMessageBox>
 
 PQSlideDesigner::PQSlideDesigner(QWidget* parent)
-  : QGraphicsView(parent)
+    : QDeclarativeView(parent)
 {
+    setResizeMode(SizeRootObjectToView);
+    setAcceptDrops(true);
 
+    setSource(QUrl(CoreUtils::resourcePath() % QLatin1String("/qml/internals/Slide.qml")));
 }
 
 PQSlideDesigner::~PQSlideDesigner()
 {
 
 }
+
+void PQSlideDesigner::dragEnterEvent(QDragEnterEvent* event)
+{
+    if (!event->mimeData()->text().startsWith(QLatin1String("Component/"))) {
+	event->ignore();
+	return;
+    }
+
+    event->acceptProposedAction();
+}
+
+void PQSlideDesigner::dragMoveEvent(QDragMoveEvent* event)
+{
+    /* Always allow dragged item to be moved around */
+    event->accept();
+}
+
+void PQSlideDesigner::dropEvent(QDropEvent* event)
+{
+    QString type = event->mimeData()->text();
+
+    if (!type.startsWith(QLatin1String("Component/"))) {
+	event->ignore();
+	return;
+    }
+
+    QString comp = type.remove(QLatin1String("Component/"));
+
+    PQQMLManager *manager = PQQMLManager::instance();
+    QDeclarativeItem *item = manager->componentInstance(engine(), comp);
+    if (!item) {
+	qWarning() << "Failed to create an instance of" << comp;
+	return;
+    }
+
+    QDeclarativeItem *slide = rootObject()->findChild<QDeclarativeItem*>(QLatin1String("slideRoot"));
+    if (!slide) {
+	qWarning() << "Failed to locate slide root element";
+	return;
+    }
+
+    item->setParentItem(slide);
+    item->setProperty("x", event->pos().x() - slide->x());
+    item->setProperty("y", event->pos().y() - slide->y());
+
+    event->acceptProposedAction();
+}
+
+
 
 
 #include "pqslidedesigner.moc"

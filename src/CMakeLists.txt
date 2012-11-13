@@ -15,6 +15,9 @@ set(presquile_SRCS
     panels/pqslidesviewpanel.cpp
     panels/pqslidepropertiespanel.cpp
     panels/pqcomponentspanel.cpp
+
+    qml/pqqmlmanager.cpp
+#    qml/pqmlrichtexteditor.cpp
 )
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR})

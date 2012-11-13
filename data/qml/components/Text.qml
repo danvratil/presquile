@@ -17,29 +17,9 @@
  *
  */
 
-#ifndef PQSLIDEDESIGNER_H
-#define PQSLIDEDESIGNER_H
+import QtQuick 1.0
 
-#include <QDeclarativeView>
-
-class QDragEnterEvent;
-class QDragMoveEvent;
-class QDropEvent;
-
-class PQSlideDesigner : public QDeclarativeView
-{
-    Q_OBJECT
-
-public:
-    explicit PQSlideDesigner(QWidget* parent = 0);
-    virtual ~PQSlideDesigner();
-
-
-protected:
-    virtual void dragEnterEvent(QDragEnterEvent* event);
-    virtual void dragMoveEvent(QDragMoveEvent* event);
-    virtual void dropEvent(QDropEvent* event);
-
-};
-
-#endif // PQSLIDEDESIGNER_H
+Text {
+    property string	_PQDisplayName:		qsTr("Label");
+    property string	_PQDescription:		qsTr("Display HTML-formatted text");
+}
