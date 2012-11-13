@@ -18,7 +18,7 @@
  */
 
 #include "propertieseditor.h"
-#include "editors/easingcurveeditor.h"
+#include "easingcurveeditor.h"
 
 #include <QMetaProperty>
 

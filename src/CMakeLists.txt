@@ -3,12 +3,12 @@ set(presquile_SRCS
     coreutils.cpp
     pqcomponentstreewidget.cpp
     pqslidedesigner.cpp
-    propertieseditor.cpp
     main.cpp
     mainwindow.cpp
 
     editors/animationsequenceeditor.cpp
     editors/easingcurveeditor.cpp
+    editors/propertieseditor.cpp
 
     panels/pqcomponentpropertiespanel.cpp
     panels/pqcomponentsanimationspanel.cpp

@@ -18,8 +18,8 @@
  */
 
 #include "animationsequenceeditor.h"
+#include "propertieseditor.h"
 #include "../animationselectdialog.h"
-#include "../propertieseditor.h"
 
 #include <QTreeWidget>
 #include <QSplitter>
