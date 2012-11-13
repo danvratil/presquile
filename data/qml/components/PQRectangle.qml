@@ -21,17 +21,33 @@ import QtQuick 1.0
 
 PQResizable {
 
+    property string		_PQDisplayName:		qsTr("Rectangle");
+    property string		_PQDescription:		qsTr("A rectangle");
+    property int 		_PQInitialWidth:	200;
+    property int 		_PQInitialHeight:	200;
+    property bool 		_PQEditable:		false;
+    property variant		_PQProperties:		[ "color",
+							  "gradient",
+							  "height",
+							  "opacity",
+							  "radius",
+							  "rotation",
+							  "scale",
+							  "smooth",
+							  "width",
+							  "x",
+							  "y",
+							  "z" ];
+
+    property alias color: rect.color;
+    property alias gradient: rect.gradient;
+    property alias radius: rect.radius;
+    property alias smooth: rect.smooth;
+
     contentView: rect;
 
     Rectangle {
 	id: rect;
-
-	property string	_PQDisplayName:		qsTr("Rectangle");
-	property string	_PQDescription:		qsTr("A rectangle");
-	property int _PQInitialWidth:		200;
-	property int _PQInitialHeight:		200;
-	property bool _PQEditable:		false;
-
 	color: "red";
 
 	anchors.top: parent.top;

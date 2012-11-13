@@ -22,14 +22,21 @@
 
 #include <QDockWidget>
 
+class PropertiesEditor;
 class PQComponentPropertiesPanel : public QDockWidget
 {
     Q_OBJECT
 
 public:
-    explicit PQComponentPropertiesPanel(QWidget* parent = 0, Qt::WindowFlags flags = 0);
+    explicit PQComponentPropertiesPanel(QWidget* parent = 0);
     virtual ~PQComponentPropertiesPanel();
 
+public Q_SLOTS:
+    void setItem(QObject *item);
+
+private:
+    PropertiesEditor *mEditor;
+    QSharedPointer<QObject> mObject;
 };
 
 #endif // PQCOMPONENTPROPERTIESPANEL_H

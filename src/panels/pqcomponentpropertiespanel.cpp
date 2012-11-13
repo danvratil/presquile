@@ -18,16 +18,31 @@
  */
 
 #include "pqcomponentpropertiespanel.h"
+#include "../editors/propertieseditor.h"
 
-PQComponentPropertiesPanel::PQComponentPropertiesPanel(QWidget* parent, Qt::WindowFlags flags)
-  : QDockWidget(tr("Component Properties"), parent, flags)
+#include <QDebug>
+
+PQComponentPropertiesPanel::PQComponentPropertiesPanel(QWidget* parent)
+  : QDockWidget(tr("Component Properties"), parent)
+  , mEditor(new PropertiesEditor(this))
 {
-
+    setWidget(mEditor);
 }
 
 PQComponentPropertiesPanel::~PQComponentPropertiesPanel()
 {
 
 }
+
+void PQComponentPropertiesPanel::setItem(QObject* item)
+{
+    if (mObject.data() == item) {
+	return;
+    }
+
+    mObject = QSharedPointer<QObject>(item);
+    mEditor->setObject(mObject);
+}
+
 
 #include "pqcomponentpropertiespanel.moc"

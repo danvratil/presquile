@@ -34,6 +34,11 @@ public:
     explicit PQSlideDesigner(QWidget* parent = 0);
     virtual ~PQSlideDesigner();
 
+Q_SIGNALS:
+    void focusedItemChanged(QObject *item);
+
+private Q_SLOTS:
+    void slotItemFocusChanged(bool hasFocus);
 
 protected:
     virtual void dragEnterEvent(QDragEnterEvent* event);

@@ -17,33 +17,47 @@
  *
  */
 
-#ifndef PROPERTIESEDITOR_H
-#define PROPERTIESEDITOR_H
+#ifndef PROPERTIESEDITORITEM_H
+#define PROPERTIESEDITORITEM_H
 
 #include <QTableWidget>
 #include <QMetaProperty>
+#include <QPointer>
 
-class PropertiesEditor : public QTableWidget
+class PropertiesEditorItemPrivate;
+
+class PropertiesEditorItem : public QObject, public QTableWidgetItem
 {
     Q_OBJECT
 
 public:
-    enum Roles {
-	PropertyIndexRole = Qt::UserRole + 1,
-    };
+    explicit PropertiesEditorItem(const QSharedPointer<QObject> &object, const QMetaProperty &property, QWidget *parent = 0);
+    virtual ~PropertiesEditorItem();
 
-    explicit PropertiesEditor(QWidget* parent = 0);
-    virtual ~PropertiesEditor();
 
-    void setObject(const QSharedPointer<QObject> &object);
-    QSharedPointer<QObject> object() const;
+    QWidget *editorWidget() const;
 
+    QWidget *parent() const;
+
+private Q_SLOTS:
+    void slotPropertyValueChanged();
+
+    void slotOpenEasingCurveEditor();
+    void slotOpenColorEditor();
+
+    void slotSpinBoxValueChanged();
+    void slotDoubleSpinBoxValueChanged();
+    void slotCheckBoxToggled();
+    void slotFontComboChanged();
+    void slotLineEditChanged();
 
 private:
-    QMetaProperty property(int row);
-    void setEditorWidget(int row);
+    void prepareWidget();
 
+    QPointer<QWidget> mWidget;
     QSharedPointer<QObject> mObject;
+    QMetaProperty mProperty;
+
 };
 
-#endif // PROPERTIESEDITOR_H
+#endif // PROPERTIESEDITORITEM_H

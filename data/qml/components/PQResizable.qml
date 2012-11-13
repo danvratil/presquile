@@ -102,7 +102,7 @@ Item {
     }
 
     Component.onCompleted: {
-	handleInst.x = contentView._PQInitialWidth;
-	handleInst.y = contentView._PQInitialHeight;
+	handleInst.x = _PQInitialWidth;
+	handleInst.y = _PQInitialHeight;
     }
 }

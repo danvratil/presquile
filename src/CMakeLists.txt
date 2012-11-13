@@ -9,6 +9,7 @@ set(presquile_SRCS
     editors/animationsequenceeditor.cpp
     editors/easingcurveeditor.cpp
     editors/propertieseditor.cpp
+    editors/propertieseditoritem.cpp
 
     panels/pqcomponentpropertiespanel.cpp
     panels/pqcomponentsanimationspanel.cpp
