@@ -64,7 +64,7 @@ PQQMLManager::~PQQMLManager()
 
 QDeclarativeItem* PQQMLManager::componentInstance(QDeclarativeEngine *engine, const QString& componentName)
 {
-    if (!QFile::exists(CoreUtils::resourcePath() % QLatin1String("/qml/components/") % componentName)) {
+    if (!QFile::exists(CoreUtils::resourcePath() % QLatin1String("/qml/components/") % componentName % QLatin1String(".qml"))) {
 	qWarning() << componentName << "source file does not exist";
 	return 0;
     }

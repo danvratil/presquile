@@ -19,11 +19,24 @@
 
 import QtQuick 1.0
 
-Rectangle {
-    property string	_PQDisplayName:		qsTr("Rectangle");
-    property string	_PQDescription:		qsTr("A rectangle");
+PQResizable {
 
-    width: 150;
-    height: 150;
-    color: "blue";
+    contentView: rect;
+
+    Rectangle {
+	id: rect;
+
+	property string	_PQDisplayName:		qsTr("Rectangle");
+	property string	_PQDescription:		qsTr("A rectangle");
+	property int _PQInitialWidth:		200;
+	property int _PQInitialHeight:		200;
+	property bool _PQEditable:		false;
+
+	color: "red";
+
+	anchors.top: parent.top;
+	anchors.left: parent.left;
+	anchors.right: parent.handle.horizontalCenter;
+	anchors.bottom: parent.handle.verticalCenter;
+    }
 }
