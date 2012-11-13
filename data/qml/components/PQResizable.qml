@@ -79,6 +79,10 @@ Item {
 	onDoubleClicked: {
 	    root.isEditable = true;
 	}
+
+	onPressed: {
+	    root.focus = true;
+	}
     }
 
     onIsEditableChanged: {
@@ -91,6 +95,10 @@ Item {
 	moveMouseMarea.enabled = !isEditable;
 
 	contentEditor.text = contentView.text;
+    }
+
+    onFocusChanged: {
+	handleInst.visible = root.focus;
     }
 
     Component.onCompleted: {

@@ -77,7 +77,8 @@ void PQSlideDesigner::dropEvent(QDropEvent* event)
 	return;
     }
 
-    QDeclarativeItem *slide = rootObject()->findChild<QDeclarativeItem*>(QLatin1String("slideRoot"));
+    /* FIXME: Be more generic here */
+    QDeclarativeItem *slide = rootObject()->findChild<QDeclarativeItem*>(QLatin1String("slideRootFocusScope"));
     if (!slide) {
 	qWarning() << "Failed to locate slide root element";
 	return;
@@ -86,6 +87,7 @@ void PQSlideDesigner::dropEvent(QDropEvent* event)
     item->setParentItem(slide);
     item->setProperty("x", event->pos().x() - slide->x());
     item->setProperty("y", event->pos().y() - slide->y());
+    item->setProperty("focus", true);
 
     event->acceptProposedAction();
 }

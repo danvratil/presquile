@@ -33,18 +33,25 @@ Item {
 	width: 800;
 	height: 600;
 	radius: 10;
+	focus: true;
 
 	anchors.centerIn: parent;
 
 	color: palette.light;
 
+	FocusScope {
+	    id: focusScope;
+	    objectName: "slideRootFocusScope";
+
+	    anchors.fill: parent;
+	}
 
 	function updateScale() {
 	    /* "Real" size (including margin) is 880x680.
-	     * Scale the slideRectangle so that it always fits into root with
-	     * the margin
-	     * TODO: The margin should be scaled as well - the smaller the scale,
-	     * the smaller margin */
+	    * Scale the slideRectangle so that it always fits into root with
+	    * the margin
+	    * TODO: The margin should be scaled as well - the smaller the scale,
+	    * the smaller margin */
 
 	    slideRoot.scale = Math.min(root.width / 880, root.height / 680);
 	}
