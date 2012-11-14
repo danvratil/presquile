@@ -82,8 +82,6 @@ void PropertiesEditor::setObject(const QSharedPointer< QObject >& object)
 	properties = p.read(mObject.data()).toStringList();
     }
 
-    qDebug() << metaObject->superClass()->className();
-
     QStringList processed;
     int count = metaObject->propertyCount();
     while (metaObject) {

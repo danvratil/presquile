@@ -22,14 +22,22 @@
 
 #include <QDockWidget>
 
+class TransformationsEditor;
 class PQComponentsAnimationsPanel : public QDockWidget
 {
     Q_OBJECT
 
 public:
-    explicit PQComponentsAnimationsPanel(QWidget* parent = 0, Qt::WindowFlags flags = 0);
+    explicit PQComponentsAnimationsPanel(QWidget* parent = 0);
     virtual ~PQComponentsAnimationsPanel();
 
+public Q_SLOTS:
+    void setItem(QObject *item);
+
+private:
+    QObject *mObject;
+
+    TransformationsEditor *mTransformationsEditor;
 };
 
 #endif // PQCOMPONENTSANIMATIONSPANEL_H

@@ -18,16 +18,35 @@
  */
 
 #include "pqcomponentsanimationspanel.h"
+#include "../editors/transformationseditor.h"
+#include <QHBoxLayout>
 
-PQComponentsAnimationsPanel::PQComponentsAnimationsPanel(QWidget* parent, Qt::WindowFlags flags)
-  : QDockWidget(tr("Components Animations"), parent, flags)
+PQComponentsAnimationsPanel::PQComponentsAnimationsPanel(QWidget* parent)
+  : QDockWidget(tr("Animations And Transformations"), parent)
+  , mObject(0)
 {
+    QWidget *mainWidget = new QWidget(this);
+    setWidget(mainWidget);
 
+    QHBoxLayout *layout = new QHBoxLayout(mainWidget);
+
+    mTransformationsEditor = new TransformationsEditor(this);
+    mTransformationsEditor->setEnabled(false);
+    layout->addWidget(mTransformationsEditor);
 }
 
 PQComponentsAnimationsPanel::~PQComponentsAnimationsPanel()
 {
 
 }
+
+void PQComponentsAnimationsPanel::setItem(QObject* item)
+{
+    mObject = item;
+
+    mTransformationsEditor->setObject(mObject);
+    mTransformationsEditor->setEnabled(item != 0);
+}
+
 
 #include "pqcomponentsanimationspanel.moc"

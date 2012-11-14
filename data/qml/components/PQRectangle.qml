@@ -46,6 +46,33 @@ PQResizable {
 
     contentView: rect;
 
+    transform: [
+	Translate {
+	    x: 0;
+	    y: 0;
+	},
+	Rotation {
+	    angle: 0;
+	    axis {
+		x: 0;
+		y: 0;
+		z: 0;
+	    }
+	    origin {
+		x: 0;
+		y: 0;
+	    }
+	},
+	Scale {
+	    xScale: 1.0;
+	    yScale: 1.0;
+	    origin {
+		x: 0;
+		y: 0;
+	    }
+	}
+    ]
+
     Rectangle {
 	id: rect;
 	color: "red";

@@ -74,6 +74,8 @@ MainWindow::MainWindow(QWidget *parent)
     setCentralWidget(mSlidesDesigner);
     connect(mSlidesDesigner, SIGNAL(focusedItemChanged(QObject*)),
 	    mComponentPropertiesPanel, SLOT(setItem(QObject*)));
+    connect(mSlidesDesigner, SIGNAL(focusedItemChanged(QObject*)),
+	    mComponentsAnimationsPanel, SLOT(setItem(QObject*)));
 
     mStatusBar = new QStatusBar(this);
     setStatusBar(mStatusBar);
