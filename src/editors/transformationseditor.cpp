@@ -37,37 +37,31 @@ TransformationsEditor::TransformationsEditor(QWidget* parent)
     mRotationAngle->setMinimum(LONG_MIN);
     mRotationAngle->setMaximum(LONG_MAX);
     layout->addRow(tr("Angle"), mRotationAngle);
-    connect(mRotationAngle, SIGNAL(valueChanged(double)), SLOT(slotRotationAngleEditValueChanged()));
 
     mRotationXAxis = new QDoubleSpinBox(this);
     mRotationXAxis->setMinimum(LONG_MIN);
     mRotationXAxis->setMaximum(LONG_MAX);
     layout->addRow(tr("X Axis"), mRotationXAxis);
-    connect(mRotationXAxis, SIGNAL(valueChanged(double)), SLOT(slotRotationAxisEditValueChanged()));
 
     mRotationYAxis = new QDoubleSpinBox(this);
     mRotationYAxis->setMinimum(LONG_MIN);
     mRotationYAxis->setMaximum(LONG_MAX);
     layout->addRow(tr("Y Axis"), mRotationYAxis);
-    connect(mRotationYAxis, SIGNAL(valueChanged(double)), SLOT(slotRotationAxisEditValueChanged()));
 
     mRotationZAxis = new QDoubleSpinBox(this);
     mRotationZAxis->setMinimum(LONG_MIN);
     mRotationZAxis->setMaximum(LONG_MAX);
     layout->addRow(tr("Z Axis"), mRotationZAxis);
-    connect(mRotationZAxis, SIGNAL(valueChanged(double)), SLOT(slotRotationAxisEditValueChanged()));
 
     mRotationXOrigin = new QDoubleSpinBox(this);
     mRotationXOrigin->setMinimum(LONG_MIN);
     mRotationXOrigin->setMaximum(LONG_MAX);
     layout->addRow(tr("X Origin"), mRotationXOrigin);
-    connect(mRotationXOrigin, SIGNAL(valueChanged(double)), SLOT(slotRotationOriginEditValueChanged()));
 
     mRotationYOrigin = new QDoubleSpinBox(this);
     mRotationYOrigin->setMinimum(LONG_MIN);
     mRotationYOrigin->setMaximum(LONG_MAX);
     layout->addRow(tr("Y Origin"), mRotationYOrigin);
-    connect(mRotationYOrigin, SIGNAL(valueChanged(double)), SLOT(slotRotationOriginEditValueChanged()));
 
 
     mScaleTab = new QWidget(this);
@@ -77,27 +71,23 @@ TransformationsEditor::TransformationsEditor(QWidget* parent)
     mScaleXOrigin->setMinimum(LONG_MIN);
     mScaleXOrigin->setMaximum(LONG_MAX);
     layout->addRow(tr("X Origin"), mScaleXOrigin);
-    connect(mScaleXOrigin, SIGNAL(valueChanged(double)), SLOT(slotScaleOriginEditValueChanged()));
 
     mScaleYOrigin = new QDoubleSpinBox(this);
     mScaleYOrigin->setMinimum(LONG_MIN);
     mScaleYOrigin->setMaximum(LONG_MAX);
     layout->addRow(tr("Y Origin"), mScaleYOrigin);
-    connect(mScaleYOrigin, SIGNAL(valueChanged(double)), SLOT(slotScaleOriginEditValueChanged()));
 
     mScaleXScale = new QDoubleSpinBox(this);
     mScaleXScale->setMinimum(LONG_MIN);
     mScaleXScale->setMaximum(LONG_MAX);
     mScaleXScale->setSingleStep(0.1);
     layout->addRow(tr("X Scale"), mScaleXScale);
-    connect(mScaleXScale, SIGNAL(valueChanged(double)), SLOT(slotScaleScaleEditValueChanged()));
 
     mScaleYScale = new QDoubleSpinBox(this);
     mScaleYScale->setMinimum(LONG_MIN);
     mScaleYScale->setMaximum(LONG_MAX);
     mScaleYScale->setSingleStep(0.1);
     layout->addRow(tr("Y Scale"), mScaleYScale);
-    connect(mScaleYScale, SIGNAL(valueChanged(double)), SLOT(slotScaleScaleEditValueChanged()));
 
 
     mTranslateTab = new QWidget(this);
@@ -107,13 +97,11 @@ TransformationsEditor::TransformationsEditor(QWidget* parent)
     mTranslateX->setMinimum(LONG_MIN);
     mTranslateX->setMaximum(LONG_MAX);
     layout->addRow(tr("X"), mTranslateX);
-    connect(mTranslateX, SIGNAL(valueChanged(double)), SLOT(slotTranslateEditValueChanged()));
 
     mTranslateY = new QDoubleSpinBox(this);
     mTranslateY->setMinimum(LONG_MIN);
     mTranslateY->setMaximum(LONG_MAX);
     layout->addRow(tr("Y"), mTranslateY);
-    connect(mTranslateY, SIGNAL(valueChanged(double)), SLOT(slotTranslateEditValueChanged()));
 
     addTab(mRotationTab, tr("Rotation"));
     addTab(mScaleTab, tr("Scale"));
@@ -198,30 +186,60 @@ QGraphicsTransform* TransformationsEditor::translationTransformation() const
 
 void TransformationsEditor::setObject(QObject *object)
 {
-    mObject = object;
+    /* Disconnect handlers from old object */
     disconnect(this, SLOT(slotRotationAngleChanged()));
     disconnect(this, SLOT(slotRotationAxisChanged()));
     disconnect(this, SLOT(slotRotationOriginChanged()));
     disconnect(this, SLOT(slotScaleOriginChanged()));
     disconnect(this, SLOT(slotScaleScaleChanged()));
 
+    /* Temporarily disconnect valueChanged signal from all spinboxes, so that
+     * we can initialize them correctly. */
+    disconnect(mRotationAngle, SIGNAL(valueChanged(double)), this, SLOT(slotRotationAngleEditValueChanged()));
+    disconnect(mRotationXAxis, SIGNAL(valueChanged(double)), this, SLOT(slotRotationAxisEditValueChanged()));
+    disconnect(mRotationYAxis, SIGNAL(valueChanged(double)), this, SLOT(slotRotationAxisEditValueChanged()));
+    disconnect(mRotationZAxis, SIGNAL(valueChanged(double)), this, SLOT(slotRotationAxisEditValueChanged()));
+    disconnect(mRotationXOrigin, SIGNAL(valueChanged(double)), this, SLOT(slotRotationOriginEditValueChanged()));
+    disconnect(mRotationYOrigin, SIGNAL(valueChanged(double)), this, SLOT(slotRotationOriginEditValueChanged()));
+    disconnect(mScaleXOrigin, SIGNAL(valueChanged(double)), this, SLOT(slotScaleOriginEditValueChanged()));
+    disconnect(mScaleYOrigin, SIGNAL(valueChanged(double)), this, SLOT(slotScaleOriginEditValueChanged()));
+    disconnect(mScaleXScale, SIGNAL(valueChanged(double)), this, SLOT(slotScaleScaleEditValueChanged()));
+    disconnect(mScaleYScale, SIGNAL(valueChanged(double)), this, SLOT(slotScaleScaleEditValueChanged()));
+    disconnect(mTranslateX, SIGNAL(valueChanged(double)), this, SLOT(slotTranslateEditValueChanged()));
+    disconnect(mTranslateY, SIGNAL(valueChanged(double)), this, SLOT(slotTranslateEditValueChanged()));
+    mObject = object;
+
     QGraphicsRotation *rotation = rotationTransformation();
-    connect(rotation, SIGNAL(angleChanged()), SLOT(slotRotationAngleChanged()));
-    connect(rotation, SIGNAL(axisChanged()), SLOT(slotRotationAxisChanged()));
-    connect(rotation, SIGNAL(originChanged()), SLOT(slotRotationOriginChanged()));
     slotRotationAngleChanged();
     slotRotationAxisChanged();
     slotRotationOriginChanged();
+    connect(rotation, SIGNAL(angleChanged()), SLOT(slotRotationAngleChanged()));
+    connect(rotation, SIGNAL(axisChanged()), SLOT(slotRotationAxisChanged()));
+    connect(rotation, SIGNAL(originChanged()), SLOT(slotRotationOriginChanged()));
 
     QGraphicsScale *scale = scaleTransformation();
+    slotScaleScaleChanged();
+    slotScaleOriginChanged();
     connect(scale, SIGNAL(originChanged()), SLOT(slotScaleOriginChanged()));
     connect(scale, SIGNAL(scaleChanged()), SLOT(slotScaleScaleChanged()));
-    slotScaleOriginChanged();
-    slotScaleScaleChanged();
 
     QGraphicsTransform *translation = translationTransformation();
     mTranslateX->setValue(translation->property("x").toReal());
     mTranslateY->setValue(translation->property("y").toReal());
+
+    /* Connect the spinboxes again */
+    connect(mRotationAngle, SIGNAL(valueChanged(double)), SLOT(slotRotationAngleEditValueChanged()));
+    connect(mRotationXAxis, SIGNAL(valueChanged(double)), SLOT(slotRotationAxisEditValueChanged()));
+    connect(mRotationYAxis, SIGNAL(valueChanged(double)), SLOT(slotRotationAxisEditValueChanged()));
+    connect(mRotationZAxis, SIGNAL(valueChanged(double)), SLOT(slotRotationAxisEditValueChanged()));
+    connect(mRotationXOrigin, SIGNAL(valueChanged(double)), SLOT(slotRotationOriginEditValueChanged()));
+    connect(mRotationYOrigin, SIGNAL(valueChanged(double)), SLOT(slotRotationOriginEditValueChanged()));
+    connect(mScaleXOrigin, SIGNAL(valueChanged(double)), SLOT(slotScaleOriginEditValueChanged()));
+    connect(mScaleYOrigin, SIGNAL(valueChanged(double)), SLOT(slotScaleOriginEditValueChanged()));
+    connect(mScaleXScale, SIGNAL(valueChanged(double)), SLOT(slotScaleScaleEditValueChanged()));
+    connect(mScaleYScale, SIGNAL(valueChanged(double)), SLOT(slotScaleScaleEditValueChanged()));
+    connect(mTranslateX, SIGNAL(valueChanged(double)), SLOT(slotTranslateEditValueChanged()));
+    connect(mTranslateY, SIGNAL(valueChanged(double)), SLOT(slotTranslateEditValueChanged()));
 }
 
 void TransformationsEditor::slotRotationAngleChanged()
