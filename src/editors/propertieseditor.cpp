@@ -38,7 +38,8 @@ static const QList<QVariant::Type> supportedTypes = QList<QVariant::Type>()
 							<< QVariant::LongLong
 							<< QVariant::String
 							<< QVariant::ULongLong
-							<< QVariant::UInt;
+							<< QVariant::UInt
+							<< QVariant::Url;
 
 PropertiesEditor::PropertiesEditor(QWidget* parent)
   : QTableWidget(parent)

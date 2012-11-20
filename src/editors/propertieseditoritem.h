@@ -25,6 +25,7 @@
 #include <QPointer>
 
 class PropertiesEditorItemPrivate;
+class QPushButton;
 
 class PropertiesEditorItem : public QObject, public QTableWidgetItem
 {
@@ -50,9 +51,11 @@ private Q_SLOTS:
     void slotCheckBoxToggled();
     void slotFontComboChanged();
     void slotLineEditChanged();
+    void slotUrlButtonClicked();
 
 private:
     void prepareWidget();
+    void setButtonUrl(QPushButton *button, const QUrl &text);
 
     QPointer<QWidget> mWidget;
     QPointer<QObject> mObject;

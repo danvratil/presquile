@@ -28,6 +28,8 @@
 #include <QFontComboBox>
 #include <QStringBuilder>
 #include <QColorDialog>
+#include <QFileDialog>
+#include <QUrl>
 
 #include <QDebug>
 
@@ -221,10 +223,11 @@ void PropertiesEditorItem::prepareWidget()
 	connect(spinBox, SIGNAL(valueChanged(int)), SLOT(slotDoubleSpinBoxValueChanged()));
 
     } else if (mProperty.type() == QVariant::Url) {
-	QLineEdit *lineEdit = new QLineEdit(parent());
-	lineEdit->setText(mProperty.read(mObject.data()).toString());
-	editor = qobject_cast< QWidget* >(lineEdit);
-	connect(lineEdit, SIGNAL(textChanged(QString)), SLOT(slotLineEditChanged()));
+	QPushButton *button = new QPushButton(parent());
+	QUrl url = mProperty.read(mObject.data()).toUrl();
+	setButtonUrl(button, url);
+	editor = qobject_cast< QWidget* >(button);
+	connect(button, SIGNAL(clicked(bool)), SLOT(slotUrlButtonClicked()));
 
     } else if (mProperty.type() == QVariant::UserType) {
 
@@ -297,6 +300,30 @@ void PropertiesEditorItem::slotDoubleSpinBoxValueChanged()
     QDoubleSpinBox *spinBox = qobject_cast<QDoubleSpinBox*>(mWidget.data());
     mProperty.write(mObject.data(), spinBox->value());
 }
+
+void PropertiesEditorItem::slotUrlButtonClicked()
+{
+    QFileDialog *dialog =  new QFileDialog(parent(), tr("Open File"));
+    dialog->setAcceptMode(QFileDialog::AcceptOpen);
+    dialog->setFileMode(QFileDialog::ExistingFile);
+    if (dialog->exec() == QDialog::Accepted) {
+	QStringList files = dialog->selectedFiles();
+	if (files.isEmpty()) {
+	    delete dialog;
+	    return;
+	}
+
+	QUrl url = files.first();
+
+	QPushButton *button = qobject_cast<QPushButton*>(mWidget.data());
+	setButtonUrl(button, url);
+
+	mProperty.write(mObject.data(), url);
+    }
+
+    delete dialog;
+}
+
 
 void PropertiesEditorItem::slotPropertyValueChanged()
 {
@@ -416,8 +443,9 @@ void PropertiesEditorItem::slotPropertyValueChanged()
 	spinBox->setValue(mProperty.read(mObject.data()).toULongLong());
 
     } else if (mProperty.type() == QVariant::Url) {
-	QLineEdit *lineEdit = qobject_cast<QLineEdit*>(mWidget.data());
-	lineEdit->setText(mProperty.read(mObject.data()).toString());
+	QPushButton *button = qobject_cast<QPushButton*>(mWidget.data());
+	QUrl url = mProperty.read(mObject.data()).toUrl();
+	setButtonUrl(button, url);
 
     } else if (mProperty.type() == QVariant::UserType) {
 
@@ -427,6 +455,20 @@ void PropertiesEditorItem::slotPropertyValueChanged()
 
     } else if (mProperty.type() == QVariant::Vector4D) {
 
+    }
+}
+
+void PropertiesEditorItem::setButtonUrl(QPushButton* button, const QUrl& url)
+{
+    if (url.isValid()) {
+	QFontMetrics metrics = button->fontMetrics();
+	QString elidedText = metrics.elidedText(url.toString(), Qt::ElideLeft, button->width());
+
+	button->setText(elidedText);
+	button->setToolTip(url.toString());
+    } else {
+	button->setText(tr("Open File..."));
+	button->setToolTip(QString());
     }
 }
 

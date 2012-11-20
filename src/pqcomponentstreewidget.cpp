@@ -55,7 +55,7 @@ PQComponentsTreeWidget::PQComponentsTreeWidget(QWidget* parent)
 
     item = new QTreeWidgetItem(category);
     item->setText(0, tr("Image"));
-    item->setData(0, ComponentNameRole, QLatin1String("Image"));
+    item->setData(0, ComponentNameRole, QLatin1String("PQImage"));
     category->addChild(item);
 }
 

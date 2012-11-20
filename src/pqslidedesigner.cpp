@@ -95,7 +95,6 @@ void PQSlideDesigner::dropEvent(QDropEvent* event)
 	return;
     }
 
-    /* FIXME: Be more generic here */
     QDeclarativeItem *slideContainer = slideChildrenContainer();
     QDeclarativeItem *rect = slideRect();
     QDeclarativeItem *root = slideRoot();
