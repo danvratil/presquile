@@ -87,8 +87,9 @@ void PQSlideDesigner::dropEvent(QDropEvent* event)
     item->setParentItem(slide);
     item->setProperty("x", event->pos().x() - slide->x());
     item->setProperty("y", event->pos().y() - slide->y());
-    item->setProperty("focus", true);
+
     connect(item, SIGNAL(focusChanged(bool)), this, SLOT(slotItemFocusChanged(bool)));
+    item->setProperty("focus", true);
 
     event->acceptProposedAction();
 }
