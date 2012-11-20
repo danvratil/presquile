@@ -40,7 +40,7 @@ void PQComponentPropertiesPanel::setItem(QObject* item)
 	return;
     }
 
-    mObject = QSharedPointer<QObject>(item);
+    mObject = item;
     mEditor->setObject(mObject);
 }
 

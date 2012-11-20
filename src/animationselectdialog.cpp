@@ -28,10 +28,11 @@
 #include <QDebug>
 #include <QDeclarativeComponent>
 #include <QDeclarativeEngine>
+#include <QPointer>
 
 #include "coreutils.h"
 
-Q_DECLARE_METATYPE(QSharedPointer<QObject>);
+Q_DECLARE_METATYPE(QPointer<QObject>);
 
 AnimationSelectDialog::AnimationSelectDialog(QDeclarativeEngine *engine, QWidget* parent)
     : QDialog(parent)
@@ -70,22 +71,22 @@ AnimationSelectDialog::~AnimationSelectDialog()
 
 }
 
-QSharedPointer<QObject> AnimationSelectDialog::selectedAnimation() const
+QObject* AnimationSelectDialog::selectedAnimation() const
 {
     if (!mAnimationsList->currentIndex().isValid()) {
-	return QSharedPointer<QObject>();
+	return 0;
     }
 
-    return mAnimationsList->currentItem()->data(0, ObjectTypeRole).value< QSharedPointer<QObject> >();
+    return mAnimationsList->currentItem()->data(0, ObjectTypeRole).value< QPointer<QObject> >().data();
 }
 
 
-QSharedPointer<QObject> AnimationSelectDialog::getObject(const QString& qmlFile)
+QObject* AnimationSelectDialog::getObject(const QString& qmlFile)
 {
     QDeclarativeComponent component(mEngine, CoreUtils::resourcePath() % QLatin1String("/qml/animations/") % qmlFile);
-    QSharedPointer<QObject> ptr(component.create(mEngine->rootContext()));
+    QObject *ptr = component.create(mEngine->rootContext());
 
-    if (ptr.isNull()) {
+    if (ptr == 0) {
       qWarning() << component.errorString();
     }
 
@@ -109,7 +110,7 @@ void AnimationSelectDialog::loadAnimations()
 	       << QLatin1String("PauseAnimation.qml");
 
     Q_FOREACH(const QString &animation, animations) {
-	QSharedPointer<QObject> obj = getObject(animation);
+	QPointer<QObject> obj = getObject(animation);
 	item = new QTreeWidgetItem(mAnimationsList);
 	item->setText(0, obj->property("_PQDisplayName").toString());
 	item->setText(1, obj->property("_PQDescription").toString());

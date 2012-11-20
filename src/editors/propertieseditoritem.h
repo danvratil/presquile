@@ -31,7 +31,7 @@ class PropertiesEditorItem : public QObject, public QTableWidgetItem
     Q_OBJECT
 
 public:
-    explicit PropertiesEditorItem(const QSharedPointer<QObject> &object, const QMetaProperty &property, QWidget *parent = 0);
+    explicit PropertiesEditorItem(QObject *object, const QMetaProperty &property, QWidget *parent = 0);
     virtual ~PropertiesEditorItem();
 
 
@@ -55,7 +55,7 @@ private:
     void prepareWidget();
 
     QPointer<QWidget> mWidget;
-    QSharedPointer<QObject> mObject;
+    QPointer<QObject> mObject;
     QMetaProperty mProperty;
 
 };

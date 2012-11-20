@@ -22,6 +22,7 @@
 
 #include <QTableWidget>
 #include <QMetaProperty>
+#include <QPointer>
 
 class PropertiesEditor : public QTableWidget
 {
@@ -35,15 +36,15 @@ public:
     explicit PropertiesEditor(QWidget* parent = 0);
     virtual ~PropertiesEditor();
 
-    void setObject(const QSharedPointer<QObject> &object);
-    QSharedPointer<QObject> object() const;
+    void setObject(QObject *object);
+    QObject* object() const;
 
 
 private:
     QMetaProperty property(int row);
     void setEditorWidget(int row);
 
-    QSharedPointer<QObject> mObject;
+    QPointer<QObject> mObject;
 };
 
 #endif // PROPERTIESEDITOR_H

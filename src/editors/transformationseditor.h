@@ -21,6 +21,7 @@
 #define TRANSFORMATIONSEDITOR_H
 
 #include <QTabWidget>
+#include <QPointer>
 
 class QDoubleSpinBox;
 class QTabWidget;
@@ -62,7 +63,7 @@ private:
     QGraphicsScale* scaleTransformation() const;
     QGraphicsTransform* translationTransformation() const;
 
-    QObject *mObject;
+    QPointer<QObject> mObject;
 
     QWidget *mRotationTab;
     QDoubleSpinBox *mRotationAngle;

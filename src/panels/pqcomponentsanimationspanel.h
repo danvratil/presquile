@@ -21,6 +21,7 @@
 #define PQCOMPONENTSANIMATIONSPANEL_H
 
 #include <QDockWidget>
+#include <QPointer>
 
 class TransformationsEditor;
 class PQComponentsAnimationsPanel : public QDockWidget
@@ -35,7 +36,7 @@ public Q_SLOTS:
     void setItem(QObject *item);
 
 private:
-    QObject *mObject;
+    QPointer<QObject> mObject;
 
     TransformationsEditor *mTransformationsEditor;
 };

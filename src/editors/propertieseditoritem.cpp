@@ -33,7 +33,7 @@
 
 #include <limits.h>
 
-PropertiesEditorItem::PropertiesEditorItem(const QSharedPointer<QObject> &object, const QMetaProperty& property, QWidget *parent)
+PropertiesEditorItem::PropertiesEditorItem(QObject *object, const QMetaProperty& property, QWidget *parent)
     : QObject(parent)
     , QTableWidgetItem()
     , mObject(object)

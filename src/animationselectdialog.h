@@ -41,11 +41,11 @@ public:
     explicit AnimationSelectDialog(QDeclarativeEngine *engine, QWidget* parent = 0);
     virtual ~AnimationSelectDialog();
 
-    QSharedPointer<QObject> selectedAnimation() const;
+    QObject* selectedAnimation() const;
 
 private:
     void loadAnimations();
-    QSharedPointer<QObject> getObject(const QString &qmlFile);
+    QObject* getObject(const QString &qmlFile);
 
     QGridLayout *mLayout;
     QTreeWidget *mAnimationsList;

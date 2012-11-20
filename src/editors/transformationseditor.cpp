@@ -29,7 +29,6 @@
 
 TransformationsEditor::TransformationsEditor(QWidget* parent)
     : QTabWidget(parent)
-    , mObject(0)
 {
     mRotationTab = new QWidget(this);
     QFormLayout *layout = new QFormLayout(mRotationTab);
@@ -128,7 +127,7 @@ TransformationsEditor::~TransformationsEditor()
 
 QGraphicsRotation* TransformationsEditor::rotationTransformation() const
 {
-    if (mObject == 0) {
+    if (mObject.isNull()) {
 	return 0;
     }
 
@@ -151,7 +150,7 @@ QGraphicsRotation* TransformationsEditor::rotationTransformation() const
 
 QGraphicsScale* TransformationsEditor::scaleTransformation() const
 {
-    if (mObject == 0) {
+    if (mObject.isNull()) {
 	return 0;
     }
 
@@ -174,7 +173,7 @@ QGraphicsScale* TransformationsEditor::scaleTransformation() const
 
 QGraphicsTransform* TransformationsEditor::translationTransformation() const
 {
-    if (mObject == 0) {
+    if (mObject.isNull()) {
 	return 0;
     }
 
@@ -322,7 +321,5 @@ void TransformationsEditor::slotTranslateEditValueChanged()
 	translation->setProperty("y", mTranslateY->value());
     }
 }
-
-
 
 #include "transformationseditor.moc"

@@ -42,7 +42,6 @@ static const QList<QVariant::Type> supportedTypes = QList<QVariant::Type>()
 
 PropertiesEditor::PropertiesEditor(QWidget* parent)
   : QTableWidget(parent)
-  , mObject(0)
 {
     setColumnCount(2);
     setSelectionBehavior(SelectRows);
@@ -59,7 +58,7 @@ PropertiesEditor::~PropertiesEditor()
 
 }
 
-void PropertiesEditor::setObject(const QSharedPointer< QObject >& object)
+void PropertiesEditor::setObject(QObject *object)
 {
     clear();
     setRowCount(0);
@@ -131,9 +130,9 @@ void PropertiesEditor::setObject(const QSharedPointer< QObject >& object)
     setSortingEnabled(true);
 }
 
-QSharedPointer< QObject > PropertiesEditor::object() const
+QObject* PropertiesEditor::object() const
 {
-    return mObject;
+    return mObject.data();
 }
 
 void PropertiesEditor::setEditorWidget(int row)

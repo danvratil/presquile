@@ -32,7 +32,7 @@
 #include <QDeclarativeEngine>
 #include <QDialogButtonBox>
 
-Q_DECLARE_METATYPE(QSharedPointer<QObject>);
+Q_DECLARE_METATYPE(QPointer<QObject>);
 
 AnimationSequenceEditor::AnimationSequenceEditor(QWidget* parent)
     : QDialog(parent)
@@ -116,18 +116,18 @@ void AnimationSequenceEditor::slotCurrentItemChanged()
 	mRemoveAnimationButton->setEnabled(false);
 	mMoveAnimationUpButton->setEnabled(false);
 	mMoveAnimsationDownButton->setEnabled(false);
-	mPropertiesEditor->setObject(QSharedPointer<QObject>());
+	mPropertiesEditor->setObject(0);
 	return;
     }
 
-    QSharedPointer<QObject> obj = currentItem->data(0, ObjectRole).value< QSharedPointer<QObject> >();
+    QPointer<QObject> obj = currentItem->data(0, ObjectRole).value< QPointer<QObject> >();
     /* Top-level item */
     if (obj.isNull()) {
       mAddAnimationButton->setEnabled(true);
       mRemoveAnimationButton->setEnabled(false);
       mMoveAnimationUpButton->setEnabled(false);
       mMoveAnimsationDownButton->setEnabled(false);
-      mPropertiesEditor->setObject(QSharedPointer<QObject>());
+      mPropertiesEditor->setObject(0);
       return;
     }
 
@@ -150,7 +150,7 @@ void AnimationSequenceEditor::slotAddAnimation()
 	return;
     }
 
-    QSharedPointer<QObject> animation = dlg->selectedAnimation();
+    QPointer<QObject> animation = dlg->selectedAnimation();
 
     QTreeWidgetItem* currentItem = mAnimationsTree->currentItem();
     if (!currentItem) {

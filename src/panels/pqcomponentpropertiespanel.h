@@ -21,6 +21,7 @@
 #define PQCOMPONENTPROPERTIESPANEL_H
 
 #include <QDockWidget>
+#include <QPointer>
 
 class PropertiesEditor;
 class PQComponentPropertiesPanel : public QDockWidget
@@ -36,7 +37,7 @@ public Q_SLOTS:
 
 private:
     PropertiesEditor *mEditor;
-    QSharedPointer<QObject> mObject;
+    QPointer<QObject> mObject;
 };
 
 #endif // PQCOMPONENTPROPERTIESPANEL_H
