@@ -49,6 +49,8 @@ protected:
 
 private:
     QDeclarativeItem* slideRoot() const;
+    QDeclarativeItem* slideRect() const;
+    QDeclarativeItem* slideChildrenContainer() const;
 
 };
 

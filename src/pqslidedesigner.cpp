@@ -55,8 +55,26 @@ void PQSlideDesigner::dragEnterEvent(QDragEnterEvent* event)
 
 void PQSlideDesigner::dragMoveEvent(QDragMoveEvent* event)
 {
-    /* Always allow dragged item to be moved around */
-    event->accept();
+    QDeclarativeItem *slide = slideRect();
+    QDeclarativeItem *root = slideRoot();
+    if (!slide || !root) {
+	event->ignore();
+	return;
+    }
+
+    /* We must convert the real dimensions to the visual ones - i.e. apply scale */
+    const int width = slide->width() * slide->scale();
+    const int height = slide->height() * slide->scale();
+    const int x = (root->width() - width) / 2;
+    const int y = (root->height() - height) / 2;
+    const QRect slideRect(x, y, width, height);
+
+    if (slideRect.contains(event->pos(), true)) {
+	event->accept();
+	return;
+    }
+
+    event->ignore();
 }
 
 void PQSlideDesigner::dropEvent(QDropEvent* event)
@@ -78,15 +96,21 @@ void PQSlideDesigner::dropEvent(QDropEvent* event)
     }
 
     /* FIXME: Be more generic here */
-    QDeclarativeItem *slide = slideRoot();
-    if (!slide) {
-	qWarning() << "Failed to locate slide root element";
+    QDeclarativeItem *slideContainer = slideChildrenContainer();
+    QDeclarativeItem *rect = slideRect();
+    QDeclarativeItem *root = slideRoot();
+    if (!slideContainer || !root) {
 	return;
     }
 
-    item->setParentItem(slide);
-    item->setProperty("x", event->pos().x() - slide->parentItem()->x());
-    item->setProperty("y", event->pos().y() - slide->parentItem()->y());
+    item->setParentItem(slideContainer);
+
+    /* Transform to current visual coordinates, which can be different from the
+     * real ones thanks to scaling of the slide rect */
+    const int rootX = (root->width() - (rect->width() * rect->scale())) / 2;
+    const int rootY = (root->height() - (rect->height() * rect->scale())) / 2;
+    const QPointF newPos(event->pos().x() - rootX, event->pos().y() - rootY);
+    item->setPos(newPos);
 
     connect(item, SIGNAL(focusChanged(bool)), this, SLOT(slotItemFocusChanged(bool)));
     item->setProperty("focus", true);
@@ -97,13 +121,13 @@ void PQSlideDesigner::dropEvent(QDropEvent* event)
 void PQSlideDesigner::keyReleaseEvent(QKeyEvent* event)
 {
     if (event->key() == Qt::Key_Delete) {
-	QDeclarativeItem *slide = slideRoot();
-	if (!slide) {
-	    qWarning() << "Failed to locate slide root element";
+	QDeclarativeItem *slideContainer = slideChildrenContainer();
+	if (!slideContainer) {
+	    qWarning() << "Failed to locate slide container element";
 	    return;
 	}
 
-	QListIterator<QGraphicsItem*> iter(slide->childItems());
+	QListIterator<QGraphicsItem*> iter(slideContainer->childItems());
 	while (iter.hasNext()) {
 	    QDeclarativeItem *dItem = qobject_cast<QDeclarativeItem*>(iter.next());
 	    if (dItem && dItem->hasFocus()) {
@@ -137,6 +161,16 @@ void PQSlideDesigner::slotItemFocusChanged(bool hasFocus)
 }
 
 QDeclarativeItem* PQSlideDesigner::slideRoot() const
+{
+    return qobject_cast<QDeclarativeItem*>(rootObject());
+}
+
+QDeclarativeItem* PQSlideDesigner::slideRect() const
+{
+    return rootObject()->findChild<QDeclarativeItem*>(QLatin1String("slideRect"));
+}
+
+QDeclarativeItem* PQSlideDesigner::slideChildrenContainer() const
 {
     return rootObject()->findChild<QDeclarativeItem*>(QLatin1String("slideRootFocusScope"));
 }

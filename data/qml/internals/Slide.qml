@@ -21,14 +21,15 @@ import QtQuick 1.0
 
 Item {
     id: root;
+    objectName: "slideRoot";
 
     SystemPalette {
 	id: palette;
     }
 
     Rectangle {
-	id: slideRoot;
-	objectName: "slideRoot";
+	id: slideRect;
+	objectName: "slideRect";
 
 	width: 800;
 	height: 600;
@@ -53,10 +54,10 @@ Item {
 	    * TODO: The margin should be scaled as well - the smaller the scale,
 	    * the smaller margin */
 
-	    slideRoot.scale = Math.min(root.width / 880, root.height / 680);
+	    slideRect.scale = Math.min(root.width / 880, root.height / 680);
 	}
     }
 
-    onHeightChanged: slideRoot.updateScale();
-    onWidthChanged: slideRoot.updateScale();
+    onHeightChanged: slideRect.updateScale();
+    onWidthChanged: slideRect.updateScale();
 }
