@@ -40,6 +40,7 @@ PropertiesEditorItem::PropertiesEditorItem(QObject *object, const QMetaProperty&
     , mProperty(property)
 {
     if (mProperty.hasNotifySignal()) {
+	/* Can't connect a QMetaObject to a Q_SLOT - only to an another QMetaObject */
 	QMetaMethod slot = metaObject()->method(metaObject()->indexOfMethod("slotPropertyValueChanged()"));
 	QObject::connect(mObject.data(), mProperty.notifySignal(), (QObject*) this, slot);
     }

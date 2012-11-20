@@ -25,6 +25,7 @@
 class QDragEnterEvent;
 class QDragMoveEvent;
 class QDropEvent;
+class QDeclarativeItem;
 
 class PQSlideDesigner : public QDeclarativeView
 {
@@ -44,6 +45,10 @@ protected:
     virtual void dragEnterEvent(QDragEnterEvent* event);
     virtual void dragMoveEvent(QDragMoveEvent* event);
     virtual void dropEvent(QDropEvent* event);
+    virtual void keyReleaseEvent(QKeyEvent* event);
+
+private:
+    QDeclarativeItem* slideRoot() const;
 
 };
 

@@ -78,7 +78,7 @@ void PQSlideDesigner::dropEvent(QDropEvent* event)
     }
 
     /* FIXME: Be more generic here */
-    QDeclarativeItem *slide = rootObject()->findChild<QDeclarativeItem*>(QLatin1String("slideRootFocusScope"));
+    QDeclarativeItem *slide = slideRoot();
     if (!slide) {
 	qWarning() << "Failed to locate slide root element";
 	return;
@@ -93,12 +93,53 @@ void PQSlideDesigner::dropEvent(QDropEvent* event)
     event->acceptProposedAction();
 }
 
+void PQSlideDesigner::keyReleaseEvent(QKeyEvent* event)
+{
+    if (event->key() == Qt::Key_Delete) {
+	QDeclarativeItem *slide = slideRoot();
+	if (!slide) {
+	    qWarning() << "Failed to locate slide root element";
+	    return;
+	}
+
+	QListIterator<QGraphicsItem*> iter(slide->childItems());
+	while (iter.hasNext()) {
+	    QDeclarativeItem *dItem = qobject_cast<QDeclarativeItem*>(iter.next());
+	    if (dItem && dItem->hasFocus()) {
+		qDebug() << "Deleting" << dItem;
+		dItem->deleteLater();
+
+		/* Move focus */
+		if (iter.hasPrevious()) {
+		    QObject *prev = qobject_cast<QObject*>(iter.peekPrevious());
+		    qDebug() << "Moving focus to" << qobject_cast<QDeclarativeItem*>(prev);
+		    prev->setProperty("focus", true);
+		} else {
+		    qDebug() << "Unsetting focus";
+		    Q_EMIT focusedItemChanged(0);
+		}
+	    }
+	}
+
+	return;
+    }
+
+    QGraphicsView::keyReleaseEvent(event);
+}
+
 void PQSlideDesigner::slotItemFocusChanged(bool hasFocus)
 {
     if (hasFocus) {
+	qDebug() << "Focused item changed to" << qobject_cast<QDeclarativeItem*>(sender());
 	Q_EMIT focusedItemChanged(sender());
     }
 }
+
+QDeclarativeItem* PQSlideDesigner::slideRoot() const
+{
+    return rootObject()->findChild<QDeclarativeItem*>(QLatin1String("slideRootFocusScope"));
+}
+
 
 
 #include "pqslidedesigner.moc"
