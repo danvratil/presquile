@@ -21,7 +21,6 @@ set(presquile_SRCS
     panels/pqcomponentspanel.cpp
 
     qml/pqqmlmanager.cpp
-#    qml/pqmlrichtexteditor.cpp
 )
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
