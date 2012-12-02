@@ -40,6 +40,7 @@ Q_SIGNALS:
 
 private Q_SLOTS:
     void slotItemFocusChanged(bool hasFocus);
+    void slotItemDoubleClicked();
 
 protected:
     virtual void dragEnterEvent(QDragEnterEvent* event);

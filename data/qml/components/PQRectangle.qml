@@ -25,7 +25,7 @@ PQResizable {
     property string		_PQDescription:		qsTr("A rectangle");
     property int 		_PQInitialWidth:	200;
     property int 		_PQInitialHeight:	200;
-    property bool 		_PQEditable:		false;
+    property string 		_PQDoubleClickEdit:	"color";
     property variant		_PQProperties:		[ "color",
 							  "gradient",
 							  "height",

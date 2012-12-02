@@ -25,7 +25,7 @@ PQResizable {
     property string		_PQDescription:		qsTr("An image");
     property int 		_PQInitialWidth:	200;
     property int 		_PQInitialHeight:	200;
-    property bool 		_PQEditable:		false;
+    property string 		_PQDoubleClickEdit:	"source";
     property variant		_PQProperties:		[ "height",
 							  "fillMode",
 							  "opacity",

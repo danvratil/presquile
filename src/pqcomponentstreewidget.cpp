@@ -45,7 +45,7 @@ PQComponentsTreeWidget::PQComponentsTreeWidget(QWidget* parent)
 
     item = new QTreeWidgetItem(category);
     item->setText(0, tr("Text"));
-    item->setData(0, ComponentNameRole, QLatin1String("Text"));
+    item->setData(0, ComponentNameRole, QLatin1String("PQText"));
     category->addChild(item);
 
     item = new QTreeWidgetItem(category);

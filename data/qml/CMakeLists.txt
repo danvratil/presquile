@@ -9,9 +9,11 @@ set(QML_ANIMATIONS
 )
 
 set(QML_COMPONENTS
+      PQAnimatedImage.qml
+      PQImage.qml
       PQRectangle.qml
       PQResizable.qml
-      Text.qml
+      PQText.qml
 )
 
 set(QML_INTERNALS

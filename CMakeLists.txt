@@ -12,3 +12,4 @@ endif(CMAKE_BUILD_TYPE MATCHES Debug)
 
 add_subdirectory(src)
 add_subdirectory(data)
+add_subdirectory(tests)

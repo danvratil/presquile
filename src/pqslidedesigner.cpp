@@ -20,6 +20,7 @@
 #include "pqslidedesigner.h"
 #include "coreutils.h"
 #include "qml/pqqmlmanager.h"
+#include "editors/propertyeditor.h"
 
 #include <QDragEnterEvent>
 #include <QDragMoveEvent>
@@ -27,6 +28,7 @@
 #include <QStringBuilder>
 #include <QDeclarativeItem>
 #include <QDeclarativeEngine>
+#include <QPointer>
 #include <QMessageBox>
 
 PQSlideDesigner::PQSlideDesigner(QWidget* parent)
@@ -114,6 +116,8 @@ void PQSlideDesigner::dropEvent(QDropEvent* event)
     connect(item, SIGNAL(focusChanged(bool)), this, SLOT(slotItemFocusChanged(bool)));
     item->setProperty("focus", true);
 
+    connect(item, SIGNAL(doubleClicked()), this, SLOT(slotItemDoubleClicked()));
+
     event->acceptProposedAction();
 }
 
@@ -158,6 +162,25 @@ void PQSlideDesigner::slotItemFocusChanged(bool hasFocus)
 	Q_EMIT focusedItemChanged(sender());
     }
 }
+
+void PQSlideDesigner::slotItemDoubleClicked()
+{
+    QDeclarativeItem *item = qobject_cast<QDeclarativeItem*>(sender());
+    if (!item) {
+	return;
+    }
+
+    QString editProperty = item->property("_PQDoubleClickEdit").toString();
+    if (editProperty.isEmpty()) {
+	return;
+    }
+
+    QPointer<PropertyEditor> editor = new PropertyEditor(item, editProperty, this);
+    editor->exec();
+
+    delete editor;
+}
+
 
 QDeclarativeItem* PQSlideDesigner::slideRoot() const
 {

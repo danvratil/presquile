@@ -3,40 +3,11 @@ import QtQuick 1.0
 Item {
     id: root;
 
-    property bool isEditable: false;
     property Item contentView;
     property Item handle: handleInst;
 
-    /*
-    Rectangle {
-	id: contentEditor;
-	border {
-	    color: "black";
-	    width: 1;
-	}
+    signal doubleClicked();
 
-	visible: false;
-
-	property alias text: textEdit.text;
-
-	TextEdit {
-	    id: textEdit;
-	    anchors {
-		fill: parent;
-		margins: 5;
-	    }
-	    smooth: true;
-	    textFormat: TextEdit.RichText;
-	    selectByMouse: true;
-	    wrapMode: TextEdit.Wrap;
-	}
-
-	anchors.top: root.top;
-	anchors.left: root.left;
-	anchors.right: handle.horizontalCenter;
-	anchors.bottom: handle.verticalCenter;
-    }
-    */
 
     Rectangle {
 	id: handleInst;
@@ -77,24 +48,12 @@ Item {
 	}
 
 	onDoubleClicked: {
-	    root.isEditable = true;
+	    root.doubleClicked();
 	}
 
 	onPressed: {
 	    root.focus = true;
 	}
-    }
-
-    onIsEditableChanged: {
-	if (contentView._PQEditable == false) {
-	    return;
-	}
-
-	contentView.visible = !isEditable;
-	contentEditor.visible = isEditable;
-	moveMouseMarea.enabled = !isEditable;
-
-	contentEditor.text = contentView.text;
     }
 
     onFocusChanged: {
