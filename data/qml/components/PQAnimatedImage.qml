@@ -18,6 +18,7 @@
  */
 
 import QtQuick 1.0
+import Presquile 1.0
 
 PQResizable {
 
@@ -77,13 +78,9 @@ PQResizable {
 	id: img;
 
 	/* Display an border until an image is assigned */
-	Rectangle {
+	PQItemFrame {
 	    id: borderRect;
 	    anchors.fill: parent;
-	    border {
-		width: 1;
-		color: "black";
-	    }
 	    visible: (parent.source == "");
 	}
 
