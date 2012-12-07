@@ -18,6 +18,7 @@
  */
 
 import QtQuick 1.0
+import Presquile 1.0
 
 PQResizable {
 
@@ -84,10 +85,21 @@ PQResizable {
 
     Text {
 	id: text;
+        z: 1;
+
+        wrapMode: Text.Wrap;
+        clip: true;
 
 	anchors.top: parent.top;
 	anchors.left: parent.left;
 	anchors.right: parent.handle.horizontalCenter;
 	anchors.bottom: parent.handle.verticalCenter;
+    }
+
+    PQItemFrame {
+        id: frame;
+        z: 0;
+
+        anchors.fill: text;
     }
 }

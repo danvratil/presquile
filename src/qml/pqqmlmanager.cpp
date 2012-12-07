@@ -29,6 +29,7 @@
 #include <QFile>
 
 #include "../coreutils.h"
+#include "pqitemframe.h"
 
 //#include "pqtext.h"
 
@@ -53,7 +54,7 @@ PQQMLManager::PQQMLManager()
 {
     /* TODO: Components should be plugins that can be loaded dynamically */
 
-    //qmlRegisterType<PQText>();
+    qmlRegisterType<PQItemFrame>("Presquile", 1, 0, "PQItemFrame");
 
 }
 

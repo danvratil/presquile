@@ -28,7 +28,7 @@
 #include <QUrl>
 #include <QDebug>
 
-#include "../pqtexteditor.h"
+#include "pqtexteditor.h"
 
 PropertyEditor::PropertyEditor(QObject* object, const QString& propertyName, QObject* parent):
     QObject(parent),

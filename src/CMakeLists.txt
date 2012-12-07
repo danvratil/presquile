@@ -21,6 +21,7 @@ set(presquile_SRCS
     panels/pqcomponentspanel.cpp
 
     qml/pqqmlmanager.cpp
+    qml/pqitemframe.cpp
 )
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
