@@ -17,35 +17,21 @@
  *
  */
 
-#ifndef PQSLIDESVIEWPANEL_H
-#define PQSLIDESVIEWPANEL_H
+#ifndef PQSLIDESMODELDELEGATE_H
+#define PQSLIDESMODELDELEGATE_H
 
-#include <QDockWidget>
-#include <QModelIndex>
+#include <QStyledItemDelegate>
 
-#include "../pqslide.h"
-
-class QListView;
-class MainWindow;
-
-class PQSlidesViewPanel : public QDockWidget
+class PQSlidesModelDelegate : public QStyledItemDelegate
 {
     Q_OBJECT
 
   public:
-    explicit PQSlidesViewPanel(MainWindow* parent = 0, Qt::WindowFlags flags = 0);
-    virtual ~PQSlidesViewPanel();
+    explicit PQSlidesModelDelegate(QWidget* parent);
+    virtual ~PQSlidesModelDelegate();
 
-  Q_SIGNALS:
-    void slideCreated(const PQSlide::Ptr &slide);
-    void slideActivated(const PQSlide::Ptr &slide);
-
-  private Q_SLOTS:
-    void currentItemChanged(const QModelIndex &index);
-
-  private:
-    QListView *mSlidesListwidget;
-
+    virtual void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const;
+    virtual QSize sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const;
 };
 
-#endif // PQSLIDESVIEWPANEL_H
+#endif // PQSLIDESMODELDELEGATE_H

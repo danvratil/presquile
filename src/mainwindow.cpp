@@ -27,6 +27,8 @@
 #include "pqslidedesigner.h"
 
 #include "editors/animationsequenceeditor.h"
+#include "pqslidesmodel.h"
+#include "coreutils.h"
 
 #include <QStatusBar>
 #include <QAction>
@@ -37,6 +39,7 @@
 #include <QPointer>
 #include <QToolBar>
 #include <QSettings>
+#include <QStringBuilder>
 
 MainWindow::MainWindow(QWidget *parent)
   : QMainWindow(parent)
@@ -50,33 +53,40 @@ MainWindow::MainWindow(QWidget *parent)
     setCorner(Qt::TopRightCorner, Qt::RightDockWidgetArea);
     setDockNestingEnabled(true);
 
+    mSlidesDesigner = new PQSlideDesigner(this);
+    setCentralWidget(mSlidesDesigner);
+
+    mSlidesModel = new PQSlidesModel(this);
+
+    const QString path = CoreUtils::resourcePath() % QLatin1String("/qml/internals/Slide.qml");
+    PQSlide::Ptr defaultSlide(new PQSlide(path, mSlidesDesigner->engine(), this));
+    mSlidesModel->appendSlide(defaultSlide);
+
     mComponentsPanel = new PQComponentsPanel(this);
     mComponentsPanel->setObjectName(QLatin1String("ComponentsPanel"));
     addDockWidget(Qt::LeftDockWidgetArea, mComponentsPanel);
 
     mComponentPropertiesPanel = new PQComponentPropertiesPanel(this);
     mComponentPropertiesPanel->setObjectName(QLatin1String("ComponentPropertiesPanel"));
+    connect(mSlidesDesigner, SIGNAL(focusedItemChanged(QObject*)),
+            mComponentPropertiesPanel, SLOT(setItem(QObject*)));
     addDockWidget(Qt::LeftDockWidgetArea, mComponentPropertiesPanel);
 
     mComponentsAnimationsPanel = new PQComponentsAnimationsPanel(this);
     mComponentsAnimationsPanel->setObjectName(QLatin1String("ComponentsAnimationsPanel"));
+    connect(mSlidesDesigner, SIGNAL(focusedItemChanged(QObject*)),
+            mComponentsAnimationsPanel, SLOT(setItem(QObject*)));
     addDockWidget(Qt::BottomDockWidgetArea, mComponentsAnimationsPanel);
 
     mSlidesViewPanel = new PQSlidesViewPanel(this);
     mSlidesViewPanel->setObjectName(QLatin1String("SlidesViewPanel"));
+    connect(mSlidesViewPanel, SIGNAL(slideActivated(PQSlide::Ptr)),
+            mSlidesDesigner, SLOT(setSlide(PQSlide::Ptr)));
     addDockWidget(Qt::RightDockWidgetArea, mSlidesViewPanel);
 
     mSlidePropertiesPanel = new PQSlidePropertiesPanel(this);
     mSlidePropertiesPanel->setObjectName(QLatin1String("SlidePropertiesPanel"));
     addDockWidget(Qt::RightDockWidgetArea, mSlidePropertiesPanel);
-
-    mSlidesDesigner = new PQSlideDesigner(this);
-    setCentralWidget(mSlidesDesigner);
-    connect(mSlidesDesigner, SIGNAL(focusedItemChanged(QObject*)),
-	    mComponentPropertiesPanel, SLOT(setItem(QObject*)));
-    connect(mSlidesDesigner, SIGNAL(focusedItemChanged(QObject*)),
-	    mComponentsAnimationsPanel, SLOT(setItem(QObject*)));
-
     mStatusBar = new QStatusBar(this);
     setStatusBar(mStatusBar);
 
@@ -92,6 +102,16 @@ MainWindow::~MainWindow()
     QSettings settings(QLatin1String("Presquile"), QLatin1String("MainApplication"));
     settings.setValue(QLatin1String("MainWindow/geometry"), saveGeometry());
     settings.setValue(QLatin1String("MainWindow/windowState"), saveState());
+}
+
+PQSlideDesigner* MainWindow::slideDesigner() const
+{
+    return mSlidesDesigner;
+}
+
+PQSlidesModel* MainWindow::slidesModel() const
+{
+    return mSlidesModel;
 }
 
 void MainWindow::setupActions()

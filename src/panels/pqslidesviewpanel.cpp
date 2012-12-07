@@ -18,17 +18,25 @@
  */
 
 #include "pqslidesviewpanel.h"
+#include "../mainwindow.h"
+#include "../pqslidesmodeldelegate.h"
+#include "../pqslidesmodel.h"
 
 #include <QListWidget>
 #include <QVBoxLayout>
 
-PQSlidesViewPanel::PQSlidesViewPanel(QWidget* parent, Qt::WindowFlags flags)
+PQSlidesViewPanel::PQSlidesViewPanel(MainWindow* parent, Qt::WindowFlags flags)
   : QDockWidget(tr("Slides"), parent, flags)
 {
-  mSlidesListwidget = new QListWidget(this);
+  mSlidesListwidget = new QListView(this);
+  mSlidesListwidget->setModel(parent->slidesModel());
+  mSlidesListwidget->setItemDelegate(new PQSlidesModelDelegate(mSlidesListwidget));
   mSlidesListwidget->setDragDropMode(QAbstractItemView::InternalMove);
   mSlidesListwidget->setDragEnabled(true);
   mSlidesListwidget->setSelectionMode(QAbstractItemView::SingleSelection);
+
+  connect(mSlidesListwidget, SIGNAL(activated(QModelIndex)),
+          this, SLOT(currentItemChanged(QModelIndex)));
 
   setWidget(mSlidesListwidget);
 }
@@ -38,20 +46,13 @@ PQSlidesViewPanel::~PQSlidesViewPanel()
 
 }
 
-void PQSlidesViewPanel::load(const QString& filePath)
+void PQSlidesViewPanel::currentItemChanged(const QModelIndex &index)
 {
+    PQSlide::Ptr slide = index.data(PQSlidesModel::PQSlideRole).value<PQSlide::Ptr>();
 
+    Q_EMIT slideActivated(slide);
 }
 
-void PQSlidesViewPanel::close()
-{
-
-}
-
-void PQSlidesViewPanel::reset()
-{
-
-}
 
 
 #include "pqslidesviewpanel.moc"

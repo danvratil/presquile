@@ -28,6 +28,7 @@
 #include <QStringBuilder>
 #include <QDeclarativeItem>
 #include <QDeclarativeEngine>
+#include <QDeclarativeContext>
 #include <QPointer>
 #include <QMessageBox>
 
@@ -36,13 +37,20 @@ PQSlideDesigner::PQSlideDesigner(QWidget* parent)
 {
     setResizeMode(SizeRootObjectToView);
     setAcceptDrops(true);
-
-    setSource(QUrl(CoreUtils::resourcePath() % QLatin1String("/qml/internals/Slide.qml")));
 }
 
 PQSlideDesigner::~PQSlideDesigner()
 {
 
+}
+
+void PQSlideDesigner::setSlide(const PQSlide::Ptr& slide)
+{
+    mCurrentSlide = slide;
+    QGraphicsScene *scene = mCurrentSlide->scene();
+
+    setScene(scene);
+    ensureVisible(scene->itemsBoundingRect());
 }
 
 void PQSlideDesigner::dragEnterEvent(QDragEnterEvent* event)

@@ -21,6 +21,7 @@
 #define PQSLIDEDESIGNER_H
 
 #include <QDeclarativeView>
+#include "pqslide.h"
 
 class QDragEnterEvent;
 class QDragMoveEvent;
@@ -34,6 +35,9 @@ class PQSlideDesigner : public QDeclarativeView
 public:
     explicit PQSlideDesigner(QWidget* parent = 0);
     virtual ~PQSlideDesigner();
+
+public Q_SLOTS:
+    void setSlide(const PQSlide::Ptr &slide);
 
 Q_SIGNALS:
     void focusedItemChanged(QObject *item);
@@ -52,6 +56,8 @@ private:
     QDeclarativeItem* slideRoot() const;
     QDeclarativeItem* slideRect() const;
     QDeclarativeItem* slideChildrenContainer() const;
+
+    PQSlide::Ptr mCurrentSlide;
 
 };
 

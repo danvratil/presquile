@@ -17,35 +17,28 @@
  *
  */
 
-#ifndef PQSLIDESVIEWPANEL_H
-#define PQSLIDESVIEWPANEL_H
+#include "pqslidesmodel.h"
+#include "pqslide.h"
 
-#include <QDockWidget>
-#include <QModelIndex>
+#include <QStandardItem>
 
-#include "../pqslide.h"
-
-class QListView;
-class MainWindow;
-
-class PQSlidesViewPanel : public QDockWidget
+PQSlidesModel::PQSlidesModel(QObject* parent)
+    : QStandardItemModel(parent)
 {
-    Q_OBJECT
 
-  public:
-    explicit PQSlidesViewPanel(MainWindow* parent = 0, Qt::WindowFlags flags = 0);
-    virtual ~PQSlidesViewPanel();
+}
 
-  Q_SIGNALS:
-    void slideCreated(const PQSlide::Ptr &slide);
-    void slideActivated(const PQSlide::Ptr &slide);
+PQSlidesModel::~PQSlidesModel()
+{
 
-  private Q_SLOTS:
-    void currentItemChanged(const QModelIndex &index);
+}
 
-  private:
-    QListView *mSlidesListwidget;
+void PQSlidesModel::appendSlide(const PQSlide::Ptr &slide)
+{
+    QStandardItem *item = new QStandardItem;
+    item->setData(QVariant::fromValue<PQSlide::Ptr>(slide), PQSlideRole);
 
-};
+    appendRow(item);
+}
 
-#endif // PQSLIDESVIEWPANEL_H
+#include "pqslidesmodel.moc"

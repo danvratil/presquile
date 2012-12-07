@@ -2,6 +2,9 @@ set(presquile_SRCS
     animationselectdialog.cpp
     coreutils.cpp
     pqcomponentstreewidget.cpp
+    pqslide.cpp
+    pqslidesmodel.cpp
+    pqslidesmodeldelegate.cpp
     pqslidedesigner.cpp
     main.cpp
     mainwindow.cpp

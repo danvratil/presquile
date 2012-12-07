@@ -22,6 +22,7 @@
 
 #include <QMainWindow>
 
+class PQSlidesModel;
 class QHBoxLayout;
 
 class PQComponentsPanel;
@@ -37,6 +38,9 @@ class MainWindow: public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     virtual ~MainWindow();
+
+    PQSlideDesigner* slideDesigner() const;
+    PQSlidesModel* slidesModel() const;
 
 private Q_SLOTS:
     void slotNewPresentation();
@@ -63,6 +67,7 @@ private:
     PQSlidesViewPanel *mSlidesViewPanel;
     PQSlidePropertiesPanel *mSlidePropertiesPanel;
     PQSlideDesigner *mSlidesDesigner;
+    PQSlidesModel *mSlidesModel;
 
     QStatusBar *mStatusBar;
 
