@@ -81,6 +81,10 @@ void PQComponentsTreeWidget::mousePressEvent(QMouseEvent* event)
 
 void PQComponentsTreeWidget::mouseMoveEvent(QMouseEvent* event)
 {
+    if (selectedItems().isEmpty()) {
+        return;
+    }
+
     QTreeWidgetItem *item = currentItem();
 
     if (item->parent() == 0) {
