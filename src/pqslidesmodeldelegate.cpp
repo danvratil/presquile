@@ -22,6 +22,8 @@
 #include "pqslidesmodel.h"
 #include "pqslidedesigner.h"
 
+#include <math.h>
+
 #include <QPainter>
 #include <QGraphicsView>
 #include <QGraphicsItem>
@@ -55,22 +57,28 @@ void PQSlidesModelDelegate::paint(QPainter* painter, const QStyleOptionViewItem&
 
     painter->save();
 
-    QDeclarativeItem *slideItem = qobject_cast<QDeclarativeItem*>(slide->rootObject());
-    QDeclarativeItem *slideRect = slideItem->findChild<QDeclarativeItem*>("slideRect");
+    QDeclarativeItem *slideRoot = qobject_cast<QDeclarativeItem*>(slide->rootObject());
+    QDeclarativeItem *slideRect = slideRoot->findChild<QDeclarativeItem*>("slideRect");
     QRect rect = QRect(slideRect->x(), slideRect->y(), slideRect->width(), slideRect->height());
 
     QSize itemSize = sizeHint(option, index);
+    QRect targetRect = QRect(10, option.rect.y() + 10, itemSize.width() - 20, itemSize.height() - 20);
 
     if (option.state & QStyle::State_Selected) {
         QPen pen = painter->pen();
         painter->fillRect(option.rect, option.palette.highlight());
 
-        mDesigner->render(painter, QRect(0, option.rect.y(), itemSize.width(), itemSize.height()), rect);
+        int realWidth = floor(slideRect->width() * slideRect->scale());
+        int realHeight = floor(slideRect->height() * slideRect->scale());
+        int realX = floor((slideRoot->width() - realWidth) / 2);
+        int realY = floor((slideRoot->height() - realHeight) / 2);
+
+        mDesigner->render(painter, targetRect, QRect(realX, realY, realWidth, realHeight));
     } else {
         QDeclarativeView view;
-        view.scene()->addItem(slideItem);
-        view.scene()->render(painter, QRect(0, option.rect.y(), itemSize.width(), itemSize.height()), rect);
-        view.scene()->removeItem(slideItem);
+        view.scene()->addItem(slideRoot);
+        view.scene()->render(painter, targetRect, rect);
+        view.scene()->removeItem(slideRoot);
     }
 
     painter->restore();
