@@ -21,7 +21,7 @@
 #define PQSLIDESVIEWPANEL_H
 
 #include <QDockWidget>
-#include <QModelIndex>
+#include <QItemSelection>
 
 #include "../pqslide.h"
 
@@ -42,7 +42,7 @@ class PQSlidesViewPanel : public QDockWidget
     void slideActivated(const PQSlide::Ptr &slide);
 
   private Q_SLOTS:
-    void currentItemChanged(const QModelIndex &index);
+    void currentItemChanged(const QItemSelection &selection, const QItemSelection &deselected);
 
   private:
     QListView *mSlidesListwidget;

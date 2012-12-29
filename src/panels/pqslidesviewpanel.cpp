@@ -25,6 +25,7 @@
 #include <QListWidget>
 #include <QVBoxLayout>
 #include <QTimer>
+#include <QDebug>
 
 PQSlidesViewPanel::PQSlidesViewPanel(MainWindow* parent, Qt::WindowFlags flags)
   : QDockWidget(tr("Slides"), parent, flags)
@@ -45,8 +46,8 @@ PQSlidesViewPanel::PQSlidesViewPanel(MainWindow* parent, Qt::WindowFlags flags)
     delegate->setDesigner(parent->slideDesigner());
     mSlidesListwidget->setItemDelegate(delegate);
 
-    connect(mSlidesListwidget->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
-            this, SLOT(currentItemChanged(QModelIndex)));
+    connect(mSlidesListwidget->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
+            this, SLOT(currentItemChanged(QItemSelection,QItemSelection)));
 
     setWidget(mSlidesListwidget);
 
@@ -61,10 +62,16 @@ PQSlidesViewPanel::~PQSlidesViewPanel()
 
 }
 
-void PQSlidesViewPanel::currentItemChanged(const QModelIndex &index)
+void PQSlidesViewPanel::currentItemChanged(const QItemSelection &selected, const QItemSelection &unselected)
 {
-    PQSlide::Ptr slide = index.data(PQSlidesModel::PQSlideRole).value<PQSlide::Ptr>();
+    /* Don't allow unselecting an item */
+    if (selected.isEmpty() && !unselected.isEmpty()) {
+        mSlidesListwidget->selectionModel()->select(unselected, QItemSelectionModel::SelectCurrent);
+        return;
+    }
 
+    QModelIndexList indexes = selected.indexes();
+    PQSlide::Ptr slide = indexes.first().data(PQSlidesModel::PQSlideRole).value<PQSlide::Ptr>();
     Q_EMIT slideActivated(slide);
 }
 
