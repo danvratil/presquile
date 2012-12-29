@@ -58,12 +58,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     mSlidesModel = new PQSlidesModel(this);
 
-    const QString path = CoreUtils::resourcePath() % QLatin1String("/qml/internals/Slide.qml");
-    PQSlide::Ptr slide1(new PQSlide(path, mSlidesDesigner->engine(), this));
-    mSlidesModel->appendSlide(slide1);
-
-    PQSlide::Ptr slide2(new PQSlide(path, mSlidesDesigner->engine(), this));
-    mSlidesModel->appendSlide(slide2);
+    /* Create the initial slide */
+    slotAddSlide();
 
     mComponentsPanel = new PQComponentsPanel(this);
     mComponentsPanel->setObjectName(QLatin1String("ComponentsPanel"));
@@ -238,7 +234,9 @@ void MainWindow::slotRunFromCurrentSlide()
 
 void MainWindow::slotAddSlide()
 {
-    /* TODO: Add Slide */
+    const QString path = CoreUtils::resourcePath() % QLatin1String("/qml/internals/Slide.qml");
+    PQSlide::Ptr slide(new PQSlide(path, mSlidesDesigner->engine(), this));
+    mSlidesModel->appendSlide(slide);
 }
 
 void MainWindow::slotDeleteSlide()
