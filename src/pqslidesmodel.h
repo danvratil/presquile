@@ -36,6 +36,9 @@ class PQSlidesModel: public  QStandardItemModel
     virtual ~PQSlidesModel();
 
     void appendSlide(const PQSlide::Ptr &slide);
+    void removeSlide(const PQSlide::Ptr &slide);
+    int slideIndex(const PQSlide::Ptr &slide);
+    PQSlide::Ptr slideAt(int index);
 
 };
 

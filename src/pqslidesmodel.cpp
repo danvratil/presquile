@@ -40,8 +40,37 @@ void PQSlidesModel::appendSlide(const PQSlide::Ptr &slide)
     item->setData(QVariant::fromValue<PQSlide::Ptr>(slide), PQSlideRole);
 
     appendRow(item);
+}
 
-    qDebug() << rowCount();
+void PQSlidesModel::removeSlide(const PQSlide::Ptr& slide)
+{
+    int row = slideIndex(slide);
+    if (row > -1) {
+        removeRow(row);
+    }
+}
+
+int PQSlidesModel::slideIndex(const PQSlide::Ptr& slide)
+{
+    for (int ii = 0; ii < rowCount(); ii++) {
+        QModelIndex row = index(ii, 0);
+
+        if (row.data(PQSlideRole).value<PQSlide::Ptr>() == slide) {
+            return ii;
+        }
+    }
+
+    return -1;
+}
+
+PQSlide::Ptr PQSlidesModel::slideAt(int row)
+{
+    QModelIndex i = index(row, 0);
+    if (!i.isValid()) {
+        return PQSlide::Ptr();
+    }
+
+    return i.data(PQSlideRole).value<PQSlide::Ptr>();
 }
 
 #include "pqslidesmodel.moc"

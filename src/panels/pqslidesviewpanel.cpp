@@ -45,7 +45,7 @@ PQSlidesViewPanel::PQSlidesViewPanel(MainWindow* parent, Qt::WindowFlags flags)
     delegate->setDesigner(parent->slideDesigner());
     mSlidesListwidget->setItemDelegate(delegate);
 
-    connect(mSlidesListwidget, SIGNAL(activated(QModelIndex)),
+    connect(mSlidesListwidget->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
             this, SLOT(currentItemChanged(QModelIndex)));
 
     setWidget(mSlidesListwidget);

@@ -241,7 +241,7 @@ void MainWindow::slotAddSlide()
 
 void MainWindow::slotDeleteSlide()
 {
-    /* TODO: Remove Slide */
+    mSlidesModel->removeSlide(mSlidesDesigner->slide());
 }
 
 

@@ -59,6 +59,11 @@ void PQSlideDesigner::setSlide(const PQSlide::Ptr& slide)
     setRootObject(slide->rootObject());
 }
 
+PQSlide::Ptr PQSlideDesigner::slide() const
+{
+    return mCurrentSlide;
+}
+
 void PQSlideDesigner::dragEnterEvent(QDragEnterEvent* event)
 {
     if (!event->mimeData()->text().startsWith(QLatin1String("Component/"))) {
