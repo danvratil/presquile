@@ -56,7 +56,9 @@ void PQSlideDesigner::setSlide(const PQSlide::Ptr& slide)
     }
 
     mCurrentSlide = slide;
-    setRootObject(slide->rootObject());
+    if (slide) {
+        setRootObject(slide->rootObject());
+    }
 }
 
 PQSlide::Ptr PQSlideDesigner::slide() const
