@@ -21,6 +21,7 @@
 #include "pqslide.h"
 
 #include <QStandardItem>
+#include <QDebug>
 
 PQSlidesModel::PQSlidesModel(QObject* parent)
     : QStandardItemModel(parent)
@@ -39,6 +40,8 @@ void PQSlidesModel::appendSlide(const PQSlide::Ptr &slide)
     item->setData(QVariant::fromValue<PQSlide::Ptr>(slide), PQSlideRole);
 
     appendRow(item);
+
+    qDebug() << rowCount();
 }
 
 #include "pqslidesmodel.moc"

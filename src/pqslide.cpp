@@ -19,11 +19,12 @@
 
 
 #include "pqslide.h"
-#include <QGraphicsScene>
 
+#include <QGraphicsScene>
 #include <QDeclarativeComponent>
 #include <QDeclarativeContext>
 #include <QDeclarativeEngine>
+#include <QDeclarativeItem>
 #include <QGraphicsItem>
 
 PQSlide::PQSlide(const QString& filePath, QDeclarativeEngine *engine, QObject* parent)
@@ -31,16 +32,21 @@ PQSlide::PQSlide(const QString& filePath, QDeclarativeEngine *engine, QObject* p
     , mSlideFilePath(filePath)
     , mEngine(engine)
 {
-
-    mContext = new QDeclarativeContext(mEngine, this);
+    mContext = new QDeclarativeContext(mEngine->rootContext(), this);
     mComponent = new QDeclarativeComponent(mEngine, QUrl::fromLocalFile(filePath), this);
 
     /* mScene takes ownership of the instance */
-    QObject *instance = mComponent->create(mContext);
-    QGraphicsItem *graphicsItem = qobject_cast<QGraphicsItem*>(instance);
+    mRootObject = mComponent->create(mContext);
+    QDeclarativeItem *item = qobject_cast<QDeclarativeItem*>(mRootObject.data());
 
-    mScene = new QGraphicsScene(this);
-    mScene->addItem(graphicsItem);
+    /* FIXME: This is a hack to force initial size of the slide. Maybe in this
+     * case it would be better to hardcode 800x600 here rather then building
+     * the scene. */
+    QGraphicsScene scene;
+    scene.addItem(item);
+    item->setWidth(scene.width());
+    item->setHeight(scene.height());
+    scene.removeItem(item); /* otherwise scene would destroy the item */
 }
 
 PQSlide::~PQSlide()
@@ -63,14 +69,14 @@ QDeclarativeComponent* PQSlide::component() const
     return mComponent;
 }
 
-QGraphicsScene* PQSlide::scene() const
-{
-    return mScene;
-}
-
 QString PQSlide::slideFilePath() const
 {
     return mSlideFilePath;
+}
+
+QObject* PQSlide::rootObject() const
+{
+    return mRootObject;
 }
 
 #include "pqslide.moc"

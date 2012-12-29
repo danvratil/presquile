@@ -47,10 +47,10 @@ private Q_SLOTS:
     void slotItemDoubleClicked();
 
 protected:
-    virtual void dragEnterEvent(QDragEnterEvent* event);
-    virtual void dragMoveEvent(QDragMoveEvent* event);
-    virtual void dropEvent(QDropEvent* event);
-    virtual void keyReleaseEvent(QKeyEvent* event);
+    virtual void dragEnterEvent(QDragEnterEvent *event);
+    virtual void dragMoveEvent(QDragMoveEvent *event);
+    virtual void dropEvent(QDropEvent *event);
+    virtual void keyReleaseEvent(QKeyEvent *event);
 
 private:
     QDeclarativeItem* slideRoot() const;

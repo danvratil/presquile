@@ -24,21 +24,35 @@
 
 #include <QListWidget>
 #include <QVBoxLayout>
+#include <QTimer>
 
 PQSlidesViewPanel::PQSlidesViewPanel(MainWindow* parent, Qt::WindowFlags flags)
   : QDockWidget(tr("Slides"), parent, flags)
 {
-  mSlidesListwidget = new QListView(this);
-  mSlidesListwidget->setModel(parent->slidesModel());
-  mSlidesListwidget->setItemDelegate(new PQSlidesModelDelegate(mSlidesListwidget));
-  mSlidesListwidget->setDragDropMode(QAbstractItemView::InternalMove);
-  mSlidesListwidget->setDragEnabled(true);
-  mSlidesListwidget->setSelectionMode(QAbstractItemView::SingleSelection);
+    mSlidesListwidget = new QListView(this);
+    mSlidesListwidget->setModel(parent->slidesModel());
+    mSlidesListwidget->setDragDropMode(QAbstractItemView::InternalMove);
+    mSlidesListwidget->setDragEnabled(false);
+    mSlidesListwidget->setSelectionMode(QAbstractItemView::SingleSelection);
+    mSlidesListwidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    mSlidesListwidget->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+    mSlidesListwidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    mSlidesListwidget->setUniformItemSizes(true);
+    mSlidesListwidget->setSelectionRectVisible(true);
 
-  connect(mSlidesListwidget, SIGNAL(activated(QModelIndex)),
-          this, SLOT(currentItemChanged(QModelIndex)));
+    PQSlidesModelDelegate *delegate = new PQSlidesModelDelegate(mSlidesListwidget);
+    delegate->setDesigner(parent->slideDesigner());
+    mSlidesListwidget->setItemDelegate(delegate);
 
-  setWidget(mSlidesListwidget);
+    connect(mSlidesListwidget, SIGNAL(activated(QModelIndex)),
+            this, SLOT(currentItemChanged(QModelIndex)));
+
+    setWidget(mSlidesListwidget);
+
+    mRedrawTimer = new QTimer(this);
+    mRedrawTimer->setInterval(600);
+    connect(mRedrawTimer, SIGNAL(timeout()), this, SLOT(updateItem()));
+    mRedrawTimer->start();
 }
 
 PQSlidesViewPanel::~PQSlidesViewPanel()
@@ -53,6 +67,14 @@ void PQSlidesViewPanel::currentItemChanged(const QModelIndex &index)
     Q_EMIT slideActivated(slide);
 }
 
+void PQSlidesViewPanel::updateItem()
+{
+    if (!mSlidesListwidget->currentIndex().isValid()) {
+        return;
+    }
+
+    mSlidesListwidget->update(mSlidesListwidget->currentIndex());
+}
 
 
 #include "pqslidesviewpanel.moc"

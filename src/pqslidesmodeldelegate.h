@@ -22,16 +22,28 @@
 
 #include <QStyledItemDelegate>
 
+class QListView;
+class PQSlideDesigner;
+class QGraphicsItem;
+
 class PQSlidesModelDelegate : public QStyledItemDelegate
 {
     Q_OBJECT
 
   public:
-    explicit PQSlidesModelDelegate(QWidget* parent);
+    explicit PQSlidesModelDelegate(QListView* parent);
     virtual ~PQSlidesModelDelegate();
+
+    void setDesigner(PQSlideDesigner *designer);
 
     virtual void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const;
     virtual QSize sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const;
+
+  private:
+
+    PQSlideDesigner *mDesigner;
+
+    mutable QSize mLastSize;
 };
 
 #endif // PQSLIDESMODELDELEGATE_H

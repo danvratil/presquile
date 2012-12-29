@@ -34,6 +34,7 @@
 
 PQSlideDesigner::PQSlideDesigner(QWidget* parent)
     : QDeclarativeView(parent)
+    , mCurrentSlide(0)
 {
     setResizeMode(SizeRootObjectToView);
     setAcceptDrops(true);
@@ -46,11 +47,16 @@ PQSlideDesigner::~PQSlideDesigner()
 
 void PQSlideDesigner::setSlide(const PQSlide::Ptr& slide)
 {
-    mCurrentSlide = slide;
-    QGraphicsScene *scene = mCurrentSlide->scene();
+    if (mCurrentSlide == slide) {
+        return;
+    }
 
-    setScene(scene);
-    ensureVisible(scene->itemsBoundingRect());
+    if (mCurrentSlide) {
+        scene()->removeItem(qobject_cast<QGraphicsItem*>(mCurrentSlide->rootObject()));
+    }
+
+    mCurrentSlide = slide;
+    setRootObject(slide->rootObject());
 }
 
 void PQSlideDesigner::dragEnterEvent(QDragEnterEvent* event)

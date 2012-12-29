@@ -25,6 +25,7 @@
 
 #include "../pqslide.h"
 
+class QTimer;
 class QListView;
 class MainWindow;
 
@@ -45,7 +46,10 @@ class PQSlidesViewPanel : public QDockWidget
 
   private:
     QListView *mSlidesListwidget;
+    QTimer *mRedrawTimer;
 
+public slots:
+    void updateItem();
 };
 
 #endif // PQSLIDESVIEWPANEL_H

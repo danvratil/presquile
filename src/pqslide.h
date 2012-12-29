@@ -28,7 +28,6 @@
 class QDeclarativeEngine;
 class QDeclarativeContext;
 class QDeclarativeComponent;
-class QGraphicsScene;
 
 class PQSlide : public QObject
 {
@@ -40,18 +39,18 @@ class PQSlide : public QObject
     explicit PQSlide(const QString &filePath, QDeclarativeEngine *engine, QObject* parent = 0);
     virtual ~PQSlide();
 
-    QGraphicsScene* scene() const;
     QString slideFilePath() const;
     QDeclarativeEngine* engine() const;
     QDeclarativeContext* context() const;
     QDeclarativeComponent* component() const;
+    QObject* rootObject() const;
 
   private:
     QString mSlideFilePath;
     QPointer<QDeclarativeEngine> mEngine;
     QPointer<QDeclarativeContext> mContext;
     QPointer<QDeclarativeComponent> mComponent;
-    QPointer<QGraphicsScene> mScene;
+    QPointer<QObject> mRootObject;
 
 };
 
