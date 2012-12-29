@@ -36,6 +36,7 @@ PQSlidesViewPanel::PQSlidesViewPanel(MainWindow* parent, Qt::WindowFlags flags)
     mSlidesListwidget->setSelectionMode(QAbstractItemView::SingleSelection);
     mSlidesListwidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     mSlidesListwidget->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+    mSlidesListwidget->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
     mSlidesListwidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
     mSlidesListwidget->setUniformItemSizes(true);
     mSlidesListwidget->setSelectionRectVisible(true);
