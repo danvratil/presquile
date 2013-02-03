@@ -88,15 +88,15 @@ void PQComponentsTreeWidget::mouseMoveEvent(QMouseEvent* event)
     QTreeWidgetItem *item = currentItem();
 
     if (item->parent() == 0) {
-	return;
+        return;
     }
 
     if (!(event->buttons() & Qt::LeftButton)) {
-	return;
+        return;
     }
 
     if ((event->pos() - mLastClickPos).manhattanLength() < QApplication::startDragDistance()) {
-	return;
+        return;
     }
 
     QMimeData *mimeData = new QMimeData;

@@ -38,7 +38,7 @@ class AnimationSequenceEditor : public QDialog
 
 public:
     enum Roles {
-	ObjectRole = Qt::UserRole + 1,
+        ObjectRole = Qt::UserRole + 1,
     };
     explicit AnimationSequenceEditor(QWidget* parent = 0);
     virtual ~AnimationSequenceEditor();

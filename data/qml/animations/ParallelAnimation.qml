@@ -20,7 +20,7 @@
 import QtQuick 1.0
 
 ParallelAnimation {
-    property bool	_PQCanHaveChildren:	true;
-    property string	_PQDisplayName:		qsTr("Parallel Animation");
-    property string	_PQDescription:		qsTr("Runs all child animations in parallel");
+    property bool        _PQCanHaveChildren:        true;
+    property string        _PQDisplayName:                qsTr("Parallel Animation");
+    property string        _PQDescription:                qsTr("Runs all child animations in parallel");
 }

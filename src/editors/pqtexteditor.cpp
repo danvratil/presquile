@@ -86,7 +86,7 @@ PQTextEditor::PQTextEditor(QWidget* parent):
     mFontSizeComboBox = new QComboBox(this);
     QFontDatabase db;
     Q_FOREACH (int size, db.standardSizes()) {
-	mFontSizeComboBox->addItem(QString::number(size));
+        mFontSizeComboBox->addItem(QString::number(size));
     }
     /* Initialize */
     mFontSizeComboBox->setCurrentIndex(mFontSizeComboBox->findText(QString::number(QApplication::font().pointSize())));
@@ -111,8 +111,8 @@ PQTextEditor::~PQTextEditor()
 }
 
 QAction* PQTextEditor::addAction(QToolBar* toolbar, const QString& name, const QString& icon,
-				       const QString& text, bool checkable, const QKeySequence& shortcut,
-				       const QObject* receiver, const char* member)
+                                       const QString& text, bool checkable, const QKeySequence& shortcut,
+                                       const QObject* receiver, const char* member)
 {
     QAction *action = toolbar->addAction(QIcon::fromTheme(icon), text, receiver, member);
     action->setShortcut(shortcut);

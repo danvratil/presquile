@@ -37,7 +37,7 @@ PQComponentPropertiesPanel::~PQComponentPropertiesPanel()
 void PQComponentPropertiesPanel::setItem(QObject* item)
 {
     if (mObject.data() == item) {
-	return;
+        return;
     }
 
     mObject = item;

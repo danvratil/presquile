@@ -22,27 +22,27 @@ import Presquile 1.0
 
 PQResizable {
 
-    property string		_PQDisplayName:		qsTr("Text");
-    property string		_PQDescription:		qsTr("Display a HTML-formatted text");
-    property int 		_PQInitialWidth:	200;
-    property int 		_PQInitialHeight:	40;
-    property string 		_PQDoubleClickEdit:	"text";
-    property variant		_PQProperties:		[ "color",
-							  "elide",
-							  "height",
-							  "opacity",
-							  //"lineHeight",
-							  //"lineHeightMode",
-							  "rotation",
-							  "scale",
-							  "smooth",
-							  "text",
-							  "verticalAlignment",
-							  "width",
-							  "wrapMode",
-							  "x",
-							  "y",
-							  "z" ];
+    property string     _PQDisplayName:         qsTr("Text");
+    property string     _PQDescription:         qsTr("Display a HTML-formatted text");
+    property int        _PQInitialWidth:        200;
+    property int        _PQInitialHeight:       40;
+    property string     _PQDoubleClickEdit:     "text";
+    property variant    _PQProperties:          [ "color",
+                                                  "elide",
+                                                  "height",
+                                                  "opacity",
+                                                  //"lineHeight",
+                                                  //"lineHeightMode",
+                                                  "rotation",
+                                                  "scale",
+                                                  "smooth",
+                                                  "text",
+                                                  "verticalAlignment",
+                                                  "width",
+                                                  "wrapMode",
+                                                  "x",
+                                                  "y",
+                                                  "z" ];
 
     property alias color: text.color;
     property alias elide: text.elide;
@@ -57,43 +57,43 @@ PQResizable {
     resizableItem: text;
 
     transform: [
-	Translate {
-	    x: 0;
-	    y: 0;
-	},
-	Rotation {
-	    angle: 0;
-	    axis {
-		x: 0;
-		y: 0;
-		z: 0;
-	    }
-	    origin {
-		x: 0;
-		y: 0;
-	    }
-	},
-	Scale {
-	    xScale: 1.0;
-	    yScale: 1.0;
-	    origin {
-		x: 0;
-		y: 0;
-	    }
-	}
+        Translate {
+            x: 0;
+            y: 0;
+        },
+        Rotation {
+            angle: 0;
+            axis {
+                x: 0;
+                y: 0;
+                z: 0;
+            }
+            origin {
+                x: 0;
+                y: 0;
+            }
+        },
+        Scale {
+            xScale: 1.0;
+            yScale: 1.0;
+            origin {
+                x: 0;
+                y: 0;
+            }
+        }
     ]
 
     Text {
-	id: text;
+        id: text;
         z: 1;
 
         wrapMode: Text.Wrap;
         clip: true;
 
-	anchors.top: parent.top;
-	anchors.left: parent.left;
-	anchors.right: parent.handle.horizontalCenter;
-	anchors.bottom: parent.handle.verticalCenter;
+        anchors.top: parent.top;
+        anchors.left: parent.left;
+        anchors.right: parent.handle.horizontalCenter;
+        anchors.bottom: parent.handle.verticalCenter;
     }
 
     PQItemFrame {

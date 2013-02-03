@@ -20,7 +20,7 @@
 import QtQuick 1.0
 
 ColorAnimation {
-    property bool	_PQCanHaveChildren:	false;
-    property string	_PQDisplayName:		qsTr("Color Animation");
-    property string	_PQDescription:		qsTr("Animates color of an object");
+    property bool        _PQCanHaveChildren:        false;
+    property string        _PQDisplayName:                qsTr("Color Animation");
+    property string        _PQDescription:                qsTr("Animates color of an object");
 }

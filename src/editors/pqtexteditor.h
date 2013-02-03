@@ -64,8 +64,8 @@ Q_SIGNALS:
 
 private:
     QAction* addAction(QToolBar *toolbar, const QString &name, const QString &icon,
-		       const QString &text, bool checkable, const QKeySequence &shortcut,
-		       const QObject *receiver, const char *member);
+                       const QString &text, bool checkable, const QKeySequence &shortcut,
+                       const QObject *receiver, const char *member);
     void mergeFormatOnWordOrSelection(const QTextCharFormat &format);
 
     QGridLayout *mLayout;

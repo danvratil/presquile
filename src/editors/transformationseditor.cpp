@@ -116,21 +116,21 @@ TransformationsEditor::~TransformationsEditor()
 QGraphicsRotation* TransformationsEditor::rotationTransformation() const
 {
     if (mObject.isNull()) {
-	return 0;
+        return 0;
     }
 
     QDeclarativeItem *item = qobject_cast<QDeclarativeItem*>(mObject);
     if (!item) {
-	return 0;
+        return 0;
     }
 
     QList<QGraphicsTransform*> transformations = item->transformations();
     for (int ii = 0; ii < transformations.count(); ii++) {
-	QGraphicsTransform *transformation = transformations.at(ii);
+        QGraphicsTransform *transformation = transformations.at(ii);
 
-	if (qobject_cast<QGraphicsRotation*>(transformation) != 0) {
-	    return qobject_cast<QGraphicsRotation*>(transformation);
-	}
+        if (qobject_cast<QGraphicsRotation*>(transformation) != 0) {
+            return qobject_cast<QGraphicsRotation*>(transformation);
+        }
     }
 
     return 0;
@@ -139,21 +139,21 @@ QGraphicsRotation* TransformationsEditor::rotationTransformation() const
 QGraphicsScale* TransformationsEditor::scaleTransformation() const
 {
     if (mObject.isNull()) {
-	return 0;
+        return 0;
     }
 
     QDeclarativeItem *item = qobject_cast<QDeclarativeItem*>(mObject);
     if (!item) {
-	return 0;
+        return 0;
     }
 
     QList<QGraphicsTransform*> transformations = item->transformations();
     for (int ii = 0; ii < transformations.count(); ii++) {
-	QGraphicsTransform *transformation = transformations.at(ii);
+        QGraphicsTransform *transformation = transformations.at(ii);
 
-	if (qobject_cast<QGraphicsScale*>(transformation) != 0) {
-	    return qobject_cast<QGraphicsScale*>(transformation);
-	}
+        if (qobject_cast<QGraphicsScale*>(transformation) != 0) {
+            return qobject_cast<QGraphicsScale*>(transformation);
+        }
     }
 
     return 0;
@@ -162,22 +162,22 @@ QGraphicsScale* TransformationsEditor::scaleTransformation() const
 QGraphicsTransform* TransformationsEditor::translationTransformation() const
 {
     if (mObject.isNull()) {
-	return 0;
+        return 0;
     }
 
     QDeclarativeItem *item = qobject_cast<QDeclarativeItem*>(mObject);
     if (!item) {
-	return 0;
+        return 0;
     }
 
     QList<QGraphicsTransform*> transformations = item->transformations();
     for (int ii = 0; ii < transformations.count(); ii++) {
-	QGraphicsTransform *transformation = transformations.at(ii);
+        QGraphicsTransform *transformation = transformations.at(ii);
 
-	if ((qobject_cast<QGraphicsRotation*>(transformation) == 0) &&
-	    (qobject_cast<QGraphicsScale*>(transformation)) == 0) {
-	    return qobject_cast<QGraphicsTransform*>(transformation);
-	}
+        if ((qobject_cast<QGraphicsRotation*>(transformation) == 0) &&
+            (qobject_cast<QGraphicsScale*>(transformation)) == 0) {
+            return qobject_cast<QGraphicsTransform*>(transformation);
+        }
     }
 
     return 0;
@@ -246,7 +246,7 @@ void TransformationsEditor::slotRotationAngleChanged()
 {
     QGraphicsRotation *rotation = rotationTransformation();
     if (rotation) {
-	mRotationAngle->setValue(rotation->angle());
+        mRotationAngle->setValue(rotation->angle());
     }
 }
 
@@ -254,9 +254,9 @@ void TransformationsEditor::slotRotationAxisChanged()
 {
     QGraphicsRotation *rotation = rotationTransformation();
     if (rotation) {
-	mRotationXAxis->setValue(rotation->axis().x());
-	mRotationYAxis->setValue(rotation->axis().y());
-	mRotationZAxis->setValue(rotation->axis().z());
+        mRotationXAxis->setValue(rotation->axis().x());
+        mRotationYAxis->setValue(rotation->axis().y());
+        mRotationZAxis->setValue(rotation->axis().z());
     }
 }
 
@@ -264,8 +264,8 @@ void TransformationsEditor::slotRotationOriginChanged()
 {
     QGraphicsRotation *rotation = rotationTransformation();
     if (rotation) {
-	mRotationXOrigin->setValue(rotation->origin().x());
-	mRotationYOrigin->setValue(rotation->origin().y());
+        mRotationXOrigin->setValue(rotation->origin().x());
+        mRotationYOrigin->setValue(rotation->origin().y());
     }
 }
 
@@ -273,8 +273,8 @@ void TransformationsEditor::slotScaleScaleChanged()
 {
     QGraphicsScale *scale = scaleTransformation();
     if (scale) {
-	mScaleXScale->setValue(scale->xScale());
-	mScaleYScale->setValue(scale->yScale());
+        mScaleXScale->setValue(scale->xScale());
+        mScaleYScale->setValue(scale->yScale());
     }
 }
 
@@ -282,8 +282,8 @@ void TransformationsEditor::slotScaleOriginChanged()
 {
     QGraphicsScale *scale = scaleTransformation();
     if (scale) {
-	mScaleXOrigin->setValue(scale->origin().x());
-	mScaleYOrigin->setValue(scale->origin().y());
+        mScaleXOrigin->setValue(scale->origin().x());
+        mScaleYOrigin->setValue(scale->origin().y());
     }
 }
 
@@ -291,7 +291,7 @@ void TransformationsEditor::slotRotationAngleEditValueChanged()
 {
     QGraphicsRotation *rotation = rotationTransformation();
     if (rotation) {
-	rotation->setAngle(mRotationAngle->value());
+        rotation->setAngle(mRotationAngle->value());
     }
 }
 
@@ -299,8 +299,8 @@ void TransformationsEditor::slotRotationAxisEditValueChanged()
 {
     QGraphicsRotation *rotation = rotationTransformation();
     if (rotation) {
-	QVector3D vector(mRotationXAxis->value(), mRotationYAxis->value(), mRotationZAxis->value());
-	rotation->setAxis(vector);
+        QVector3D vector(mRotationXAxis->value(), mRotationYAxis->value(), mRotationZAxis->value());
+        rotation->setAxis(vector);
     }
 }
 
@@ -308,8 +308,8 @@ void TransformationsEditor::slotRotationOriginEditValueChanged()
 {
     QGraphicsRotation *rotation = rotationTransformation();
     if (rotation) {
-	QVector2D vector(mRotationXOrigin->value(), mRotationYOrigin->value());
-	rotation->setOrigin(vector);
+        QVector2D vector(mRotationXOrigin->value(), mRotationYOrigin->value());
+        rotation->setOrigin(vector);
     }
 }
 
@@ -317,8 +317,8 @@ void TransformationsEditor::slotScaleOriginEditValueChanged()
 {
     QGraphicsScale *scale = scaleTransformation();
     if (scale) {
-	QVector3D vector(mScaleXOrigin->value(), mScaleYOrigin->value(), 0);
-	scale->setOrigin(vector);
+        QVector3D vector(mScaleXOrigin->value(), mScaleYOrigin->value(), 0);
+        scale->setOrigin(vector);
     }
 }
 
@@ -326,8 +326,8 @@ void TransformationsEditor::slotScaleScaleEditValueChanged()
 {
     QGraphicsScale *scale = scaleTransformation();
     if (scale) {
-	scale->setXScale(mScaleXScale->value());
-	scale->setYScale(mScaleYScale->value());
+        scale->setXScale(mScaleXScale->value());
+        scale->setYScale(mScaleYScale->value());
     }
 }
 
@@ -335,8 +335,8 @@ void TransformationsEditor::slotTranslateEditValueChanged()
 {
     QGraphicsTransform *translation = translationTransformation();
     if (translation) {
-	translation->setProperty("x", mTranslateX->value());
-	translation->setProperty("y", mTranslateY->value());
+        translation->setProperty("x", mTranslateX->value());
+        translation->setProperty("y", mTranslateY->value());
     }
 }
 

@@ -20,7 +20,7 @@
 import QtQuick 1.0
 
 NumberAnimation {
-    property bool	_PQCanHaveChildren:	false;
-    property string	_PQDisplayName:		qsTr("Number Animation");
-    property string	_PQDescription:		qsTr("Animates any numerical property of an object");
+    property bool        _PQCanHaveChildren:        false;
+    property string        _PQDisplayName:                qsTr("Number Animation");
+    property string        _PQDescription:                qsTr("Animates any numerical property of an object");
 }

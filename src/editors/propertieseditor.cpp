@@ -29,17 +29,17 @@ Q_DECLARE_METATYPE(QSharedPointer<QObject>);
 Q_DECLARE_METATYPE(QMetaProperty);
 
 static const QList<QVariant::Type> supportedTypes = QList<QVariant::Type>()
-							<< QVariant::Bool
-							<< QVariant::Color
-							<< QVariant::Double
-							<< QVariant::EasingCurve
-							<< QVariant::Font
-							<< QVariant::Int
-							<< QVariant::LongLong
-							<< QVariant::String
-							<< QVariant::ULongLong
-							<< QVariant::UInt
-							<< QVariant::Url;
+                                                        << QVariant::Bool
+                                                        << QVariant::Color
+                                                        << QVariant::Double
+                                                        << QVariant::EasingCurve
+                                                        << QVariant::Font
+                                                        << QVariant::Int
+                                                        << QVariant::LongLong
+                                                        << QVariant::String
+                                                        << QVariant::ULongLong
+                                                        << QVariant::UInt
+                                                        << QVariant::Url;
 
 PropertiesEditor::PropertiesEditor(QWidget* parent)
   : QTableWidget(parent)
@@ -69,7 +69,7 @@ void PropertiesEditor::setObject(QObject *object)
 
     mObject = object;
     if (mObject.isNull()) {
-	return;
+        return;
     }
 
     setSortingEnabled(false);
@@ -78,54 +78,54 @@ void PropertiesEditor::setObject(QObject *object)
     const QMetaObject *metaObject = mObject->metaObject();
     int pIndex = metaObject->indexOfProperty("_PQProperties");
     if (pIndex > -1) {
-	QMetaProperty p = metaObject->property(pIndex);
-	properties = p.read(mObject.data()).toStringList();
+        QMetaProperty p = metaObject->property(pIndex);
+        properties = p.read(mObject.data()).toStringList();
     }
 
     QStringList processed;
     int count = metaObject->propertyCount();
     while (metaObject) {
-	for (int ii = 0; ii < count; ii++) {
-	    QMetaProperty property = metaObject->property(ii);
+        for (int ii = 0; ii < count; ii++) {
+            QMetaProperty property = metaObject->property(ii);
 
-	    if (processed.contains(property.name())) {
-		continue;
-	    }
+            if (processed.contains(property.name())) {
+                continue;
+            }
 
-	    /* If the properties list is not empty, then accept only properties
-	    * from that list. */
-	    if (!properties.isEmpty() && !properties.contains(property.name())) {
-		continue;
-	    }
+            /* If the properties list is not empty, then accept only properties
+            * from that list. */
+            if (!properties.isEmpty() && !properties.contains(property.name())) {
+                continue;
+            }
 
-	    /* Don't display our internal properties or properties we can't edit */
-	    if (QString(property.name()).startsWith(QLatin1String("_PQ")) ||
-		!supportedTypes.contains(property.type())) {
-		continue;
-	    }
+            /* Don't display our internal properties or properties we can't edit */
+            if (QString(property.name()).startsWith(QLatin1String("_PQ")) ||
+                !supportedTypes.contains(property.type())) {
+                continue;
+            }
 
-	    int row = rowCount();
-	    setRowCount(rowCount() + 1);
-	    setVerticalHeaderItem(row, new QTableWidgetItem(QString()));
+            int row = rowCount();
+            setRowCount(rowCount() + 1);
+            setVerticalHeaderItem(row, new QTableWidgetItem(QString()));
 
-	    QTableWidgetItem *propertyNameItem = new QTableWidgetItem;
-	    propertyNameItem->setText(property.name());
-	    propertyNameItem->setData(PropertyIndexRole, ii);
-	    propertyNameItem->setFlags(propertyNameItem->flags() ^ Qt::ItemIsEditable);
-	    setItem(row, 0, propertyNameItem);
+            QTableWidgetItem *propertyNameItem = new QTableWidgetItem;
+            propertyNameItem->setText(property.name());
+            propertyNameItem->setData(PropertyIndexRole, ii);
+            propertyNameItem->setFlags(propertyNameItem->flags() ^ Qt::ItemIsEditable);
+            setItem(row, 0, propertyNameItem);
 
-	    PropertiesEditorItem *propertyValueItem = new PropertiesEditorItem(mObject, property, this);
-	    if (!property.isWritable()) {
-		propertyValueItem->setFlags(propertyValueItem->flags() ^ Qt::ItemIsEditable);
-	    }
-	    setItem(row, 1, propertyValueItem);
+            PropertiesEditorItem *propertyValueItem = new PropertiesEditorItem(mObject, property, this);
+            if (!property.isWritable()) {
+                propertyValueItem->setFlags(propertyValueItem->flags() ^ Qt::ItemIsEditable);
+            }
+            setItem(row, 1, propertyValueItem);
 
-	    setEditorWidget(row);
+            setEditorWidget(row);
 
-	    processed << property.name();
-	}
+            processed << property.name();
+        }
 
-	metaObject = metaObject->superClass();
+        metaObject = metaObject->superClass();
     }
 
     setSortingEnabled(true);
@@ -146,7 +146,7 @@ void PropertiesEditor::setEditorWidget(int row)
 QMetaProperty PropertiesEditor::property(int row)
 {
     if (row < 0) {
-	return QMetaProperty();
+        return QMetaProperty();
     }
 
     int index = item(row, 0)->data(PropertyIndexRole).toInt();

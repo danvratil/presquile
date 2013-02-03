@@ -42,9 +42,9 @@ PropertiesEditorItem::PropertiesEditorItem(QObject *object, const QMetaProperty&
     , mProperty(property)
 {
     if (mProperty.hasNotifySignal()) {
-	/* Can't connect a QMetaObject to a Q_SLOT - only to an another QMetaObject */
-	QMetaMethod slot = metaObject()->method(metaObject()->indexOfMethod("slotPropertyValueChanged()"));
-	QObject::connect(mObject.data(), mProperty.notifySignal(), (QObject*) this, slot);
+        /* Can't connect a QMetaObject to a Q_SLOT - only to an another QMetaObject */
+        QMetaMethod slot = metaObject()->method(metaObject()->indexOfMethod("slotPropertyValueChanged()"));
+        QObject::connect(mObject.data(), mProperty.notifySignal(), (QObject*) this, slot);
     }
 
     prepareWidget();
@@ -74,11 +74,11 @@ void PropertiesEditorItem::prepareWidget()
     } else if (mProperty.type() == QVariant::Bitmap) {
 
     } else if (mProperty.type() == QVariant::Bool) {
-	QCheckBox *checkBox = new QCheckBox(parent());
-	checkBox->setText(QString());
-	checkBox->setChecked(mProperty.read(mObject.data()).toBool());
-	editor = qobject_cast< QWidget* >(checkBox);
-	connect(checkBox, SIGNAL(toggled(bool)), SLOT(slotCheckBoxToggled()));
+        QCheckBox *checkBox = new QCheckBox(parent());
+        checkBox->setText(QString());
+        checkBox->setChecked(mProperty.read(mObject.data()).toBool());
+        editor = qobject_cast< QWidget* >(checkBox);
+        connect(checkBox, SIGNAL(toggled(bool)), SLOT(slotCheckBoxToggled()));
 
     } else if (mProperty.type() == QVariant::Brush) {
 
@@ -87,10 +87,10 @@ void PropertiesEditorItem::prepareWidget()
     } else if (mProperty.type() == QVariant::Char) {
 
     } else if (mProperty.type() == QVariant::Color) {
-	QPushButton *button = new QPushButton(parent());
-	button->setText(mProperty.read(mObject.data()).value<QColor>().name());
-	connect(button, SIGNAL(clicked(bool)), SLOT(slotOpenColorEditor()));
-	editor = qobject_cast< QWidget* >(button);
+        QPushButton *button = new QPushButton(parent());
+        button->setText(mProperty.read(mObject.data()).value<QColor>().name());
+        connect(button, SIGNAL(clicked(bool)), SLOT(slotOpenColorEditor()));
+        editor = qobject_cast< QWidget* >(button);
 
     } else if (mProperty.type() == QVariant::Cursor) {
 
@@ -99,26 +99,26 @@ void PropertiesEditorItem::prepareWidget()
     } else if (mProperty.type() == QVariant::DateTime) {
 
     } else if (mProperty.type() == QVariant::Double) {
-	QDoubleSpinBox *spinBox = new QDoubleSpinBox(parent());
-	spinBox->setMaximum(LONG_MAX);
-	spinBox->setMinimum(LONG_MIN);
-	spinBox->setSingleStep(0.01);
-	spinBox->setValue(mProperty.read(mObject.data()).toDouble());
-	editor = qobject_cast< QWidget* >(spinBox);
-	connect(spinBox, SIGNAL(valueChanged(double)), SLOT(slotDoubleSpinBoxValueChanged()));
+        QDoubleSpinBox *spinBox = new QDoubleSpinBox(parent());
+        spinBox->setMaximum(LONG_MAX);
+        spinBox->setMinimum(LONG_MIN);
+        spinBox->setSingleStep(0.01);
+        spinBox->setValue(mProperty.read(mObject.data()).toDouble());
+        editor = qobject_cast< QWidget* >(spinBox);
+        connect(spinBox, SIGNAL(valueChanged(double)), SLOT(slotDoubleSpinBoxValueChanged()));
 
     } else if (mProperty.type() == QVariant::EasingCurve) {
-	QPushButton *button = new QPushButton(parent());
-	QEasingCurve curve = mProperty.read(mObject.data()).toEasingCurve();
-	button->setText(curve.staticMetaObject.enumerator(0).valueToKey(curve.type()));
-	connect(button, SIGNAL(clicked(bool)), SLOT(slotOpenEasingCurveEditor()));
-	editor = qobject_cast< QWidget* >(button);
+        QPushButton *button = new QPushButton(parent());
+        QEasingCurve curve = mProperty.read(mObject.data()).toEasingCurve();
+        button->setText(curve.staticMetaObject.enumerator(0).valueToKey(curve.type()));
+        connect(button, SIGNAL(clicked(bool)), SLOT(slotOpenEasingCurveEditor()));
+        editor = qobject_cast< QWidget* >(button);
 
     } else if (mProperty.type() == QVariant::Font) {
-	QFontComboBox *comboBox = new QFontComboBox(parent());
-	comboBox->setCurrentFont(mProperty.read(mObject.data()).value<QFont>());
-	editor = qobject_cast< QWidget* >(comboBox);
-	connect(comboBox, SIGNAL(currentFontChanged(QFont)), SLOT(slotFontComboChanged()));
+        QFontComboBox *comboBox = new QFontComboBox(parent());
+        comboBox->setCurrentFont(mProperty.read(mObject.data()).value<QFont>());
+        editor = qobject_cast< QWidget* >(comboBox);
+        connect(comboBox, SIGNAL(currentFontChanged(QFont)), SLOT(slotFontComboChanged()));
 
     } else if (mProperty.type() == QVariant::Hash) {
 
@@ -127,12 +127,12 @@ void PropertiesEditorItem::prepareWidget()
     } else if (mProperty.type() == QVariant::Image) {
 
     } else if (mProperty.type() == QVariant::Int) {
-	QSpinBox *spinBox = new QSpinBox(parent());
-	spinBox->setMinimum(INT_MIN);
-	spinBox->setMaximum(INT_MAX);
-	spinBox->setValue(mProperty.read(mObject.data()).toInt());
-	editor = qobject_cast< QWidget* >(spinBox);
-	connect(spinBox, SIGNAL(valueChanged(int)), SLOT(slotSpinBoxValueChanged()));
+        QSpinBox *spinBox = new QSpinBox(parent());
+        spinBox->setMinimum(INT_MIN);
+        spinBox->setMaximum(INT_MAX);
+        spinBox->setValue(mProperty.read(mObject.data()).toInt());
+        editor = qobject_cast< QWidget* >(spinBox);
+        connect(spinBox, SIGNAL(valueChanged(int)), SLOT(slotSpinBoxValueChanged()));
 
     } else if (mProperty.type() == QVariant::KeySequence) {
 
@@ -145,14 +145,14 @@ void PropertiesEditorItem::prepareWidget()
     } else if (mProperty.type() == QVariant::Locale) {
 
     } else if (mProperty.type() == QVariant::LongLong) {
-	QDoubleSpinBox *spinBox = new QDoubleSpinBox(parent());
-	spinBox->setSingleStep(1.0);
-	spinBox->setDecimals(0);
-	spinBox->setMaximum(LONG_MAX);
-	spinBox->setMinimum(LONG_MIN);
-	spinBox->setValue(mProperty.read(mObject.data()).toLongLong());
-	editor = qobject_cast< QWidget* >(spinBox);
-	connect(spinBox, SIGNAL(valueChanged(int)), SLOT(slotDoubleSpinBoxValueChanged()));
+        QDoubleSpinBox *spinBox = new QDoubleSpinBox(parent());
+        spinBox->setSingleStep(1.0);
+        spinBox->setDecimals(0);
+        spinBox->setMaximum(LONG_MAX);
+        spinBox->setMinimum(LONG_MIN);
+        spinBox->setValue(mProperty.read(mObject.data()).toLongLong());
+        editor = qobject_cast< QWidget* >(spinBox);
+        connect(spinBox, SIGNAL(valueChanged(int)), SLOT(slotDoubleSpinBoxValueChanged()));
 
     } else if (mProperty.type() == QVariant::Map) {
 
@@ -189,10 +189,10 @@ void PropertiesEditorItem::prepareWidget()
     } else if (mProperty.type() == QVariant::SizePolicy) {
 
     } else if (mProperty.type() == QVariant::String) {
-	QLineEdit *lineEdit = new QLineEdit(parent());
-	lineEdit->setText(mProperty.read(mObject.data()).toString());
-	editor = qobject_cast< QWidget* >(lineEdit);
-	connect(lineEdit, SIGNAL(textChanged(QString)), SLOT(slotLineEditChanged()));
+        QLineEdit *lineEdit = new QLineEdit(parent());
+        lineEdit->setText(mProperty.read(mObject.data()).toString());
+        editor = qobject_cast< QWidget* >(lineEdit);
+        connect(lineEdit, SIGNAL(textChanged(QString)), SLOT(slotLineEditChanged()));
 
     } else if (mProperty.type() == QVariant::StringList) {
 
@@ -205,29 +205,29 @@ void PropertiesEditorItem::prepareWidget()
     } else if (mProperty.type() == QVariant::Transform) {
 
     } else if (mProperty.type() == QVariant::UInt) {
-	QSpinBox *spinBox = new QSpinBox(parent());
-	spinBox->setMaximum(UINT_MAX);
-	spinBox->setMinimum(0);
-	spinBox->setValue(mProperty.read(mObject.data()).toUInt());
-	editor = qobject_cast< QWidget* >(spinBox);
-	connect(spinBox, SIGNAL(valueChanged(int)), SLOT(slotSpinBoxValueChanged()));
+        QSpinBox *spinBox = new QSpinBox(parent());
+        spinBox->setMaximum(UINT_MAX);
+        spinBox->setMinimum(0);
+        spinBox->setValue(mProperty.read(mObject.data()).toUInt());
+        editor = qobject_cast< QWidget* >(spinBox);
+        connect(spinBox, SIGNAL(valueChanged(int)), SLOT(slotSpinBoxValueChanged()));
 
     } else if (mProperty.type() == QVariant::ULongLong) {
-	QDoubleSpinBox *spinBox = new QDoubleSpinBox(parent());
-	spinBox->setSingleStep(1.0);
-	spinBox->setDecimals(0);
-	spinBox->setMinimum(0);
-	spinBox->setMaximum(ULONG_MAX);
-	spinBox->setValue(mProperty.read(mObject.data()).toULongLong());
-	editor = qobject_cast< QWidget* >(spinBox);
-	connect(spinBox, SIGNAL(valueChanged(int)), SLOT(slotDoubleSpinBoxValueChanged()));
+        QDoubleSpinBox *spinBox = new QDoubleSpinBox(parent());
+        spinBox->setSingleStep(1.0);
+        spinBox->setDecimals(0);
+        spinBox->setMinimum(0);
+        spinBox->setMaximum(ULONG_MAX);
+        spinBox->setValue(mProperty.read(mObject.data()).toULongLong());
+        editor = qobject_cast< QWidget* >(spinBox);
+        connect(spinBox, SIGNAL(valueChanged(int)), SLOT(slotDoubleSpinBoxValueChanged()));
 
     } else if (mProperty.type() == QVariant::Url) {
-	QPushButton *button = new QPushButton(parent());
-	QUrl url = mProperty.read(mObject.data()).toUrl();
-	setButtonUrl(button, url);
-	editor = qobject_cast< QWidget* >(button);
-	connect(button, SIGNAL(clicked(bool)), SLOT(slotUrlButtonClicked()));
+        QPushButton *button = new QPushButton(parent());
+        QUrl url = mProperty.read(mObject.data()).toUrl();
+        setButtonUrl(button, url);
+        editor = qobject_cast< QWidget* >(button);
+        connect(button, SIGNAL(clicked(bool)), SLOT(slotUrlButtonClicked()));
 
     } else if (mProperty.type() == QVariant::UserType) {
 
@@ -247,11 +247,11 @@ void PropertiesEditorItem::slotOpenEasingCurveEditor()
     EasingCurveEditor *editor = new EasingCurveEditor(parent());
     editor->setEasingCurve(mProperty.read(mObject.data()).toEasingCurve());
     if (editor->exec() == QDialog::Accepted) {
-	QEasingCurve curve = editor->easingCurve();
-	mProperty.write(mObject.data(), curve);
+        QEasingCurve curve = editor->easingCurve();
+        mProperty.write(mObject.data(), curve);
 
-	QPushButton *button = qobject_cast<QPushButton*>(mWidget.data());
-	button->setText(curve.staticMetaObject.enumerator(0).valueToKey(curve.type()));
+        QPushButton *button = qobject_cast<QPushButton*>(mWidget.data());
+        button->setText(curve.staticMetaObject.enumerator(0).valueToKey(curve.type()));
     }
 
     delete editor;
@@ -262,10 +262,10 @@ void PropertiesEditorItem::slotOpenColorEditor()
     QColorDialog *dialog = new QColorDialog(parent());
     dialog->setCurrentColor(mProperty.read(mObject.data()).value<QColor>());
     if (dialog->exec() == QDialog::Accepted) {
-	mProperty.write(mObject.data(), QVariant::fromValue(dialog->currentColor()));
+        mProperty.write(mObject.data(), QVariant::fromValue(dialog->currentColor()));
 
-	QPushButton *button = qobject_cast<QPushButton*>(mWidget.data());
-	button->setText(dialog->currentColor().name());
+        QPushButton *button = qobject_cast<QPushButton*>(mWidget.data());
+        button->setText(dialog->currentColor().name());
     }
 
     delete dialog;
@@ -307,18 +307,18 @@ void PropertiesEditorItem::slotUrlButtonClicked()
     dialog->setAcceptMode(QFileDialog::AcceptOpen);
     dialog->setFileMode(QFileDialog::ExistingFile);
     if (dialog->exec() == QDialog::Accepted) {
-	QStringList files = dialog->selectedFiles();
-	if (files.isEmpty()) {
-	    delete dialog;
-	    return;
-	}
+        QStringList files = dialog->selectedFiles();
+        if (files.isEmpty()) {
+            delete dialog;
+            return;
+        }
 
-	QUrl url = files.first();
+        QUrl url = files.first();
 
-	QPushButton *button = qobject_cast<QPushButton*>(mWidget.data());
-	setButtonUrl(button, url);
+        QPushButton *button = qobject_cast<QPushButton*>(mWidget.data());
+        setButtonUrl(button, url);
 
-	mProperty.write(mObject.data(), url);
+        mProperty.write(mObject.data(), url);
     }
 
     delete dialog;
@@ -332,8 +332,8 @@ void PropertiesEditorItem::slotPropertyValueChanged()
     } else if (mProperty.type() == QVariant::Bitmap) {
 
     } else if (mProperty.type() == QVariant::Bool) {
-	QCheckBox *checkBox = qobject_cast<QCheckBox*>(mWidget.data());
-	checkBox->setChecked(mProperty.read(mObject.data()).toBool());
+        QCheckBox *checkBox = qobject_cast<QCheckBox*>(mWidget.data());
+        checkBox->setChecked(mProperty.read(mObject.data()).toBool());
 
     } else if (mProperty.type() == QVariant::Brush) {
 
@@ -350,17 +350,17 @@ void PropertiesEditorItem::slotPropertyValueChanged()
     } else if (mProperty.type() == QVariant::DateTime) {
 
     } else if (mProperty.type() == QVariant::Double) {
-	QDoubleSpinBox *spinBox = qobject_cast<QDoubleSpinBox*>(mWidget.data());
-	spinBox->setValue(mProperty.read(mObject.data()).toDouble());
+        QDoubleSpinBox *spinBox = qobject_cast<QDoubleSpinBox*>(mWidget.data());
+        spinBox->setValue(mProperty.read(mObject.data()).toDouble());
 
     } else if (mProperty.type() == QVariant::EasingCurve) {
-	QPushButton *button = qobject_cast<QPushButton*>(mWidget.data());
-	QEasingCurve curve = mProperty.read(mObject.data()).toEasingCurve();
-	button->setText(curve.staticMetaObject.enumerator(0).valueToKey(curve.type()));
+        QPushButton *button = qobject_cast<QPushButton*>(mWidget.data());
+        QEasingCurve curve = mProperty.read(mObject.data()).toEasingCurve();
+        button->setText(curve.staticMetaObject.enumerator(0).valueToKey(curve.type()));
 
     } else if (mProperty.type() == QVariant::Font) {
-	QFontComboBox *comboBox = qobject_cast<QFontComboBox*>(mWidget.data());
-	comboBox->setCurrentFont(mProperty.read(mObject.data()).value<QFont>());
+        QFontComboBox *comboBox = qobject_cast<QFontComboBox*>(mWidget.data());
+        comboBox->setCurrentFont(mProperty.read(mObject.data()).value<QFont>());
 
     } else if (mProperty.type() == QVariant::Hash) {
 
@@ -369,8 +369,8 @@ void PropertiesEditorItem::slotPropertyValueChanged()
     } else if (mProperty.type() == QVariant::Image) {
 
     } else if (mProperty.type() == QVariant::Int) {
-	QSpinBox *spinBox = qobject_cast<QSpinBox*>(mWidget.data());
-	spinBox->setValue(mProperty.read(mObject.data()).toInt());
+        QSpinBox *spinBox = qobject_cast<QSpinBox*>(mWidget.data());
+        spinBox->setValue(mProperty.read(mObject.data()).toInt());
 
     } else if (mProperty.type() == QVariant::KeySequence) {
 
@@ -383,8 +383,8 @@ void PropertiesEditorItem::slotPropertyValueChanged()
     } else if (mProperty.type() == QVariant::Locale) {
 
     } else if (mProperty.type() == QVariant::LongLong) {
-	QDoubleSpinBox *spinBox = qobject_cast<QDoubleSpinBox*>(mWidget.data());
-	spinBox->setValue(mProperty.read(mObject.data()).toLongLong());
+        QDoubleSpinBox *spinBox = qobject_cast<QDoubleSpinBox*>(mWidget.data());
+        spinBox->setValue(mProperty.read(mObject.data()).toLongLong());
 
     } else if (mProperty.type() == QVariant::Map) {
 
@@ -421,8 +421,8 @@ void PropertiesEditorItem::slotPropertyValueChanged()
     } else if (mProperty.type() == QVariant::SizePolicy) {
 
     } else if (mProperty.type() == QVariant::String) {
-	QLineEdit *lineEdit = qobject_cast<QLineEdit*>(mWidget.data());
-	lineEdit->setText(mProperty.read(mObject.data()).toString());
+        QLineEdit *lineEdit = qobject_cast<QLineEdit*>(mWidget.data());
+        lineEdit->setText(mProperty.read(mObject.data()).toString());
 
     } else if (mProperty.type() == QVariant::StringList) {
 
@@ -435,17 +435,17 @@ void PropertiesEditorItem::slotPropertyValueChanged()
     } else if (mProperty.type() == QVariant::Transform) {
 
     } else if (mProperty.type() == QVariant::UInt) {
-	QSpinBox *spinBox = qobject_cast<QSpinBox*>(mWidget.data());
-	spinBox->setValue(mProperty.read(mObject.data()).toUInt());
+        QSpinBox *spinBox = qobject_cast<QSpinBox*>(mWidget.data());
+        spinBox->setValue(mProperty.read(mObject.data()).toUInt());
 
     } else if (mProperty.type() == QVariant::ULongLong) {
-	QDoubleSpinBox *spinBox = qobject_cast<QDoubleSpinBox*>(mWidget.data());
-	spinBox->setValue(mProperty.read(mObject.data()).toULongLong());
+        QDoubleSpinBox *spinBox = qobject_cast<QDoubleSpinBox*>(mWidget.data());
+        spinBox->setValue(mProperty.read(mObject.data()).toULongLong());
 
     } else if (mProperty.type() == QVariant::Url) {
-	QPushButton *button = qobject_cast<QPushButton*>(mWidget.data());
-	QUrl url = mProperty.read(mObject.data()).toUrl();
-	setButtonUrl(button, url);
+        QPushButton *button = qobject_cast<QPushButton*>(mWidget.data());
+        QUrl url = mProperty.read(mObject.data()).toUrl();
+        setButtonUrl(button, url);
 
     } else if (mProperty.type() == QVariant::UserType) {
 
@@ -461,14 +461,14 @@ void PropertiesEditorItem::slotPropertyValueChanged()
 void PropertiesEditorItem::setButtonUrl(QPushButton* button, const QUrl& url)
 {
     if (url.isValid()) {
-	QFontMetrics metrics = button->fontMetrics();
-	QString elidedText = metrics.elidedText(url.toString(), Qt::ElideLeft, button->width());
+        QFontMetrics metrics = button->fontMetrics();
+        QString elidedText = metrics.elidedText(url.toString(), Qt::ElideLeft, button->width());
 
-	button->setText(elidedText);
-	button->setToolTip(url.toString());
+        button->setText(elidedText);
+        button->setToolTip(url.toString());
     } else {
-	button->setText(tr("Open File..."));
-	button->setToolTip(QString());
+        button->setText(tr("Open File..."));
+        button->setToolTip(QString());
     }
 }
 

@@ -20,7 +20,7 @@
 import QtQuick 1.0
 
 PropertyAnimation {
-    property bool	_PQCanHaveChildren:	false;
-    property string	_PQDisplayName:		qsTr("Property Animation");
-    property string	_PQDescription:		qsTr("Animates a specified object property");
+    property bool        _PQCanHaveChildren:        false;
+    property string        _PQDisplayName:                qsTr("Property Animation");
+    property string        _PQDescription:                qsTr("Animates a specified object property");
 }

@@ -20,7 +20,7 @@
 import QtQuick 1.0
 
 PauseAnimation {
-    property bool	_PQCanHaveChildren:	false;
-    property string	_PQDisplayName:		qsTr("Pause Animation");
-    property string	_PQDescription:		qsTr("A pause between two subsequent animations");
+    property bool        _PQCanHaveChildren:        false;
+    property string        _PQDisplayName:                qsTr("Pause Animation");
+    property string        _PQDescription:                qsTr("A pause between two subsequent animations");
 }

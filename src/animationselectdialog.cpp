@@ -74,7 +74,7 @@ AnimationSelectDialog::~AnimationSelectDialog()
 QObject* AnimationSelectDialog::selectedAnimation() const
 {
     if (!mAnimationsList->currentIndex().isValid()) {
-	return 0;
+        return 0;
     }
 
     return mAnimationsList->currentItem()->data(0, ObjectTypeRole).value< QPointer<QObject> >().data();
@@ -102,20 +102,20 @@ void AnimationSelectDialog::loadAnimations()
     /* TODO: Support loading custom user animations */
     QStringList animations;
     animations << QLatin1String("PropertyAnimation.qml")
-	       << QLatin1String("RotationAnimation.qml")
-	       << QLatin1String("ColorAnimation.qml")
-	       << QLatin1String("NumberAnimation.qml")
-	       << QLatin1String("SpringAnimation.qml")
-	       << QLatin1String("ParallelAnimation.qml")
-	       << QLatin1String("PauseAnimation.qml");
+               << QLatin1String("RotationAnimation.qml")
+               << QLatin1String("ColorAnimation.qml")
+               << QLatin1String("NumberAnimation.qml")
+               << QLatin1String("SpringAnimation.qml")
+               << QLatin1String("ParallelAnimation.qml")
+               << QLatin1String("PauseAnimation.qml");
 
     Q_FOREACH(const QString &animation, animations) {
-	QPointer<QObject> obj = getObject(animation);
-	item = new QTreeWidgetItem(mAnimationsList);
-	item->setText(0, obj->property("_PQDisplayName").toString());
-	item->setText(1, obj->property("_PQDescription").toString());
-	item->setData(0, ObjectTypeRole, QVariant::fromValue(obj));
-	mAnimationsList->addTopLevelItem(item);
+        QPointer<QObject> obj = getObject(animation);
+        item = new QTreeWidgetItem(mAnimationsList);
+        item->setText(0, obj->property("_PQDisplayName").toString());
+        item->setText(1, obj->property("_PQDescription").toString());
+        item->setData(0, ObjectTypeRole, QVariant::fromValue(obj));
+        mAnimationsList->addTopLevelItem(item);
     }
 }
 

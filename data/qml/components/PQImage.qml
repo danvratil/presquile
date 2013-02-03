@@ -22,22 +22,22 @@ import Presquile 1.0
 
 PQResizable {
 
-    property string		_PQDisplayName:		qsTr("Image");
-    property string		_PQDescription:		qsTr("An image");
-    property int 		_PQInitialWidth:	200;
-    property int 		_PQInitialHeight:	200;
-    property string 		_PQDoubleClickEdit:	"source";
-    property variant		_PQProperties:		[ "height",
-							  "fillMode",
-							  "opacity",
-							  "rotation",
-							  "scale",
-							  "smooth",
-							  "source",
-							  "width",
-							  "x",
-							  "y",
-							  "z" ];
+    property string     _PQDisplayName:         qsTr("Image");
+    property string     _PQDescription:         qsTr("An image");
+    property int        _PQInitialWidth:        200;
+    property int        _PQInitialHeight:       200;
+    property string     _PQDoubleClickEdit:     "source";
+    property variant    _PQProperties:          [ "height",
+                                                  "fillMode",
+                                                  "opacity",
+                                                  "rotation",
+                                                  "scale",
+                                                  "smooth",
+                                                  "source",
+                                                  "width",
+                                                  "x",
+                                                  "y",
+                                                  "z" ];
 
     property alias fillMode: img.fillMode;
     property alias source: img.source;
@@ -46,49 +46,49 @@ PQResizable {
     resizableItem: img;
 
     transform: [
-	Translate {
-	    x: 0;
-	    y: 0;
-	},
-	Rotation {
-	    angle: 0;
-	    axis {
-		x: 0;
-		y: 0;
-		z: 0;
-	    }
-	    origin {
-		x: 0;
-		y: 0;
-	    }
-	},
-	Scale {
-	    xScale: 1.0;
-	    yScale: 1.0;
-	    origin {
-		x: 0;
-		y: 0;
-	    }
-	}
+        Translate {
+            x: 0;
+            y: 0;
+        },
+        Rotation {
+            angle: 0;
+            axis {
+                x: 0;
+                y: 0;
+                z: 0;
+            }
+            origin {
+                x: 0;
+                y: 0;
+            }
+        },
+        Scale {
+            xScale: 1.0;
+            yScale: 1.0;
+            origin {
+                x: 0;
+                y: 0;
+            }
+        }
     ]
 
     Image {
-	id: img;
-	sourceSize {
-	    width: 800;
-	    height: 600;
-	}
+        id: img;
+        sourceSize {
+            width: 800;
+            height: 600;
+        }
 
-	/* Display a border until an image is assigned */
-	PQItemFrame {
-	    id: borderRect;
-	    anchors.fill: parent;
-	    visible: (parent.source == "");
-	}
+        /* Display a border until an image is assigned */
+        PQItemFrame {
+            id: borderRect;
+            anchors.fill: parent;
+            visible: (parent.source == "");
+        }
 
-	anchors.top: parent.top;
-	anchors.left: parent.left;
-	anchors.right: parent.handle.horizontalCenter;
-	anchors.bottom: parent.handle.verticalCenter;
+        anchors.top: parent.top;
+        anchors.left: parent.left;
+        anchors.right: parent.handle.horizontalCenter;
+        anchors.bottom: parent.handle.verticalCenter;
     }
 }

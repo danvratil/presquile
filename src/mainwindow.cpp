@@ -179,10 +179,10 @@ void MainWindow::slotOpenPresentation()
 
     mCurrentProject.clear();
     if (dlg->exec()) {
-	QStringList files = dlg->selectedFiles();
-	if (!files.isEmpty()) {
-	    mCurrentProject = files.first();
-	}
+        QStringList files = dlg->selectedFiles();
+        if (!files.isEmpty()) {
+            mCurrentProject = files.first();
+        }
     }
 
     /* TODO: Open presentation */

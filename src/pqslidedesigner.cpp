@@ -69,8 +69,8 @@ PQSlide::Ptr PQSlideDesigner::slide() const
 void PQSlideDesigner::dragEnterEvent(QDragEnterEvent* event)
 {
     if (!event->mimeData()->text().startsWith(QLatin1String("Component/"))) {
-	event->ignore();
-	return;
+        event->ignore();
+        return;
     }
 
     event->acceptProposedAction();
@@ -81,8 +81,8 @@ void PQSlideDesigner::dragMoveEvent(QDragMoveEvent* event)
     QDeclarativeItem *slide = slideRect();
     QDeclarativeItem *root = slideRoot();
     if (!slide || !root) {
-	event->ignore();
-	return;
+        event->ignore();
+        return;
     }
 
     /* We must convert the real dimensions to the visual ones - i.e. apply scale */
@@ -93,8 +93,8 @@ void PQSlideDesigner::dragMoveEvent(QDragMoveEvent* event)
     const QRect slideRect(x, y, width, height);
 
     if (slideRect.contains(event->pos(), true)) {
-	event->accept();
-	return;
+        event->accept();
+        return;
     }
 
     event->ignore();
@@ -105,8 +105,8 @@ void PQSlideDesigner::dropEvent(QDropEvent* event)
     QString type = event->mimeData()->text();
 
     if (!type.startsWith(QLatin1String("Component/"))) {
-	event->ignore();
-	return;
+        event->ignore();
+        return;
     }
 
     QString comp = type.remove(QLatin1String("Component/"));
@@ -114,15 +114,15 @@ void PQSlideDesigner::dropEvent(QDropEvent* event)
     PQQMLManager *manager = PQQMLManager::instance();
     QDeclarativeItem *item = manager->componentInstance(engine(), comp);
     if (!item) {
-	qWarning() << "Failed to create an instance of" << comp;
-	return;
+        qWarning() << "Failed to create an instance of" << comp;
+        return;
     }
 
     QDeclarativeItem *slideContainer = slideChildrenContainer();
     QDeclarativeItem *rect = slideRect();
     QDeclarativeItem *root = slideRoot();
     if (!slideContainer || !root) {
-	return;
+        return;
     }
 
     item->setParentItem(slideContainer);
@@ -145,32 +145,32 @@ void PQSlideDesigner::dropEvent(QDropEvent* event)
 void PQSlideDesigner::keyReleaseEvent(QKeyEvent* event)
 {
     if (event->key() == Qt::Key_Delete) {
-	QDeclarativeItem *slideContainer = slideChildrenContainer();
-	if (!slideContainer) {
-	    qWarning() << "Failed to locate slide container element";
-	    return;
-	}
+        QDeclarativeItem *slideContainer = slideChildrenContainer();
+        if (!slideContainer) {
+            qWarning() << "Failed to locate slide container element";
+            return;
+        }
 
-	QListIterator<QGraphicsItem*> iter(slideContainer->childItems());
-	while (iter.hasNext()) {
-	    QDeclarativeItem *dItem = qobject_cast<QDeclarativeItem*>(iter.next());
-	    if (dItem && dItem->hasFocus()) {
-		qDebug() << "Deleting" << dItem;
-		dItem->deleteLater();
+        QListIterator<QGraphicsItem*> iter(slideContainer->childItems());
+        while (iter.hasNext()) {
+            QDeclarativeItem *dItem = qobject_cast<QDeclarativeItem*>(iter.next());
+            if (dItem && dItem->hasFocus()) {
+                qDebug() << "Deleting" << dItem;
+                dItem->deleteLater();
 
-		/* Move focus */
-		if (iter.hasPrevious()) {
-		    QObject *prev = qobject_cast<QObject*>(iter.peekPrevious());
-		    qDebug() << "Moving focus to" << qobject_cast<QDeclarativeItem*>(prev);
-		    prev->setProperty("focus", true);
-		} else {
-		    qDebug() << "Unsetting focus";
-		    Q_EMIT focusedItemChanged(0);
-		}
-	    }
-	}
+                /* Move focus */
+                if (iter.hasPrevious()) {
+                    QObject *prev = qobject_cast<QObject*>(iter.peekPrevious());
+                    qDebug() << "Moving focus to" << qobject_cast<QDeclarativeItem*>(prev);
+                    prev->setProperty("focus", true);
+                } else {
+                    qDebug() << "Unsetting focus";
+                    Q_EMIT focusedItemChanged(0);
+                }
+            }
+        }
 
-	return;
+        return;
     }
 
     QGraphicsView::keyReleaseEvent(event);
@@ -179,8 +179,8 @@ void PQSlideDesigner::keyReleaseEvent(QKeyEvent* event)
 void PQSlideDesigner::slotItemFocusChanged(bool hasFocus)
 {
     if (hasFocus) {
-	qDebug() << "Focused item changed to" << qobject_cast<QDeclarativeItem*>(sender());
-	Q_EMIT focusedItemChanged(sender());
+        qDebug() << "Focused item changed to" << qobject_cast<QDeclarativeItem*>(sender());
+        Q_EMIT focusedItemChanged(sender());
     }
 }
 
@@ -188,12 +188,12 @@ void PQSlideDesigner::slotItemDoubleClicked()
 {
     QDeclarativeItem *item = qobject_cast<QDeclarativeItem*>(sender());
     if (!item) {
-	return;
+        return;
     }
 
     QString editProperty = item->property("_PQDoubleClickEdit").toString();
     if (editProperty.isEmpty()) {
-	return;
+        return;
     }
 
     QPointer<PropertyEditor> editor = new PropertyEditor(item, editProperty, this);

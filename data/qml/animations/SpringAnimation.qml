@@ -20,7 +20,7 @@
 import QtQuick 1.0
 
 SpringAnimation {
-    property bool	_PQCanHaveChildren:	false;
-    property string	_PQDisplayName:		qsTr("Spring Animation");
-    property string	_PQDescription:		qsTr("Mimics oscillatory behavior of a spring");
+    property bool        _PQCanHaveChildren:        false;
+    property string        _PQDisplayName:                qsTr("Spring Animation");
+    property string        _PQDescription:                qsTr("Mimics oscillatory behavior of a spring");
 }

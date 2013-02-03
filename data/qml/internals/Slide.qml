@@ -24,38 +24,38 @@ Item {
     objectName: "slideRoot";
 
     SystemPalette {
-	id: palette;
+        id: palette;
     }
 
     Rectangle {
-	id: slideRect;
-	objectName: "slideRect";
+        id: slideRect;
+        objectName: "slideRect";
 
-	width: 800;
-	height: 600;
-	radius: 10;
-	focus: true;
+        width: 800;
+        height: 600;
+        radius: 10;
+        focus: true;
 
-	anchors.centerIn: parent;
+        anchors.centerIn: parent;
 
-	color: palette.light;
+        color: palette.light;
 
-	FocusScope {
-	    id: focusScope;
-	    objectName: "slideRootFocusScope";
+        FocusScope {
+            id: focusScope;
+            objectName: "slideRootFocusScope";
 
-	    anchors.fill: parent;
-	}
+            anchors.fill: parent;
+        }
 
-	function updateScale() {
-	    /* "Real" size (including margin) is 880x680.
-	    * Scale the slideRectangle so that it always fits into root with
-	    * the margin
-	    * TODO: The margin should be scaled as well - the smaller the scale,
-	    * the smaller margin */
+        function updateScale() {
+            /* "Real" size (including margin) is 880x680.
+            * Scale the slideRectangle so that it always fits into root with
+            * the margin
+            * TODO: The margin should be scaled as well - the smaller the scale,
+            * the smaller margin */
 
-	    slideRect.scale = Math.min(root.width / 880, root.height / 680);
-	}
+            slideRect.scale = Math.min(root.width / 880, root.height / 680);
+        }
     }
 
     onHeightChanged: slideRect.updateScale();

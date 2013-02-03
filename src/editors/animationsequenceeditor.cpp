@@ -112,12 +112,12 @@ void AnimationSequenceEditor::slotCurrentItemChanged()
 {
     QTreeWidgetItem *currentItem = mAnimationsTree->currentItem();
     if (!currentItem) {
-	mAddAnimationButton->setEnabled(false);
-	mRemoveAnimationButton->setEnabled(false);
-	mMoveAnimationUpButton->setEnabled(false);
-	mMoveAnimsationDownButton->setEnabled(false);
-	mPropertiesEditor->setObject(0);
-	return;
+        mAddAnimationButton->setEnabled(false);
+        mRemoveAnimationButton->setEnabled(false);
+        mMoveAnimationUpButton->setEnabled(false);
+        mMoveAnimsationDownButton->setEnabled(false);
+        mPropertiesEditor->setObject(0);
+        return;
     }
 
     QPointer<QObject> obj = currentItem->data(0, ObjectRole).value< QPointer<QObject> >();
@@ -147,14 +147,14 @@ void AnimationSequenceEditor::slotAddAnimation()
 {
     QScopedPointer<AnimationSelectDialog> dlg(new AnimationSelectDialog(mEngine, this));
     if (dlg->exec() != QDialog::Accepted) {
-	return;
+        return;
     }
 
     QPointer<QObject> animation = dlg->selectedAnimation();
 
     QTreeWidgetItem* currentItem = mAnimationsTree->currentItem();
     if (!currentItem) {
-	return;
+        return;
     }
 
     QTreeWidgetItem *item = new QTreeWidgetItem(currentItem);
@@ -168,7 +168,7 @@ void AnimationSequenceEditor::slotRemoveAnimation()
 {
     QTreeWidgetItem *currentItem = mAnimationsTree->currentItem();
     if (!currentItem) {
-	return;
+        return;
     }
 
 
@@ -180,7 +180,7 @@ void AnimationSequenceEditor::slotMoveAnimationUp()
 {
     QTreeWidgetItem *currentItem = mAnimationsTree->currentItem();
     if (!currentItem) {
-	return;
+        return;
     }
 
     QTreeWidgetItem *parent = currentItem->parent();
@@ -196,14 +196,14 @@ void AnimationSequenceEditor::slotMoveAnimationDown()
 {
     QTreeWidgetItem *currentItem = mAnimationsTree->currentItem();
     if (!currentItem) {
-	return;
+        return;
     }
 
     QTreeWidgetItem *parent = currentItem->parent();
     int row = parent->indexOfChild(currentItem);
 
     if (row >= parent->childCount() - 1) {
-	return;
+        return;
     }
 
     parent->takeChild(row);

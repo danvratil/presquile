@@ -20,7 +20,7 @@
 import QtQuick 1.0
 
 RotationAnimation {
-    property bool	_PQCanHaveChildren:	false;
-    property string	_PQDisplayName:		qsTr("Rotation Animation");
-    property string	_PQDescription:		qsTr("Animates rotation of an object");
+    property bool        _PQCanHaveChildren:        false;
+    property string        _PQDisplayName:                qsTr("Rotation Animation");
+    property string        _PQDescription:                qsTr("Animates rotation of an object");
 }

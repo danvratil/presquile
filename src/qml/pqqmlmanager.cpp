@@ -41,7 +41,7 @@ PQQMLManager* PQQMLManager::instance()
 
     instanceLock.lock();
     if (mInstance == 0) {
-	mInstance = new PQQMLManager();
+        mInstance = new PQQMLManager();
     }
     instanceLock.unlock();
 
@@ -66,13 +66,13 @@ PQQMLManager::~PQQMLManager()
 QDeclarativeItem* PQQMLManager::componentInstance(QDeclarativeEngine *engine, const QString& componentName)
 {
     if (!QFile::exists(CoreUtils::resourcePath() % QLatin1String("/qml/components/") % componentName % QLatin1String(".qml"))) {
-	qWarning() << componentName << "source file does not exist";
-	return 0;
+        qWarning() << componentName << "source file does not exist";
+        return 0;
     }
 
     QByteArray ba;
     ba.append("import QtQuick 1.0\n\n").
-	      //"import Presquile 0.1\n\n").
+              //"import Presquile 0.1\n\n").
        append(componentName.toLatin1()).
        append("{ }");
 
@@ -81,8 +81,8 @@ QDeclarativeItem* PQQMLManager::componentInstance(QDeclarativeEngine *engine, co
 
     QObject *instance = component.create(engine->rootContext());
     if (!instance) {
-	qWarning() << "Failed to construct" << componentName << ":" << component.errorString();
-	return 0;
+        qWarning() << "Failed to construct" << componentName << ":" << component.errorString();
+        return 0;
     }
 
     return qobject_cast<QDeclarativeItem*>(instance);

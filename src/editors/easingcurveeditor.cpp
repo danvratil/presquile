@@ -99,13 +99,13 @@ EasingCurveEditor::EasingCurveEditor(QWidget* parent)
     /* FIXME: We should be more careful, there might be more added in future */
     QMetaEnum metaEnum = QEasingCurve::staticMetaObject.enumerator(0);
     for (int ii = 0; ii < metaEnum.keyCount(); ii++) {
-	/* We don't support custom easing curves yet */
-	if ((metaEnum.value(ii) == QEasingCurve::Custom) ||
-	    (metaEnum.value(ii) == QEasingCurve::NCurveTypes)) {
-	      continue;
-	}
+        /* We don't support custom easing curves yet */
+        if ((metaEnum.value(ii) == QEasingCurve::Custom) ||
+            (metaEnum.value(ii) == QEasingCurve::NCurveTypes)) {
+              continue;
+        }
 
-	mTypeCombo->addItem(metaEnum.key(ii), metaEnum.value(ii));
+        mTypeCombo->addItem(metaEnum.key(ii), metaEnum.value(ii));
     }
     mTypeCombo->model()->sort(0, Qt::AscendingOrder);
 
@@ -143,29 +143,29 @@ void EasingCurveEditor::slotCurveTypeChanged()
     QEasingCurve::Type type = (QEasingCurve::Type) mTypeCombo->itemData(mTypeCombo->currentIndex()).toInt();
 
     if ((type == QEasingCurve::InBounce) || (type == QEasingCurve::OutBounce) ||
-	(type == QEasingCurve::InOutBounce) || (type == QEasingCurve::OutInBounce) ||
-	(type == QEasingCurve::InElastic) || (type == QEasingCurve::OutElastic) ||
-	(type == QEasingCurve::InOutElastic) || (type == QEasingCurve::OutInElastic)) {
+        (type == QEasingCurve::InOutBounce) || (type == QEasingCurve::OutInBounce) ||
+        (type == QEasingCurve::InElastic) || (type == QEasingCurve::OutElastic) ||
+        (type == QEasingCurve::InOutElastic) || (type == QEasingCurve::OutInElastic)) {
 
-	mAmplitudeSpinBox->setEnabled(true);
+        mAmplitudeSpinBox->setEnabled(true);
     } else {
-	mAmplitudeSpinBox->setEnabled(false);
+        mAmplitudeSpinBox->setEnabled(false);
     }
 
     if ((type == QEasingCurve::InBack) || (type == QEasingCurve::OutBack) ||
-	(type == QEasingCurve::InOutBack) || (type == QEasingCurve::OutInBack)) {
+        (type == QEasingCurve::InOutBack) || (type == QEasingCurve::OutInBack)) {
 
-	mOvershootSpinBox->setEnabled(true);
+        mOvershootSpinBox->setEnabled(true);
     } else {
-	mOvershootSpinBox->setEnabled(false);
+        mOvershootSpinBox->setEnabled(false);
     }
 
     if ((type == QEasingCurve::InElastic) || (type == QEasingCurve::OutElastic) ||
-	(type == QEasingCurve::InOutElastic) || (type == QEasingCurve::OutInElastic)) {
+        (type == QEasingCurve::InOutElastic) || (type == QEasingCurve::OutInElastic)) {
 
-	mPeriodSpinBox->setEnabled(true);
+        mPeriodSpinBox->setEnabled(true);
     } else {
-	mPeriodSpinBox->setEnabled(false);
+        mPeriodSpinBox->setEnabled(false);
     }
 
     slotPropertyChanged();
@@ -174,7 +174,7 @@ void EasingCurveEditor::slotCurveTypeChanged()
 void EasingCurveEditor::slotPropertyChanged()
 {
     if (!mPaintTimer->isActive()) {
-	mPaintTimer->singleShot(100, this, SLOT(slotPaintTimer()));
+        mPaintTimer->singleShot(100, this, SLOT(slotPaintTimer()));
     }
 }
 
@@ -191,9 +191,9 @@ void EasingCurveEditor::slotPaintTimer()
 
     path.moveTo(30, 220);
     for (qreal x = 0; x <= 1; x += 0.01) {
-	qreal y = curve.valueForProgress(x);
+        qreal y = curve.valueForProgress(x);
 
-	path.lineTo(30.0 + (190.0 * x), 220.0 - (190.0 * y));
+        path.lineTo(30.0 + (190.0 * x), 220.0 - (190.0 * y));
     }
     pathItem = mScene->addPath(path, QPen(palette().text().color()));
 

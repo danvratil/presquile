@@ -30,7 +30,7 @@ class PQComponentsTreeWidget : public QTreeWidget
 
 public:
     enum Roles {
-	ComponentNameRole = Qt::UserRole + 1,
+        ComponentNameRole = Qt::UserRole + 1,
     };
 
     explicit PQComponentsTreeWidget(QWidget* parent = 0);

@@ -49,7 +49,7 @@ int PropertyEditor::exec()
 {
     QPointer<QDialog> dlg = getDialog();
     if (dlg.isNull()) {
-	return -1;
+        return -1;
     }
 
     int result = dlg->exec();
@@ -62,35 +62,35 @@ int PropertyEditor::exec()
 QDialog* PropertyEditor::getDialog() const
 {
     if (!mMetaProperty.isValid()) {
-	return 0;
+        return 0;
     }
 
     if (mMetaProperty.type() == QVariant::Color) {
-	QColorDialog *dialog = new QColorDialog();
-	dialog->setCurrentColor(QColor(mMetaProperty.read(mObject).value<QColor>()));
-	connect(dialog, SIGNAL(accepted()), SLOT(slotColorDialogAccepted()));
-	return dialog;
+        QColorDialog *dialog = new QColorDialog();
+        dialog->setCurrentColor(QColor(mMetaProperty.read(mObject).value<QColor>()));
+        connect(dialog, SIGNAL(accepted()), SLOT(slotColorDialogAccepted()));
+        return dialog;
 
     } else if (mMetaProperty.type() == QVariant::String) {
-	QDialog *dialog = new QDialog();
+        QDialog *dialog = new QDialog();
         QVBoxLayout *layout = new QVBoxLayout(dialog);
-	PQTextEditor *editor = new PQTextEditor();
+        PQTextEditor *editor = new PQTextEditor();
         layout->addWidget(editor);
-	editor->setText(mMetaProperty.read(mObject).toString());
-	connect(editor, SIGNAL(textChanged()), SLOT(slotTextEditorChanged()));
+        editor->setText(mMetaProperty.read(mObject).toString());
+        connect(editor, SIGNAL(textChanged()), SLOT(slotTextEditorChanged()));
         editor->setParent(dialog);
 
         QDialogButtonBox *buttonBox = new QDialogButtonBox(dialog);
         buttonBox->addButton(QDialogButtonBox::Ok);
         connect(buttonBox, SIGNAL(accepted()), dialog, SLOT(accept()));
         layout->addWidget(buttonBox);
-	return dialog;
+        return dialog;
 
     } else if (mMetaProperty.type() == QVariant::Url) {
-	QFileDialog *dialog = new QFileDialog();
-	dialog->setAcceptMode(QFileDialog::AcceptOpen);
-	connect(dialog, SIGNAL(accepted()), SLOT(slotFileDialogAccepted()));
-	return dialog;
+        QFileDialog *dialog = new QFileDialog();
+        dialog->setAcceptMode(QFileDialog::AcceptOpen);
+        connect(dialog, SIGNAL(accepted()), SLOT(slotFileDialogAccepted()));
+        return dialog;
 
     }
 
@@ -108,7 +108,7 @@ void PropertyEditor::slotFileDialogAccepted()
     QFileDialog *dialog = qobject_cast<QFileDialog*>(sender());
     QStringList files = dialog->selectedFiles();
     if (files.isEmpty()) {
-	return;
+        return;
     }
 
     mMetaProperty.write(mObject, QUrl::fromLocalFile(files.first()));

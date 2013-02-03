@@ -30,12 +30,12 @@ QString CoreUtils::resourcePath()
      * case of out-of-source build) */
     QDir d(QCoreApplication::applicationDirPath() + QLatin1String("/data"));
     if (d.exists()) {
-	return d.absolutePath();
+        return d.absolutePath();
     }
 
     d.setPath(QCoreApplication::applicationDirPath() + QLatin1String("/../../data/"));
     if (d.exists()) {
-	return d.absolutePath();
+        return d.absolutePath();
     }
 #endif
 

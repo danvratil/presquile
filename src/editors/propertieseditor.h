@@ -30,7 +30,7 @@ class PropertiesEditor : public QTableWidget
 
 public:
     enum Roles {
-	PropertyIndexRole = Qt::UserRole + 1,
+        PropertyIndexRole = Qt::UserRole + 1,
     };
 
     explicit PropertiesEditor(QWidget* parent = 0);
