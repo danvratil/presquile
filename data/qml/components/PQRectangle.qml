@@ -44,7 +44,7 @@ PQResizable {
     property alias radius: rect.radius;
     property alias smooth: rect.smooth;
 
-    contentView: rect;
+    resizableItem: rect;
 
     transform: [
 	Translate {

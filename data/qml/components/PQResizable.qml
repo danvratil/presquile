@@ -3,7 +3,7 @@ import QtQuick 1.0
 Item {
     id: root;
 
-    property Item contentView;
+    property Item resizableItem;
     property Item handle: handleInst;
 
     signal doubleClicked();
@@ -16,6 +16,8 @@ Item {
 	color: "blue";
 	/* FIXME: Hack! */
 	z: 100000000;
+
+       /* FIXME: handleInst should not change scale */
 
 	MouseArea {
 	    id: handleMouseArea;
@@ -35,16 +37,16 @@ Item {
 	id: moveMouseMarea;
 	x: 0;
 	y: 0;
-	width: contentView.width;
-	height: contentView.height;
+	width: resizableItem.width;
+	height: resizableItem.height;
 
 	drag {
 	    target: root;
 	    axis: Drag.XandYAxis;
 	    minimumX: 0;
 	    minimumY: 0;
-	    maximumX: root.parent.width - contentView.width - 5;
-	    maximumY: root.parent.height - contentView.height - 5;
+	    maximumX: root.parent.width - resizableItem.width - 5;
+	    maximumY: root.parent.height - resizableItem.height - 5;
 	}
 
 	onDoubleClicked: {

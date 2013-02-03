@@ -43,7 +43,7 @@ PQResizable {
     property alias source: img.source;
     property alias smooth: img.smooth;
 
-    contentView: img;
+    resizableItem: img;
 
     transform: [
 	Translate {
@@ -79,7 +79,7 @@ PQResizable {
 	    height: 600;
 	}
 
-	/* Display an border until an image is assigned */
+	/* Display a border until an image is assigned */
 	PQItemFrame {
 	    id: borderRect;
 	    anchors.fill: parent;

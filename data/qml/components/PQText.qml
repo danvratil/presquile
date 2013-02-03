@@ -54,7 +54,7 @@ PQResizable {
     property alias verticalAlignment: text.verticalAlignment;
     property alias wrapMode: text.wrapMode;
 
-    contentView: text;
+    resizableItem: text;
 
     transform: [
 	Translate {
