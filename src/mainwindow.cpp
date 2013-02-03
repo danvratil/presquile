@@ -242,6 +242,10 @@ void MainWindow::slotAddSlide()
 void MainWindow::slotDeleteSlide()
 {
     mSlidesModel->removeSlide(mSlidesDesigner->slide());
+
+    if (mSlidesModel->rowCount() == 0) {
+        mSlidesDesigner->setSlide(PQSlide::Ptr());
+    }
 }
 
 
