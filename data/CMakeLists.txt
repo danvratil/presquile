@@ -3,7 +3,7 @@ if (WIN32)
 elseif (APPLE)
   set(DATADIR "Resources/")
 else()
-  set(DATADIR "share/")
+  set(DATADIR "share/presquile")
 endif()
 
 add_subdirectory(qml)
