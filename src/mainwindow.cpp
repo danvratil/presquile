@@ -36,10 +36,24 @@
 #include <QMenuBar>
 #include <QMessageBox>
 #include <QFileDialog>
+#include <QPair>
 #include <QPointer>
 #include <QToolBar>
 #include <QSettings>
 #include <QStringBuilder>
+
+#include <QStack>
+#include <QMetaObject>
+#include <QMetaProperty>
+#include <QVariant>
+
+#include <QDebug>
+
+inline QString indent(unsigned width) {
+    QString out;
+    for (unsigned i(0); i<width; ++i) out.append("  ");
+    return out;
+}
 
 MainWindow::MainWindow(QWidget *parent)
   : QMainWindow(parent)
@@ -190,7 +204,71 @@ void MainWindow::slotOpenPresentation()
 
 void MainWindow::slotSavePresentation()
 {
-    /* TODO: Save presentation */
+    QStack<QPair<QObject *, unsigned> > objectStack; /**< Object to be written to the file */
+    unsigned lastIndent(1); /**< Last indentation level */
+
+    QPointer<QFileDialog> dlg(new QFileDialog(this, tr("Save Presentation")));
+    dlg->setAcceptMode(QFileDialog::AcceptSave);
+    dlg->setFileMode(QFileDialog::AnyFile);
+    dlg->setFilter(tr("Presquile Presentation (*.pqp)"));
+
+    if (!dlg->exec()) return; // No file to save to
+
+    QStringList files = dlg->selectedFiles();
+    if (files.isEmpty()) return;
+    QString saveFileName = files.first();
+
+    // Open the save file and write header
+    QFile saveFile(saveFileName);
+    if (!saveFile.open(QFile::WriteOnly|QFile::Truncate)) {
+        qDebug() << "Cannot open file '" << saveFileName << "' for writing.";
+        return;
+    }
+    QTextStream output(&saveFile);
+    output << "import QtQuick 1.0" << endl << endl;
+
+    // Write the root object
+    output << "PQPresentation {" << endl;
+
+    // Iterate over slides
+    for (int i(0); i<slidesModel()->rowCount(); ++i) {
+      PQSlide::Ptr currentSlide = slidesModel()->slideAt(i);
+      QObject *root = currentSlide->rootObject();
+      const QMetaObject *metaRoot = root->metaObject();
+
+      // Write slide - header, properties, child tree
+      output << indent(1) << "PQSlide {" << endl;
+      output << indent(2) << ">>> properties <<<" << endl;
+      for (int p(0); p < metaRoot->propertyCount(); ++p) {
+          QMetaProperty currentProperty = metaRoot->property(p);
+          if (currentProperty.isStored() && currentProperty.isReadable()) { // only write STORED properties
+              /*QStringList values = currentProperty.read(root).toStringList();
+
+              //if (values.empty()) continue; // skip empty properties
+              //else {
+                output << indent(2) << currentProperty.name() << ": ";
+                if (values.length() == 1) // only one value
+                  output << values.first() << endl;
+                else {
+                    output << '{' << endl;
+                    for (QStringList::ConstIterator iter(values.begin()); iter < values.end(); ++iter)
+                        output << indent(3) << *iter << endl;
+                    output << indent(2) << '}' << endl;
+                }
+              //} */
+              output << indent(2) << currentProperty.name() << ": " << currentProperty.typeName() << endl;
+          }
+      }
+
+      output << indent(2) << ">>> children <<<" << endl;
+
+      output << indent(1) << '}' << endl;
+    }
+
+    // End presentation object
+    output << '}' << endl;
+
+    saveFile.close();
 }
 
 void MainWindow::slotClosePresentation()
