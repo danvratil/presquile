@@ -46,6 +46,7 @@
 #include <QMetaObject>
 #include <QMetaProperty>
 #include <QVariant>
+#include <QDeclarativeItem>
 
 #include <QDebug>
 
@@ -227,46 +228,22 @@ void MainWindow::slotSavePresentation()
     QTextStream output(&saveFile);
     output << "import QtQuick 1.0" << endl << endl;
 
-    // Write the root object
-    output << "PQPresentation {" << endl;
-
     // Iterate over slides
     for (int i(0); i<slidesModel()->rowCount(); ++i) {
       PQSlide::Ptr currentSlide = slidesModel()->slideAt(i);
-      QObject *root = currentSlide->rootObject();
-      const QMetaObject *metaRoot = root->metaObject();
+      output << "Slide " << i << ':' << endl;
+      QDeclarativeItem *container =
+              currentSlide->rootObject()->findChild<QDeclarativeItem*>(QLatin1String("slideRootFocusScope"));
 
-      // Write slide - header, properties, child tree
-      output << indent(1) << "PQSlide {" << endl;
-      output << indent(2) << ">>> properties <<<" << endl;
-      for (int p(0); p < metaRoot->propertyCount(); ++p) {
-          QMetaProperty currentProperty = metaRoot->property(p);
-          if (currentProperty.isStored() && currentProperty.isReadable()) { // only write STORED properties
-              /*QStringList values = currentProperty.read(root).toStringList();
+      if (!container) qWarning("Invalid slide - no children container!");
 
-              //if (values.empty()) continue; // skip empty properties
-              //else {
-                output << indent(2) << currentProperty.name() << ": ";
-                if (values.length() == 1) // only one value
-                  output << values.first() << endl;
-                else {
-                    output << '{' << endl;
-                    for (QStringList::ConstIterator iter(values.begin()); iter < values.end(); ++iter)
-                        output << indent(3) << *iter << endl;
-                    output << indent(2) << '}' << endl;
-                }
-              //} */
-              output << indent(2) << currentProperty.name() << ": " << currentProperty.typeName() << endl;
-          }
+      const QList<QGraphicsItem*> data = container->childItems();
+      for (QList<QGraphicsItem*>::const_iterator iter(data.begin()); iter < data.end(); ++iter) {
+        QDeclarativeItem *child = qgraphicsitem_cast<QDeclarativeItem*>(*iter);
+        if (!child) qWarning("Invalid children");
+        else output << child->metaObject()->className() << endl;
       }
-
-      output << indent(2) << ">>> children <<<" << endl;
-
-      output << indent(1) << '}' << endl;
     }
-
-    // End presentation object
-    output << '}' << endl;
 
     saveFile.close();
 }
