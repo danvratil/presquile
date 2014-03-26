@@ -47,6 +47,7 @@
 #include <QMetaProperty>
 #include <QVariant>
 #include <QDeclarativeItem>
+#include <QDeclarativeProperty>
 
 #include <QDebug>
 
@@ -228,10 +229,12 @@ void MainWindow::slotSavePresentation()
     QTextStream output(&saveFile);
     output << "import QtQuick 1.0" << endl << endl;
 
+    output << "PQPresentation {" << endl << endl; // start presentation
+
     // Iterate over slides
     for (int i(0); i<slidesModel()->rowCount(); ++i) {
       PQSlide::Ptr currentSlide = slidesModel()->slideAt(i);
-      output << "Slide " << i << ':' << endl;
+      output << "  PQSlide {" << endl;
       QDeclarativeItem *container =
               currentSlide->rootObject()->findChild<QDeclarativeItem*>(QLatin1String("slideRootFocusScope"));
 
@@ -241,9 +244,26 @@ void MainWindow::slotSavePresentation()
       for (QList<QGraphicsItem*>::const_iterator iter(data.begin()); iter < data.end(); ++iter) {
         QDeclarativeItem *child = qgraphicsitem_cast<QDeclarativeItem*>(*iter);
         if (!child) qWarning("Invalid children");
-        else output << child->metaObject()->className() << endl;
+        QString className(child->metaObject()->className());
+        output << "    " << className.remove(QRegExp("_QMLTYPE_[0-9]+$")) << " {" << endl; // open child
+
+        QStringList properties = QDeclarativeProperty::read(child, "_PQProperties").toStringList();
+        for (
+             QStringList::const_iterator prop_iter(properties.begin());
+             prop_iter < properties.end();
+             ++prop_iter
+             ) {
+            output << "      " << *prop_iter << ": "; // name
+            output << QDeclarativeProperty::read(child, *prop_iter).typeName() << endl; // type
+        }
+
+        output << "    }" << endl << endl; // close child
       }
+
+      output << "  }" << endl << endl; // close slide
     }
+
+    output << '}' << endl; // close presentation
 
     saveFile.close();
 }
