@@ -29,6 +29,7 @@
 #include "editors/animationsequenceeditor.h"
 #include "pqslidesmodel.h"
 #include "coreutils.h"
+#include "pqbaseitem.h"
 
 #include <QStatusBar>
 #include <QAction>
@@ -51,12 +52,6 @@
 
 #include <QDebug>
 
-inline QString indent(unsigned width) {
-    QString out;
-    for (unsigned i(0); i<width; ++i) out.append("  ");
-    return out;
-}
-
 MainWindow::MainWindow(QWidget *parent)
   : QMainWindow(parent)
   , mChanged(false)
@@ -68,6 +63,9 @@ MainWindow::MainWindow(QWidget *parent)
     setCorner(Qt::BottomRightCorner, Qt::RightDockWidgetArea);
     setCorner(Qt::TopRightCorner, Qt::RightDockWidgetArea);
     setDockNestingEnabled(true);
+
+    // register QML types before creating view
+    qmlRegisterType<PQBaseItem>("Presquile", 1, 0, "PQBaseItem");
 
     mSlidesDesigner = new PQSlideDesigner(this);
     setCentralWidget(mSlidesDesigner);
@@ -227,7 +225,9 @@ void MainWindow::slotSavePresentation()
         return;
     }
     QTextStream output(&saveFile);
-    output << "import QtQuick 1.0" << endl << endl;
+    output << "import QtQuick 1.0" << endl;
+    output << "import Presquile 1.0" << endl;
+    output << endl;
 
     output << "PQPresentation {" << endl << endl; // start presentation
 
@@ -242,22 +242,10 @@ void MainWindow::slotSavePresentation()
 
       const QList<QGraphicsItem*> data = container->childItems();
       for (QList<QGraphicsItem*>::const_iterator iter(data.begin()); iter < data.end(); ++iter) {
-        QDeclarativeItem *child = qgraphicsitem_cast<QDeclarativeItem*>(*iter);
+        PQBaseItem *child = qgraphicsitem_cast<PQBaseItem*>(*iter);
         if (!child) qWarning("Invalid children");
-        QString className(child->metaObject()->className());
-        output << "    " << className.remove(QRegExp("_QMLTYPE_[0-9]+$")) << " {" << endl; // open child
 
-        QStringList properties = QDeclarativeProperty::read(child, "_PQProperties").toStringList();
-        for (
-             QStringList::const_iterator prop_iter(properties.begin());
-             prop_iter < properties.end();
-             ++prop_iter
-             ) {
-            output << "      " << *prop_iter << ": "; // name
-            output << QDeclarativeProperty::read(child, *prop_iter).typeName() << endl; // type
-        }
-
-        output << "    }" << endl << endl; // close child
+        output << child->serialize(4);
       }
 
       output << "  }" << endl << endl; // close slide

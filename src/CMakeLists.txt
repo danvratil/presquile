@@ -1,6 +1,7 @@
 set(presquile_SRCS
     animationselectdialog.cpp
     coreutils.cpp
+    pqbaseitem.cpp
     pqcomponentstreewidget.cpp
     pqslide.cpp
     pqslidesmodel.cpp
@@ -26,6 +27,8 @@ set(presquile_SRCS
     qml/pqqmlmanager.cpp
     qml/pqitemframe.cpp
 )
+
+set(CMAKE_AUTOMOC ON)
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 

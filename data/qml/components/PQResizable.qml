@@ -1,6 +1,7 @@
 import QtQuick 1.0
+import Presquile 1.0
 
-Item {
+PQBaseItem {
     id: root;
 
     property Item resizableItem;
