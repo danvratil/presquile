@@ -231,10 +231,12 @@ void MainWindow::slotSavePresentation()
 
     output << "PQPresentation {" << endl << endl; // start presentation
 
+    // Open slides list
+    output << "  slides: [" << endl;
     // Iterate over slides
     for (int i(0); i<slidesModel()->rowCount(); ++i) {
       PQSlide::Ptr currentSlide = slidesModel()->slideAt(i);
-      output << "  PQSlide {" << endl;
+      output << "    PQSlide {" << endl;
       QDeclarativeItem *container =
               currentSlide->rootObject()->findChild<QDeclarativeItem*>(QLatin1String("slideRootFocusScope"));
 
@@ -245,12 +247,15 @@ void MainWindow::slotSavePresentation()
         PQBaseItem *child = qgraphicsitem_cast<PQBaseItem*>(*iter);
         if (!child) qWarning("Invalid children");
 
-        output << child->serialize(4);
+        output << child->serialize(6);
       }
 
-      output << "  }" << endl << endl; // close slide
+      output << "    }"; // close slide
+      if (i+1 < slidesModel()->rowCount()) output << ','; // separator
+      output << endl;
     }
 
+    output << "  ]" << endl; // close slides list
     output << '}' << endl; // close presentation
 
     saveFile.close();

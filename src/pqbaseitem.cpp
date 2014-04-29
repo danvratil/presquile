@@ -11,7 +11,11 @@ QString PQBaseItem::serializeProperty(const QDeclarativeProperty &property, cons
 
     if (property.propertyTypeCategory() == QDeclarativeProperty::Normal) // Normal value property
     {
-        value = property.read().toString();
+        int propertyType = property.propertyType();
+        if (propertyType >= QVariant::Bool && propertyType <= QVariant::Double) // Numerical, unquoted values
+          value = property.read().toString();
+        else
+          value = '"' + property.read().toString().replace('"', '\'') + '"'; // Replace quotes in rich text
     }
     else if (property.propertyTypeCategory() == QDeclarativeProperty::Object) // Complex Object type
     {
@@ -28,7 +32,7 @@ QString PQBaseItem::serializeProperty(const QDeclarativeProperty &property, cons
         for (int itemIndex(0); itemIndex < list.count(); ++itemIndex) {
             QObject *item = list.at(itemIndex);
             value += serializeObject(item, indent + "  ");
-            if (itemIndex + 1 != list.count()) value += ',';
+            if (itemIndex + 1 != list.count()) value += ','; // separator
             value += '\n';
         }
         value += indent + "]"; // close list
