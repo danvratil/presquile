@@ -7,3 +7,6 @@ else()
 endif()
 
 add_subdirectory(qml)
+add_subdirectory(plugin)
+
+install(FILES qmldir DESTINATION "${DATADIR}")

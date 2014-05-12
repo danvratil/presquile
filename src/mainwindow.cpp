@@ -29,7 +29,8 @@
 #include "editors/animationsequenceeditor.h"
 #include "pqslidesmodel.h"
 #include "coreutils.h"
-#include "pqbaseitem.h"
+
+#include "../data/plugin/pqbaseitem.h"
 
 #include <QStatusBar>
 #include <QAction>
@@ -47,6 +48,7 @@
 #include <QMetaObject>
 #include <QMetaProperty>
 #include <QVariant>
+#include <QDeclarativeEngine>
 #include <QDeclarativeItem>
 #include <QDeclarativeProperty>
 
@@ -64,10 +66,8 @@ MainWindow::MainWindow(QWidget *parent)
     setCorner(Qt::TopRightCorner, Qt::RightDockWidgetArea);
     setDockNestingEnabled(true);
 
-    // register QML types before creating view
-    qmlRegisterType<PQBaseItem>("Presquile", 1, 0, "PQBaseItem");
-
     mSlidesDesigner = new PQSlideDesigner(this);
+    mSlidesDesigner->engine()->addImportPath("/usr/local/share");
     setCentralWidget(mSlidesDesigner);
 
     mSlidesModel = new PQSlidesModel(this);
