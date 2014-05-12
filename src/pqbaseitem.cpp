@@ -5,7 +5,7 @@
 #include <QDeclarativeProperty>
 #include <QDeclarativeListReference>
 
-QString PQBaseItem::serializeProperty(const QDeclarativeProperty &property, const QString &indent)
+QString PQBaseItem::serializeProperty(const QDeclarativeProperty &property, unsigned indentSize, const QString &indentStep)
 {
     QString value;
 
@@ -21,7 +21,7 @@ QString PQBaseItem::serializeProperty(const QDeclarativeProperty &property, cons
     {
         QVariant variantValue = property.read();
         if (variantValue.isValid() && !variantValue.isNull()) {
-            value = serializeObject(variantValue.value<QObject *>(), indent);
+            value = serializeObject(variantValue.value<QObject *>(), indentSize, indentStep);
         }
     }
     else if (property.propertyTypeCategory() == QDeclarativeProperty::List) // List of objects
@@ -31,18 +31,18 @@ QString PQBaseItem::serializeProperty(const QDeclarativeProperty &property, cons
         value = "[\n"; // open list
         for (int itemIndex(0); itemIndex < list.count(); ++itemIndex) {
             QObject *item = list.at(itemIndex);
-            value += serializeObject(item, indent + "  ");
+            value += serializeObject(item, indentSize+1, indentStep);
             if (itemIndex + 1 != list.count()) value += ','; // separator
             value += '\n';
         }
-        value += indent + "]"; // close list
+        value += indentStep + "]"; // close list
     }
 
-    if (!value.isEmpty()) return indent + property.name() + ": " + value + '\n';
+    if (!value.isEmpty()) return indentStep.repeated(indentSize) + property.name() + ": " + value + '\n';
     else return QString();
 }
 
-QString PQBaseItem::serializeObject(const QObject *object, const QString &indent)
+QString PQBaseItem::serializeObject(const QObject *object, unsigned indentSize, const QString &indentStep)
 {
     QString value;
     const QMetaObject *objectInfo;
@@ -52,22 +52,22 @@ QString PQBaseItem::serializeObject(const QObject *object, const QString &indent
 
     value += QString(objectInfo->className()) + " {\n"; // open object
     for (int i(objectInfo->propertyOffset()); i < objectInfo->propertyCount(); ++i) {
-        value += serializeProperty(QDeclarativeProperty(const_cast<QObject *>(object), objectInfo->property(i).name()), indent + "  ");
+        value += serializeProperty(QDeclarativeProperty(const_cast<QObject *>(object), objectInfo->property(i).name()), indentSize+1, indentStep);
     }
-    value += indent + "}"; // close object
+    value += indentStep.repeated(indentSize) + "}"; // close object
 
     return value;
 }
 
 /**
  * Serializes the object into valid QML string.
- * @param baseIndent Number of indenting steps
+ * @param baseIndentSize Number of indenting steps
+ * @param indentStep String representing the indent, default to two spaces
  * @return Serialized QML object
  */
-QString PQBaseItem::serialize(const unsigned &baseIndentSize) const
+QString PQBaseItem::serialize(const unsigned &baseIndentSize, const QString &indentStep) const
 {
-    const QString indentStep("  ");
-    QString indent = indentStep.repeated(baseIndentSize); // Inner object indent
+    unsigned indentSize = baseIndentSize;
 
     QString output; // Serialized object
     QTextStream outStream(&output, QIODevice::WriteOnly);
@@ -75,18 +75,18 @@ QString PQBaseItem::serialize(const unsigned &baseIndentSize) const
     QStringList properties(property("_PQProperties").toStringList());
 
     // Open self declaration
-    outStream << indent << qmlName() << " {" << endl;
-    indent.append(indentStep);
+    outStream << indentStep.repeated(indentSize) << qmlName() << " {" << endl;
+    ++indentSize;
 
     Q_FOREACH(const QString &currentPropertyName, properties)
     {
         QDeclarativeProperty currentProperty(const_cast<PQBaseItem *>(this), currentPropertyName);
-        outStream << serializeProperty(currentProperty, indent);
+        outStream << serializeProperty(currentProperty, indentSize, indentStep);
     }
 
     // Close self declaration
-    indent.remove(-indentStep.size(), indentStep.size()); // push indent back
-    outStream << indent << '}' << endl;
+    --indentSize;
+    outStream << indentStep.repeated(indentSize) << '}' << endl;
 
     return output;
 }

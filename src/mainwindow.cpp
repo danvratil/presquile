@@ -204,8 +204,7 @@ void MainWindow::slotOpenPresentation()
 
 void MainWindow::slotSavePresentation()
 {
-    QStack<QPair<QObject *, unsigned> > objectStack; /**< Object to be written to the file */
-    unsigned lastIndent(1); /**< Last indentation level */
+    const QString indentStep("  ");
 
     QPointer<QFileDialog> dlg(new QFileDialog(this, tr("Save Presentation")));
     dlg->setAcceptMode(QFileDialog::AcceptSave);
@@ -229,33 +228,38 @@ void MainWindow::slotSavePresentation()
     output << "import Presquile 1.0" << endl;
     output << endl;
 
-    output << "PQPresentation {" << endl << endl; // start presentation
+    output << "PQPresentation {" << endl; // start presentation
 
-    // Open slides list
-    output << "  slides: [" << endl;
-    // Iterate over slides
+    // Open slides list - one indentation step
+    output << indentStep << "slides: [" << endl;
+
+    // Iterate over slides - two indentation steps
     for (int i(0); i<slidesModel()->rowCount(); ++i) {
       PQSlide::Ptr currentSlide = slidesModel()->slideAt(i);
-      output << "    PQSlide {" << endl;
+      output << indentStep.repeated(2) << "PQSlide {" << endl;
       QDeclarativeItem *container =
               currentSlide->rootObject()->findChild<QDeclarativeItem*>(QLatin1String("slideRootFocusScope"));
 
       if (!container) qWarning("Invalid slide - no children container!");
 
       const QList<QGraphicsItem*> data = container->childItems();
+      // Iterate over the slide contents - three indentation steps
       for (QList<QGraphicsItem*>::const_iterator iter(data.begin()); iter < data.end(); ++iter) {
         PQBaseItem *child = qgraphicsitem_cast<PQBaseItem*>(*iter);
-        if (!child) qWarning("Invalid children");
+        if (!child) {
+          qWarning("Invalid children");
+          continue;
+        }
 
-        output << child->serialize(6);
+        output << child->serialize(3);
       }
 
-      output << "    }"; // close slide
+      output << indentStep.repeated(2) << '}'; // close slide
       if (i+1 < slidesModel()->rowCount()) output << ','; // separator
       output << endl;
     }
 
-    output << "  ]" << endl; // close slides list
+    output << indentStep << ']' << endl; // close slides list
     output << '}' << endl; // close presentation
 
     saveFile.close();

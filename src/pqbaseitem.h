@@ -16,8 +16,10 @@ class PQBaseItem : public QDeclarativeItem
 {
     Q_OBJECT
 
-    static QString serializeProperty(const QDeclarativeProperty &property, const QString &indent = "");
-    static QString serializeObject(const QObject *object, const QString &indent = "");
+    /** @brief Serializes one property of QML object */
+    static QString serializeProperty(const QDeclarativeProperty &property, unsigned indentSize, const QString &indentStep = "  ");
+    /** @brief Serializes one complete QML object */
+    static QString serializeObject(const QObject *object, unsigned indentSize, const QString &indentStep = "  ");
 public:
     explicit PQBaseItem(QDeclarativeItem *parent = 0);
 
@@ -25,7 +27,7 @@ public:
     QString qmlName() const;
 
     /** @brief String containing the serialized object */
-    QString serialize(const unsigned &baseIndentSize = 0) const;
+    QString serialize(const unsigned &baseIndentSize = 0, const QString &indentStep = "  ") const;
 
 signals:
 
