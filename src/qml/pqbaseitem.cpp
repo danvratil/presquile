@@ -14,8 +14,14 @@ QString PQBaseItem::serializeProperty(const QDeclarativeProperty &property, unsi
         int propertyType = property.propertyType();
         if (propertyType >= QVariant::Bool && propertyType <= QVariant::Double) // Numerical, unquoted values
           value = property.read().toString();
+          //value = '"' + property.read().toString().replace('"', '\'') + '"'; // Replace quotes in rich text
         else
-          value = '"' + property.read().toString().replace('"', '\'') + '"'; // Replace quotes in rich text
+        {
+          value = '"' + property.read().toString()
+                  .replace('\\', "\\\\") // escape backslashes in rich text
+                  .replace('"', "\\\"") // escape quotes
+                  + '"';
+        }
     }
     else if (property.propertyTypeCategory() == QDeclarativeProperty::Object) // Complex Object type
     {
