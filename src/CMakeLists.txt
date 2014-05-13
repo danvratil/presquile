@@ -60,4 +60,4 @@ target_link_libraries(presquile
 
 
 install(TARGETS pqplugin presquile RUNTIME DESTINATION bin
-                                   LIBRARY DESTINATION "${DATADIR}/plugin")
+                                   LIBRARY DESTINATION "${MODULE_DIR}/plugin")

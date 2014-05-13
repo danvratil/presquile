@@ -67,7 +67,6 @@ MainWindow::MainWindow(QWidget *parent)
     setDockNestingEnabled(true);
 
     mSlidesDesigner = new PQSlideDesigner(this);
-    mSlidesDesigner->engine()->addImportPath("/usr/local/share");
     setCentralWidget(mSlidesDesigner);
 
     mSlidesModel = new PQSlidesModel(this);
@@ -236,7 +235,8 @@ void MainWindow::slotSavePresentation()
     // Iterate over slides - two indentation steps
     for (int i(0); i<slidesModel()->rowCount(); ++i) {
       PQSlide::Ptr currentSlide = slidesModel()->slideAt(i);
-      output << indentStep.repeated(2) << "PQSlide {" << endl;
+      // Each slide must be wrapped in Component to prevent instantiating it on presentation load
+      output << indentStep.repeated(2) << "Component { PQSlide {" << endl;
       QDeclarativeItem *container =
               currentSlide->rootObject()->findChild<QDeclarativeItem*>(QLatin1String("slideRootFocusScope"));
 
@@ -254,7 +254,7 @@ void MainWindow::slotSavePresentation()
         output << child->serialize(3);
       }
 
-      output << indentStep.repeated(2) << '}'; // close slide
+      output << indentStep.repeated(2) << "} }"; // close slide and Component
       if (i+1 < slidesModel()->rowCount()) output << ','; // separator
       output << endl;
     }
