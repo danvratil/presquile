@@ -306,7 +306,8 @@ void MainWindow::slotRunFromCurrentSlide()
 
 void MainWindow::slotAddSlide()
 {
-    const QString path = CoreUtils::resourcePath() % QLatin1String("/qml/internals/Slide.qml");
+    //const QString path = CoreUtils::resourcePath() % QLatin1String("/qml/internals/Slide.qml");
+    const QString path = CoreUtils::resourcePath() % QLatin1String("/qml/skeleton/PQSlide.qml");
     PQSlide::Ptr slide(new PQSlide(path, mSlidesDesigner->engine(), this));
     mSlidesModel->appendSlide(slide);
 }

@@ -5,6 +5,8 @@ import QtQuick 1.0
 Item {
   property list<Component> slides
   property int nextSlideIndex: 0
+
+  anchors.margins: 50;
   
   Component {
     id: blackCurtain

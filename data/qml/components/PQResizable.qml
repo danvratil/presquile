@@ -18,7 +18,7 @@ PQBaseItem {
         /* FIXME: Hack! */
         z: 100000000;
 
-       /* FIXME: handleInst should not change scale */
+        visible: false
 
         MouseArea {
             id: handleMouseArea;
@@ -66,5 +66,8 @@ PQBaseItem {
     Component.onCompleted: {
         handleInst.x = _PQInitialWidth;
         handleInst.y = _PQInitialHeight;
+
+        if ((typeof _inEditMode != 'undefined') && _inEditMode)
+          handleInst.visible = true;
     }
 }
