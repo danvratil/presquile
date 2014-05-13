@@ -90,3 +90,5 @@ QString PQBaseItem::serialize(const unsigned &baseIndentSize, const QString &ind
 
     return output;
 }
+
+#include "pqbaseitem.moc"

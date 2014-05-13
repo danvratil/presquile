@@ -30,7 +30,7 @@
 #include "pqslidesmodel.h"
 #include "coreutils.h"
 
-#include "../data/plugin/pqbaseitem.h"
+#include "qml/pqbaseitem.h"
 
 #include <QStatusBar>
 #include <QAction>

@@ -1,5 +1,5 @@
 import QtQuick 1.0
-import Presquile 1.0
+import presquile 1.0
 
 PQBaseItem {
     id: root;

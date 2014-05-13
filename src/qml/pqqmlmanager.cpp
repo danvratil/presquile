@@ -54,7 +54,6 @@ PQQMLManager::PQQMLManager()
 {
     /* TODO: Components should be plugins that can be loaded dynamically */
 
-    qmlRegisterType<PQItemFrame>("Presquile", 1, 0, "PQItemFrame");
 
 }
 
