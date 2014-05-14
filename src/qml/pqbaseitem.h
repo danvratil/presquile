@@ -29,15 +29,12 @@ public:
     /** @brief String containing the serialized object */
     QString serialize(const unsigned &baseIndentSize = 0, const QString &indentStep = "  ") const;
 
-signals:
-
-public slots:
-
+private:
+    /** @brief Extra properties that are not edited in properties editor, but still should be serialized */
+    QStringList extraProperties;
 };
 
 // Inline methods
-
-inline PQBaseItem::PQBaseItem(QDeclarativeItem *parent): QDeclarativeItem(parent) {}
 
 /**
  * Modifies the QtMetaObject::className() and return an actual QML name.

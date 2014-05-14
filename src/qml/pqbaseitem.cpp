@@ -5,22 +5,28 @@
 #include <QDeclarativeProperty>
 #include <QDeclarativeListReference>
 
+PQBaseItem::PQBaseItem(QDeclarativeItem *parent): QDeclarativeItem(parent)
+{
+    // Fill extra properties
+    extraProperties.append("transform"); // it has its own extra editor
+}
+
 QString PQBaseItem::serializeProperty(const QDeclarativeProperty &property, unsigned indentSize, const QString &indentStep)
 {
-    QString value;
+    QString value, rawValue;
 
     if (property.propertyTypeCategory() == QDeclarativeProperty::Normal) // Normal value property
     {
         int propertyType = property.propertyType();
         if (propertyType >= QVariant::Bool && propertyType <= QVariant::Double) // Numerical, unquoted values
           value = property.read().toString();
-          //value = '"' + property.read().toString().replace('"', '\'') + '"'; // Replace quotes in rich text
         else
         {
-          value = '"' + property.read().toString()
-                  .replace('\\', "\\\\") // escape backslashes in rich text
-                  .replace('"', "\\\"") // escape quotes
-                  + '"';
+          if (!(rawValue = property.read().toString()).isEmpty())
+            value = '"' + property.read().toString()
+                    .replace('\\', "\\\\") // escape backslashes in rich text
+                    .replace('"', "\\\"") // escape quotes
+                    + '"';
         }
     }
     else if (property.propertyTypeCategory() == QDeclarativeProperty::Object) // Complex Object type
@@ -41,7 +47,7 @@ QString PQBaseItem::serializeProperty(const QDeclarativeProperty &property, unsi
             if (itemIndex + 1 != list.count()) value += ','; // separator
             value += '\n';
         }
-        value += indentStep + "]"; // close list
+        value += indentStep.repeated(indentSize) + "]"; // close list
     }
 
     if (!value.isEmpty()) return indentStep.repeated(indentSize) + property.name() + ": " + value + '\n';
@@ -56,7 +62,17 @@ QString PQBaseItem::serializeObject(const QObject *object, unsigned indentSize, 
     if (object == 0) return value; // empty string
     objectInfo = object->metaObject();
 
-    value += QString(objectInfo->className()) + " {\n"; // open object
+    // Handle object name
+    QString objectName(objectInfo->className());
+    // Some QML objects instantiates directly C++ classes, the name must be stripedd of Q* prefix
+    QStringList unwantedPrefixes;
+    unwantedPrefixes.append("QGraphics");
+    unwantedPrefixes.append("QDeclarative");
+    Q_FOREACH (const QString &prefix, unwantedPrefixes) {
+        if (objectName.startsWith(prefix)) objectName.remove(0, prefix.length());
+    }
+
+    value += indentStep.repeated(indentSize) + objectName + " {\n"; // open object
     for (int i(objectInfo->propertyOffset()); i < objectInfo->propertyCount(); ++i) {
         value += serializeProperty(QDeclarativeProperty(const_cast<QObject *>(object), objectInfo->property(i).name()), indentSize+1, indentStep);
     }
@@ -84,7 +100,7 @@ QString PQBaseItem::serialize(const unsigned &baseIndentSize, const QString &ind
     outStream << indentStep.repeated(indentSize) << qmlName() << " {" << endl;
     ++indentSize;
 
-    Q_FOREACH(const QString &currentPropertyName, properties)
+    Q_FOREACH(const QString &currentPropertyName, properties+extraProperties)
     {
         QDeclarativeProperty currentProperty(const_cast<PQBaseItem *>(this), currentPropertyName);
         outStream << serializeProperty(currentProperty, indentSize, indentStep);
