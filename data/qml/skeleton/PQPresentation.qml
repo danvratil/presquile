@@ -63,5 +63,5 @@ Item {
   Keys.onSpacePressed: loadNextSlide();
   Keys.onRightPressed: loadNextSlide();
   Keys.onLeftPressed:  loadPrevSlide();
-
+  Keys.onEscapePressed: Qt.quit();
 }
