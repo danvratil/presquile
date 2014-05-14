@@ -37,6 +37,7 @@ class PQSlide : public QObject
     typedef QSharedPointer<PQSlide> Ptr;
 
     explicit PQSlide(const QString &filePath, QDeclarativeEngine *engine, QObject* parent = 0);
+    explicit PQSlide(QDeclarativeComponent *slideData, QDeclarativeEngine *engine, QObject* parent = 0);
     virtual ~PQSlide();
 
     QString slideFilePath() const;

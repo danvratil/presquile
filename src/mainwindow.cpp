@@ -181,7 +181,8 @@ void MainWindow::slotNewPresentation()
 
 void MainWindow::slotOpenPresentation()
 {
-    if (!mCurrentProject.isEmpty()) {
+    //if (!mCurrentProject.isEmpty()) { // FIXME: Not working when on new unnamed project
+    if (mSlidesModel->rowCount() != 0) {
       slotClosePresentation();
     }
 
@@ -196,9 +197,38 @@ void MainWindow::slotOpenPresentation()
         if (!files.isEmpty()) {
             mCurrentProject = files.first();
         }
+        else
+            return;
     }
 
-    /* TODO: Open presentation */
+    //QDeclarativeEngine loadingEngine; // custom engine to avoid caching problems
+    mSlidesDesigner->engine()->clearComponentCache();
+    QDeclarativeComponent fileComponent(mSlidesDesigner->engine(), mCurrentProject);
+    // Get list of slides
+    QDeclarativeListReference rawSlides(fileComponent.create(), "slides");
+    if (!rawSlides.isValid()) return;
+
+    for (int i(0); i < rawSlides.count(); ++i) {
+        PQSlide::Ptr slide(new PQSlide(qobject_cast<QDeclarativeComponent*>(rawSlides.at(i)),
+                           mSlidesDesigner->engine(),
+                           this));
+
+        // Connect all chidren object to slide designer
+        QDeclarativeItem *container =
+                slide->rootObject()->findChild<QDeclarativeItem*>(QLatin1String("slideRootFocusScope"));
+        if (!container) {
+            qWarning("Invalid slide %d, skipping...", i+1);
+            continue;
+        } else {
+            slidesModel()->appendSlide(slide);
+            QList<QGraphicsItem *> slideItems(container->childItems());
+            Q_FOREACH(QGraphicsItem *currentRawItem, slideItems) {
+                QDeclarativeItem *currentItem = qgraphicsitem_cast<QDeclarativeItem *>(currentRawItem);
+                connect(currentItem, SIGNAL(focusChanged(bool)), slideDesigner(), SLOT(slotItemFocusChanged(bool)));
+                connect(currentItem, SIGNAL(doubleClicked()), slideDesigner(), SLOT(slotItemDoubleClicked()));
+            }
+        }
+    }
 }
 
 void MainWindow::slotSavePresentation()
@@ -267,7 +297,9 @@ void MainWindow::slotSavePresentation()
 
 void MainWindow::slotClosePresentation()
 {
-    /* TODO: Close presentation */
+    /* FIXME: Check for existing unsaved work */
+    mSlidesModel->clear();
+    mSlidesDesigner->setSlide(PQSlide::Ptr());
 }
 
 void MainWindow::slotQuitPresquile()
