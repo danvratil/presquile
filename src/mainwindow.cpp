@@ -188,7 +188,7 @@ void MainWindow::slotOpenPresentation()
     QPointer<QFileDialog> dlg(new QFileDialog(this, tr("Open Presentation")));
     dlg->setAcceptMode(QFileDialog::AcceptOpen);
     dlg->setFileMode(QFileDialog::ExistingFile);
-    dlg->setFilter(tr("Presquile Presentation (*.pqp)"));
+    dlg->setFilter(tr("QML source (*.qml)"));
 
     mCurrentProject.clear();
     if (dlg->exec()) {
@@ -208,7 +208,7 @@ void MainWindow::slotSavePresentation()
     QPointer<QFileDialog> dlg(new QFileDialog(this, tr("Save Presentation")));
     dlg->setAcceptMode(QFileDialog::AcceptSave);
     dlg->setFileMode(QFileDialog::AnyFile);
-    dlg->setFilter(tr("Presquile Presentation (*.pqp)"));
+    dlg->setFilter(tr("QML source (*.qml)"));
 
     if (!dlg->exec()) return; // No file to save to
 
