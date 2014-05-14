@@ -4,9 +4,10 @@ import QtQuick 1.0
 
 Item {
   property list<Component> slides
-  property int nextSlideIndex: 0
+  property int slideIndex: 0
 
   anchors.margins: 50;
+  focus: true
   
   Component {
     id: blackCurtain
@@ -31,22 +32,36 @@ Item {
     id: slideLoader
     anchors.fill: parent
     sourceComponent: slides[0]
-    onLoaded: nextSlideIndex += 1
+  }
+
+  function loadNextSlide() {
+    if (slideIndex < slides.length) {
+      slideIndex += 1;
+      slideLoader.sourceComponent = slides[slideIndex];
+    }
+
+    if (slideLoader.status == Loader.Null) { // end of slides
+      slideLoader.sourceComponent = blackCurtain;
+    }
+  }
+  function loadPrevSlide() {
+    if (slideIndex >= 1) {
+      slideIndex -= 1;
+      slideLoader.sourceComponent = slides[slideIndex];
+    }
   }
 
   MouseArea {
     anchors.fill: parent
+    acceptedButtons: Qt.LeftButton | Qt.RightButton
     onClicked: {
-      slideLoader.sourceComponent = slides[nextSlideIndex];
-      /* determine which status is set on non-existing slide
-      if (slideLoader.status == Loader.Null) console.log('Null');
-      else if (slideLoader.status == Loader.Ready) console.log('Ready');
-      else if (slideLoader.status == Loader.Loading) console.log('Loading');
-      else if (slideLoader.status == Loader.Error) console.log('Error');
-      */
-      if (slideLoader.status == Loader.Null) { // end of slides
-        slideLoader.sourceComponent = blackCurtain;
-      }
+      if (mouse.button == Qt.RightButton) loadPrevSlide();
+      else loadNextSlide();
     }
   }
+
+  Keys.onSpacePressed: loadNextSlide();
+  Keys.onRightPressed: loadNextSlide();
+  Keys.onLeftPressed:  loadPrevSlide();
+
 }
