@@ -32,7 +32,7 @@ class PQSlideDesigner : public QDeclarativeView
 {
     Q_OBJECT
 
-    Q_PROPERTY(PQSlide::Ptr slide READ slide WRITE setSlide);
+    Q_PROPERTY(PQSlide::Ptr slide READ slide WRITE setSlide)
 public:
     explicit PQSlideDesigner(QWidget* parent = 0);
     virtual ~PQSlideDesigner();

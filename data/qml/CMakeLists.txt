@@ -20,6 +20,12 @@ set(QML_INTERNALS
       internals/Slide.qml
 )
 
-install(FILES ${QML_ANIMATIONS} DESTINATION "${DATADIR}/qml/animations/")
-install(FILES ${QML_COMPONENTS} DESTINATION "${DATADIR}/qml/components/")
-install(FILES ${QML_INTERNALS} DESTINATION "${DATADIR}/qml/internals/")
+set(QML_SKELETON
+      skeleton/PQSlide.qml
+      skeleton/PQPresentation.qml
+)
+
+install(FILES ${QML_ANIMATIONS} DESTINATION "${MODULE_DIR}/qml/animations/")
+install(FILES ${QML_COMPONENTS} DESTINATION "${MODULE_DIR}/qml/components/")
+install(FILES ${QML_INTERNALS} DESTINATION "${MODULE_DIR}/qml/internals/")
+install(FILES ${QML_SKELETON} DESTINATION "${MODULE_DIR}/qml/skeleton/")

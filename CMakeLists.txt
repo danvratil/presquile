@@ -10,6 +10,8 @@ if (CMAKE_BUILD_TYPE MATCHES Debug)
   add_definitions(-DDEBUG_MODE)
 endif(CMAKE_BUILD_TYPE MATCHES Debug)
 
+set(MODULE_DIR "${QT_IMPORTS_DIR}/Presquile")
+
 add_subdirectory(src)
 add_subdirectory(data)
 add_subdirectory(tests)

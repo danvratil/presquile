@@ -30,16 +30,29 @@
 #include "pqslidesmodel.h"
 #include "coreutils.h"
 
+#include "qml/pqbaseitem.h"
+
 #include <QStatusBar>
 #include <QAction>
 #include <QMenu>
 #include <QMenuBar>
 #include <QMessageBox>
 #include <QFileDialog>
+#include <QPair>
 #include <QPointer>
 #include <QToolBar>
 #include <QSettings>
 #include <QStringBuilder>
+
+#include <QStack>
+#include <QMetaObject>
+#include <QMetaProperty>
+#include <QVariant>
+#include <QDeclarativeEngine>
+#include <QDeclarativeItem>
+#include <QDeclarativeProperty>
+
+#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent)
   : QMainWindow(parent)
@@ -168,14 +181,15 @@ void MainWindow::slotNewPresentation()
 
 void MainWindow::slotOpenPresentation()
 {
-    if (!mCurrentProject.isEmpty()) {
+    //if (!mCurrentProject.isEmpty()) { // FIXME: Not working when on new unnamed project
+    if (mSlidesModel->rowCount() != 0) {
       slotClosePresentation();
     }
 
     QPointer<QFileDialog> dlg(new QFileDialog(this, tr("Open Presentation")));
     dlg->setAcceptMode(QFileDialog::AcceptOpen);
     dlg->setFileMode(QFileDialog::ExistingFile);
-    dlg->setFilter(tr("Presquile Presentation (*.pqp)"));
+    dlg->setFilter(tr("QML source (*.qml)"));
 
     mCurrentProject.clear();
     if (dlg->exec()) {
@@ -183,19 +197,109 @@ void MainWindow::slotOpenPresentation()
         if (!files.isEmpty()) {
             mCurrentProject = files.first();
         }
+        else
+            return;
     }
 
-    /* TODO: Open presentation */
+    //QDeclarativeEngine loadingEngine; // custom engine to avoid caching problems
+    mSlidesDesigner->engine()->clearComponentCache();
+    QDeclarativeComponent fileComponent(mSlidesDesigner->engine(), mCurrentProject);
+    // Get list of slides
+    QDeclarativeListReference rawSlides(fileComponent.create(), "slides");
+    if (!rawSlides.isValid()) return;
+
+    for (int i(0); i < rawSlides.count(); ++i) {
+        PQSlide::Ptr slide(new PQSlide(qobject_cast<QDeclarativeComponent*>(rawSlides.at(i)),
+                           mSlidesDesigner->engine(),
+                           this));
+
+        // Connect all chidren object to slide designer
+        QDeclarativeItem *container =
+                slide->rootObject()->findChild<QDeclarativeItem*>(QLatin1String("slideRootFocusScope"));
+        if (!container) {
+            qWarning("Invalid slide %d, skipping...", i+1);
+            continue;
+        } else {
+            slidesModel()->appendSlide(slide);
+            QList<QGraphicsItem *> slideItems(container->childItems());
+            Q_FOREACH(QGraphicsItem *currentRawItem, slideItems) {
+                QDeclarativeItem *currentItem = qgraphicsitem_cast<QDeclarativeItem *>(currentRawItem);
+                connect(currentItem, SIGNAL(focusChanged(bool)), slideDesigner(), SLOT(slotItemFocusChanged(bool)));
+                connect(currentItem, SIGNAL(doubleClicked()), slideDesigner(), SLOT(slotItemDoubleClicked()));
+            }
+        }
+    }
 }
 
 void MainWindow::slotSavePresentation()
 {
-    /* TODO: Save presentation */
+    const QString indentStep("  ");
+
+    QPointer<QFileDialog> dlg(new QFileDialog(this, tr("Save Presentation")));
+    dlg->setAcceptMode(QFileDialog::AcceptSave);
+    dlg->setFileMode(QFileDialog::AnyFile);
+    dlg->setFilter(tr("QML source (*.qml)"));
+
+    if (!dlg->exec()) return; // No file to save to
+
+    QStringList files = dlg->selectedFiles();
+    if (files.isEmpty()) return;
+    QString saveFileName = files.first();
+
+    // Open the save file and write header
+    QFile saveFile(saveFileName);
+    if (!saveFile.open(QFile::WriteOnly|QFile::Truncate)) {
+        qDebug() << "Cannot open file '" << saveFileName << "' for writing.";
+        return;
+    }
+    QTextStream output(&saveFile);
+    output << "import QtQuick 1.0" << endl;
+    output << "import Presquile 1.0" << endl;
+    output << endl;
+
+    output << "PQPresentation {" << endl; // start presentation
+
+    // Open slides list - one indentation step
+    output << indentStep << "slides: [" << endl;
+
+    // Iterate over slides - two indentation steps
+    for (int i(0); i<slidesModel()->rowCount(); ++i) {
+      PQSlide::Ptr currentSlide = slidesModel()->slideAt(i);
+      // Each slide must be wrapped in Component to prevent instantiating it on presentation load
+      output << indentStep.repeated(2) << "Component { PQSlide {" << endl;
+      QDeclarativeItem *container =
+              currentSlide->rootObject()->findChild<QDeclarativeItem*>(QLatin1String("slideRootFocusScope"));
+
+      if (!container) qWarning("Invalid slide - no children container!");
+
+      const QList<QGraphicsItem*> data = container->childItems();
+      // Iterate over the slide contents - three indentation steps
+      for (QList<QGraphicsItem*>::const_iterator iter(data.begin()); iter < data.end(); ++iter) {
+        PQBaseItem *child = qgraphicsitem_cast<PQBaseItem*>(*iter);
+        if (!child) {
+          qWarning("Invalid children");
+          continue;
+        }
+
+        output << child->serialize(3);
+      }
+
+      output << indentStep.repeated(2) << "} }"; // close slide and Component
+      if (i+1 < slidesModel()->rowCount()) output << ','; // separator
+      output << endl;
+    }
+
+    output << indentStep << ']' << endl; // close slides list
+    output << '}' << endl; // close presentation
+
+    saveFile.close();
 }
 
 void MainWindow::slotClosePresentation()
 {
-    /* TODO: Close presentation */
+    /* FIXME: Check for existing unsaved work */
+    mSlidesModel->clear();
+    mSlidesDesigner->setSlide(PQSlide::Ptr());
 }
 
 void MainWindow::slotQuitPresquile()
@@ -234,7 +338,8 @@ void MainWindow::slotRunFromCurrentSlide()
 
 void MainWindow::slotAddSlide()
 {
-    const QString path = CoreUtils::resourcePath() % QLatin1String("/qml/internals/Slide.qml");
+    //const QString path = CoreUtils::resourcePath() % QLatin1String("/qml/internals/Slide.qml");
+    const QString path = CoreUtils::resourcePath() % QLatin1String("/qml/skeleton/PQSlide.qml");
     PQSlide::Ptr slide(new PQSlide(path, mSlidesDesigner->engine(), this));
     mSlidesModel->appendSlide(slide);
 }

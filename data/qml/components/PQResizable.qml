@@ -1,6 +1,7 @@
 import QtQuick 1.0
+import Presquile 1.0
 
-Item {
+PQBaseItem {
     id: root;
 
     property Item resizableItem;
@@ -17,7 +18,7 @@ Item {
         /* FIXME: Hack! */
         z: 100000000;
 
-       /* FIXME: handleInst should not change scale */
+        visible: false
 
         MouseArea {
             id: handleMouseArea;
@@ -65,5 +66,8 @@ Item {
     Component.onCompleted: {
         handleInst.x = _PQInitialWidth;
         handleInst.y = _PQInitialHeight;
+
+        if ((typeof _inEditMode != 'undefined') && _inEditMode)
+          handleInst.visible = true;
     }
 }

@@ -101,5 +101,11 @@ PQResizable {
         z: 0;
 
         anchors.fill: text;
+        visible: false
+    }
+
+    Component.onCompleted: {
+      if ((typeof _inEditMode != 'undefined') && _inEditMode)
+        frame.visible = true;
     }
 }

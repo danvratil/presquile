@@ -54,7 +54,6 @@ PQQMLManager::PQQMLManager()
 {
     /* TODO: Components should be plugins that can be loaded dynamically */
 
-    qmlRegisterType<PQItemFrame>("Presquile", 1, 0, "PQItemFrame");
 
 }
 
@@ -71,8 +70,8 @@ QDeclarativeItem* PQQMLManager::componentInstance(QDeclarativeEngine *engine, co
     }
 
     QByteArray ba;
-    ba.append("import QtQuick 1.0\n\n").
-              //"import Presquile 0.1\n\n").
+    ba.append("import QtQuick 1.0\n\n"
+              "import Presquile 1.0\n\n").
        append(componentName.toLatin1()).
        append("{ }");
 

@@ -38,6 +38,7 @@ PQSlideDesigner::PQSlideDesigner(QWidget* parent)
 {
     setResizeMode(SizeRootObjectToView);
     setAcceptDrops(true);
+    engine()->rootContext()->setContextProperty(QLatin1String("_inEditMode"), true);
 }
 
 PQSlideDesigner::~PQSlideDesigner()

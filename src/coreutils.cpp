@@ -21,6 +21,7 @@
 
 #include <QDir>
 #include <QCoreApplication>
+#include <QLibraryInfo>
 #include <QDebug>
 
 QString CoreUtils::resourcePath()
@@ -39,14 +40,12 @@ QString CoreUtils::resourcePath()
     }
 #endif
 
-    #ifdef Q_OS_MAC
-    #  define PATH "/../Resources"
-    #elif defined Q_OS_WIN32
-    #  define PATH "/resources"
-    #else
-    #  define PATH "/../share/presquile"
-    #endif
-
-    return QDir::cleanPath(QCoreApplication::applicationDirPath() + QLatin1String(PATH));
+#ifdef MODULEDIR
+    qDebug() << QDir::cleanPath(QLatin1String(MODULEDIR));
+    return QDir::cleanPath(QLatin1String(MODULEDIR));
+#else
+    qDebug() << QDir::cleanPath(QLibraryInfo::location(QLibraryInfo::ImportsPath) + QLatin1String("/Presquile/"));
+    return QDir::cleanPath(QLibraryInfo::location(QLibraryInfo::ImportsPath) + QLatin1String("/Presquile/"));
+#endif
 }
 
