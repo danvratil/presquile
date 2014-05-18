@@ -24,28 +24,28 @@
 #include <QLibraryInfo>
 #include <QDebug>
 
+static QString s_importPath;
+
+
 QString CoreUtils::resourcePath()
 {
-#ifdef DEBUG_MODE
-    /* For development purposes, first check for "/data" subfolder or ../../data (in
-     * case of out-of-source build) */
-    QDir d(QCoreApplication::applicationDirPath() + QLatin1String("/data"));
-    if (d.exists()) {
-        return d.absolutePath();
+    if (!s_importPath.isEmpty()) {
+        return s_importPath;
     }
 
-    d.setPath(QCoreApplication::applicationDirPath() + QLatin1String("/../../data/"));
-    if (d.exists()) {
-        return d.absolutePath();
+    const QList<QByteArray> importPaths = qgetenv("QML_IMPORT_PATH").split(':');
+    Q_FOREACH (const QByteArray &importPath, importPaths) {
+        QDir dir(importPath + "/Presquile");
+        if (dir.exists()) {
+            s_importPath = importPath + "/Presquile";
+            qDebug() << "CoreUtils::resourcePath()" << s_importPath;
+            return s_importPath;
+        }
     }
-#endif
 
-#ifdef MODULEDIR
-    qDebug() << QDir::cleanPath(QLatin1String(MODULEDIR));
-    return QDir::cleanPath(QLatin1String(MODULEDIR));
-#else
-    qDebug() << QDir::cleanPath(QLibraryInfo::location(QLibraryInfo::ImportsPath) + QLatin1String("/Presquile/"));
-    return QDir::cleanPath(QLibraryInfo::location(QLibraryInfo::ImportsPath) + QLatin1String("/Presquile/"));
-#endif
+    // Fallback
+    s_importPath = QDir::cleanPath(QLibraryInfo::location(QLibraryInfo::ImportsPath) + QLatin1String("/Presquile/"));
+    qDebug() << "CoreUtils::resourcePath()" << s_importPath;
+    return s_importPath;
 }
 
