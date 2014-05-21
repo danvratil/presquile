@@ -31,7 +31,6 @@ public:
     enum QMLImportType {
         Animation,
         Component,
-        Internal,
         Skeleton
     };
 

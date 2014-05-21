@@ -22,10 +22,6 @@ set(qml_components_SRCS
     qml/components/PQText.qml
 )
 
-set(qml_internals_SRCS
-    qml/internals/Slide.qml
-)
-
 set(qml_skeleton_SRCS
     qml/skeleton/PQSlide.qml
     qml/skeleton/PQPresentation.qml
