@@ -23,7 +23,7 @@
 #include <QDockWidget>
 #include <QItemSelection>
 
-#include "../pqslide.h"
+#include "core/pqslide.h"
 
 class QTimer;
 class QListView;

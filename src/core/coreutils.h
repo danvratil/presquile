@@ -1,5 +1,4 @@
 /*
- * <one line to give the program's name and a brief idea of what it does.>
  * Copyright (C) 2012  Dan Vratil <dan@progdan.cz>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -18,28 +17,19 @@
  *
  */
 
-#ifndef PQQMLMANAGER_H
-#define PQQMLMANAGER_H
+#ifndef COREUTILS_H
+#define COREUTILS_H
 
-#include <QObject>
+#include "presquile-core-export.h"
 
-class QDeclarativeItem;
-class QDeclarativeEngine;
+#include <QString>
 
-class PQQMLManager : public QObject
+
+class PRESQUILECORE_EXPORT CoreUtils
 {
-    Q_OBJECT
+
 public:
-    static PQQMLManager* instance();
-
-    QDeclarativeItem* componentInstance(QDeclarativeEngine *engine, const QString &componentName);
-
-
-private:
-    explicit PQQMLManager();
-    virtual ~PQQMLManager();
-
-    static PQQMLManager *mInstance;
+    static QString resourcePath();
 };
 
-#endif // PQQMLMANAGER_H
+#endif // COREUTILS_H

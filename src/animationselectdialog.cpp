@@ -30,7 +30,7 @@
 #include <QDeclarativeEngine>
 #include <QPointer>
 
-#include "coreutils.h"
+#include "core/coreutils.h"
 
 Q_DECLARE_METATYPE(QPointer<QObject>);
 

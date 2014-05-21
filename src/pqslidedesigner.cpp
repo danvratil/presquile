@@ -18,8 +18,8 @@
  */
 
 #include "pqslidedesigner.h"
-#include "coreutils.h"
-#include "qml/pqqmlmanager.h"
+#include "core/coreutils.h"
+#include "core/pqqmlloader.h"
 #include "editors/propertyeditor.h"
 
 #include <QDragEnterEvent>
@@ -112,7 +112,7 @@ void PQSlideDesigner::dropEvent(QDropEvent* event)
 
     QString comp = type.remove(QLatin1String("Component/"));
 
-    PQQMLManager *manager = PQQMLManager::instance();
+    PQQmlLoader *manager = PQQmlLoader::instance();
     QDeclarativeItem *item = manager->componentInstance(engine(), comp);
     if (!item) {
         qWarning() << "Failed to create an instance of" << comp;

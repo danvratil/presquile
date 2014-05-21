@@ -1,4 +1,7 @@
-include_directories(${CMAKE_CURRENT_BINARY_DIR})
+include_directories(${CMAKE_SOURCE_DIR}
+                    ${CMAKE_CURRENT_BINARY_DIR}
+                    ${QT_INCLUDES}
+)
 
 ################################################################################
 
@@ -14,8 +17,9 @@ add_executable(text-editor-test
 )
 
 target_link_libraries(text-editor-test
-  ${QT_QTCORE_LIBRARY}
-  ${QT_QTGUI_LIBRARY}
+                      PresquileCore
+                      ${QT_QTCORE_LIBRARY}
+                      ${QT_QTGUI_LIBRARY}
 )
 
 ################################################################################

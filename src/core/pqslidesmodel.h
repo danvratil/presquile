@@ -17,16 +17,32 @@
  *
  */
 
-#ifndef COREUTILS_H
-#define COREUTILS_H
+#ifndef PQSLIDESMODEL_H
+#define PQSLIDESMODEL_H
 
-#include <QString>
 
-class CoreUtils
+#include "presquile-core-export.h"
+
+#include <QStandardItemModel>
+
+#include "pqslide.h"
+
+class PRESQUILECORE_EXPORT PQSlidesModel: public  QStandardItemModel
 {
+    Q_OBJECT
+  public:
+    enum {
+        PQSlideRole = Qt::UserRole + 1,
+    };
 
-public:
-    static QString resourcePath();
+    explicit PQSlidesModel(QObject* parent = 0);
+    virtual ~PQSlidesModel();
+
+    void appendSlide(const PQSlide::Ptr &slide);
+    void removeSlide(const PQSlide::Ptr &slide);
+    int slideIndex(const PQSlide::Ptr &slide);
+    PQSlide::Ptr slideAt(int index);
+
 };
 
-#endif // COREUTILS_H
+#endif // PQSLIDESMODEL_H

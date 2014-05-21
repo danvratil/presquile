@@ -21,7 +21,7 @@
 #define PQSLIDEDESIGNER_H
 
 #include <QDeclarativeView>
-#include "pqslide.h"
+#include "core/pqslide.h"
 
 class QDragEnterEvent;
 class QDragMoveEvent;

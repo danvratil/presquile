@@ -18,9 +18,9 @@
  */
 
 #include "pqslidesviewpanel.h"
-#include "../mainwindow.h"
-#include "../pqslidesmodeldelegate.h"
-#include "../pqslidesmodel.h"
+#include "mainwindow.h"
+#include "pqslidesmodeldelegate.h"
+#include "core/pqslidesmodel.h"
 
 #include <QListWidget>
 #include <QVBoxLayout>

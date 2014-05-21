@@ -1,50 +1,65 @@
+include_directories(${QT_INCLUDES}
+                    ${CMAKE_SOURCE_DIR}/src
+                    ${CMAKE_BINARY_DIR}/src/core
+                    ${CMAKE_CURRENT_BINARY_DIR}
+)
+
 set(qml_animations_SRCS
-    animations/ColorAnimation.qml
-    animations/NumberAnimation.qml
-    animations/ParallelAnimation.qml
-    animations/PauseAnimation.qml
-    animations/PropertyAnimation.qml
-    animations/RotationAnimation.qml
-    animations/SpringAnimation.qml
+    qml/animations/ColorAnimation.qml
+    qml/animations/NumberAnimation.qml
+    qml/animations/ParallelAnimation.qml
+    qml/animations/PauseAnimation.qml
+    qml/animations/PropertyAnimation.qml
+    qml/animations/RotationAnimation.qml
+    qml/animations/SpringAnimation.qml
 )
 
 set(qml_components_SRCS
-    components/PQAnimatedImage.qml
-    components/PQImage.qml
-    components/PQRectangle.qml
-    components/PQResizable.qml
-    components/PQText.qml
+    qml/components/PQAnimatedImage.qml
+    qml/components/PQImage.qml
+    qml/components/PQRectangle.qml
+    qml/components/PQResizable.qml
+    qml/components/PQText.qml
 )
 
 set(qml_internals_SRCS
-    internals/Slide.qml
+    qml/internals/Slide.qml
 )
 
 set(qml_skeleton_SRCS
-    skeleton/PQSlide.qml
-    skeleton/PQPresentation.qml
+    qml/skeleton/PQSlide.qml
+    qml/skeleton/PQPresentation.qml
 )
 
 set(pqplugin_SRCS
-    pqbaseitem.cpp
     pqitemframe.cpp
     pqplugin.cpp
-    pqqmlmanager.cpp
 )
 
 add_library(pqdeclarativeplugin MODULE ${pqplugin_SRCS})
+target_link_libraries(pqdeclarativeplugin
+                      ${QT_QTCORE_LIBRARY}
+                      ${QT_QTDECLARATIVE_LIBRARY}
+                      PresquileCore
+)
 
 
 install(TARGETS pqdeclarativeplugin
         LIBRARY
-        DESTINATION ${QT_IMPORTS_DIR}/Presquile)
+        DESTINATION ${PRESQUILE_IMPORTS_INSTALL_DIR}/Presquile
+)
 install(FILES qmldir
-        DESTINATION ${QT_IMPORTS_DIR}/Presquile/qmldir)
+        DESTINATION ${PRESQUILE_IMPORTS_INSTALL_DIR}/Presquile/
+)
 install(FILES ${qml_animations_SRCS}
-        DESTINATION ${QT_IMPORTS_DIR}/Presquile/qml/animations/)
+        DESTINATION ${PRESQUILE_IMPORTS_INSTALL_DIR}/Presquile/qml/animations/
+)
 install(FILES ${qml_components_SRCS}
-        DESTINATION ${QT_IMPORTS_DIR}/Presquile/qml/components/)
+        DESTINATION ${PRESQUILE_IMPORTS_INSTALL_DIR}/Presquile/qml/components/
+)
 install(FILES ${qml_internals_SRCS}
-        DESTINATION ${QT_IMPORTS_DIR}/Presquile/qml/internals/)
+        DESTINATION ${PRESQUILE_IMPORTS_INSTALL_DIR}/Presquile/qml/internals/
+)
 install(FILES ${qml_skeleton_SRCS}
-        DESTINATION ${QT_IMPORTS_DIR}/Presquile/qml/skeleton/)
+        DESTINATION ${PRESQUILE_IMPORTS_INSTALL_DIR}/Presquile/qml/skeleton/
+)

@@ -18,9 +18,9 @@
  */
 
 #include "pqslidesmodeldelegate.h"
-#include "pqslide.h"
-#include "pqslidesmodel.h"
 #include "pqslidedesigner.h"
+#include "core/pqslide.h"
+#include "core/pqslidesmodel.h"
 
 #include <math.h>
 

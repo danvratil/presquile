@@ -17,6 +17,8 @@
 #ifndef PQBASEITEM_H
 #define PQBASEITEM_H
 
+#include "presquile-core-export.h"
+
 #include <QDeclarativeItem>
 #include <QString>
 
@@ -28,7 +30,7 @@ class QDeclarativeProperty;
  * This class implements the object identification and serialization.
  * @author Jan Stanek
  */
-class PQBaseItem : public QDeclarativeItem
+class PRESQUILECORE_EXPORT PQBaseItem : public QDeclarativeItem
 {
     Q_OBJECT
 

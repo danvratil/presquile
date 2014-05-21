@@ -17,29 +17,30 @@
  *
  */
 
-#ifndef PQSLIDESMODEL_H
-#define PQSLIDESMODEL_H
+#ifndef PQQMLLOADER_H
+#define PQQMLLOADER_H
 
-#include <QStandardItemModel>
+#include "presquile-core-export.h"
 
-#include "pqslide.h"
+#include <QObject>
 
-class PQSlidesModel: public  QStandardItemModel
+class QDeclarativeItem;
+class QDeclarativeEngine;
+
+class PRESQUILECORE_EXPORT PQQmlLoader : public QObject
 {
     Q_OBJECT
-  public:
-    enum {
-        PQSlideRole = Qt::UserRole + 1,
-    };
+public:
+    static PQQmlLoader* instance();
 
-    explicit PQSlidesModel(QObject* parent = 0);
-    virtual ~PQSlidesModel();
+    QDeclarativeItem* componentInstance(QDeclarativeEngine *engine, const QString &componentName);
 
-    void appendSlide(const PQSlide::Ptr &slide);
-    void removeSlide(const PQSlide::Ptr &slide);
-    int slideIndex(const PQSlide::Ptr &slide);
-    PQSlide::Ptr slideAt(int index);
 
+private:
+    explicit PQQmlLoader();
+    virtual ~PQQmlLoader();
+
+    static PQQmlLoader *mInstance;
 };
 
-#endif // PQSLIDESMODEL_H
+#endif // PQQMLLOADER_H

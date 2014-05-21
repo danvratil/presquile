@@ -1,13 +1,15 @@
+add_subdirectory(core)
 add_subdirectory(declarative)
 
-include_directories(${CMAKE_CURRENT_BINARY_DIR})
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}
+                    ${CMAKE_CURRENT_BINARY_DIR}
+                    ${CMAKE_CURRENT_BINARY_DIR}/core
+                    ${QT_INCLUDES}
+)
 
 set(presquile_SRCS
     animationselectdialog.cpp
-    coreutils.cpp
     pqcomponentstreewidget.cpp
-    pqslide.cpp
-    pqslidesmodel.cpp
     pqslidesmodeldelegate.cpp
     pqslidedesigner.cpp
     main.cpp
@@ -35,6 +37,7 @@ target_link_libraries(presquile
     ${QT_QTGUI_LIBRARY}
     ${QT_QTDECLARATIVE_LIBRARY}
     ${QT_QTDESIGNER_LIBRARY}
+    PresquileCore
 )
 
 install(TARGETS presquile RUNTIME DESTINATION bin)

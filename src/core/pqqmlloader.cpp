@@ -18,7 +18,7 @@
  *
  */
 
-#include "pqqmlmanager.h"
+#include "pqqmlloader.h"
 
 #include <QMutex>
 #include <QStringBuilder>
@@ -28,20 +28,19 @@
 #include <QDebug>
 #include <QFile>
 
-#include "../coreutils.h"
-#include "pqitemframe.h"
+#include "coreutils.h"
 
 //#include "pqtext.h"
 
-PQQMLManager *PQQMLManager::mInstance = 0;
+PQQmlLoader *PQQmlLoader::mInstance = 0;
 
-PQQMLManager* PQQMLManager::instance()
+PQQmlLoader* PQQmlLoader::instance()
 {
     static QMutex instanceLock;
 
     instanceLock.lock();
     if (mInstance == 0) {
-        mInstance = new PQQMLManager();
+        mInstance = new PQQmlLoader();
     }
     instanceLock.unlock();
 
@@ -49,7 +48,7 @@ PQQMLManager* PQQMLManager::instance()
 }
 
 
-PQQMLManager::PQQMLManager()
+PQQmlLoader::PQQmlLoader()
     : QObject()
 {
     /* TODO: Components should be plugins that can be loaded dynamically */
@@ -57,12 +56,12 @@ PQQMLManager::PQQMLManager()
 
 }
 
-PQQMLManager::~PQQMLManager()
+PQQmlLoader::~PQQmlLoader()
 {
 
 }
 
-QDeclarativeItem* PQQMLManager::componentInstance(QDeclarativeEngine *engine, const QString& componentName)
+QDeclarativeItem* PQQmlLoader::componentInstance(QDeclarativeEngine *engine, const QString& componentName)
 {
     if (!QFile::exists(CoreUtils::resourcePath() % QLatin1String("/qml/components/") % componentName % QLatin1String(".qml"))) {
         qWarning() << componentName << "source file does not exist";
@@ -86,6 +85,3 @@ QDeclarativeItem* PQQMLManager::componentInstance(QDeclarativeEngine *engine, co
 
     return qobject_cast<QDeclarativeItem*>(instance);
 }
-
-
-#include "pqqmlmanager.moc"

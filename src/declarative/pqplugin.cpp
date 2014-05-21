@@ -16,7 +16,7 @@
  */
 #include "pqplugin.h"
 
-#include "pqbaseitem.h"
+#include "core/pqbaseitem.h"
 #include "pqitemframe.h"
 
 #include <qdeclarative.h>

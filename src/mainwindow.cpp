@@ -27,10 +27,10 @@
 #include "pqslidedesigner.h"
 
 #include "editors/animationsequenceeditor.h"
-#include "pqslidesmodel.h"
-#include "coreutils.h"
 
-#include "qml/pqbaseitem.h"
+#include "core/coreutils.h"
+#include "core/pqslidesmodel.h"
+#include "core/pqbaseitem.h"
 
 #include <QStatusBar>
 #include <QAction>

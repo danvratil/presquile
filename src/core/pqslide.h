@@ -20,6 +20,8 @@
 #ifndef PQSLIDE_H
 #define PQSLIDE_H
 
+#include "presquile-core-export.h"
+
 #include <QObject>
 #include <QPointer>
 #include <QSharedPointer>
@@ -29,7 +31,7 @@ class QDeclarativeEngine;
 class QDeclarativeContext;
 class QDeclarativeComponent;
 
-class PQSlide : public QObject
+class PRESQUILECORE_EXPORT PQSlide : public QObject
 {
     Q_OBJECT
 
