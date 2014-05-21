@@ -17,8 +17,8 @@
  *
  */
 
-#ifndef PQSLIDE_H
-#define PQSLIDE_H
+#ifndef PRESQUILE_CORE_PQSLIDE_H
+#define PRESQUILE_CORE_PQSLIDE_H
 
 #include "presquile-core-export.h"
 
@@ -59,4 +59,4 @@ class PRESQUILECORE_EXPORT PQSlide : public QObject
 
 Q_DECLARE_METATYPE(PQSlide::Ptr)
 
-#endif // PQSLIDE_H
+#endif // PRESQUILE_CORE_PQSLIDE_H

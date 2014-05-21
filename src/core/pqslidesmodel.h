@@ -17,8 +17,8 @@
  *
  */
 
-#ifndef PQSLIDESMODEL_H
-#define PQSLIDESMODEL_H
+#ifndef PRESQUILE_CORE_PQSLIDESMODEL_H
+#define PRESQUILE_CORE_PQSLIDESMODEL_H
 
 
 #include "presquile-core-export.h"
@@ -45,4 +45,4 @@ class PRESQUILECORE_EXPORT PQSlidesModel: public  QStandardItemModel
 
 };
 
-#endif // PQSLIDESMODEL_H
+#endif // PRESQUILE_CORE_PQSLIDESMODEL_H

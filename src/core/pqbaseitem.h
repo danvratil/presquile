@@ -1,21 +1,21 @@
 /** PQBaseItem -- Base class of serializable components
  *  Copyright (C) 2014 Jan Stanek <khardix@gmail.com>
- *  
+ *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 2 of the License, or
  *  (at your option) any later version.
- *  
+ *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
- *  
+ *
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef PQBASEITEM_H
-#define PQBASEITEM_H
+#ifndef PRESQUILE_CORE_PQBASEITEM_H
+#define PRESQUILE_CORE_PQBASEITEM_H
 
 #include "presquile-core-export.h"
 
@@ -63,4 +63,4 @@ inline QString PQBaseItem::qmlName() const {
   return QString(metaObject()->className()).remove(QRegExp("_QMLTYPE_[0-9]+$"));
 }
 
-#endif // PQBASEITEM_H
+#endif // PRESQUILE_CORE_PQBASEITEM_H

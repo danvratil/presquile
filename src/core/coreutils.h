@@ -17,13 +17,12 @@
  *
  */
 
-#ifndef COREUTILS_H
-#define COREUTILS_H
+#ifndef PRESQUILE_CORE_COREUTILS_H
+#define PRESQUILE_CORE_COREUTILS_H
 
 #include "presquile-core-export.h"
 
 #include <QString>
-
 
 class PRESQUILECORE_EXPORT CoreUtils
 {
@@ -32,4 +31,4 @@ public:
     static QString resourcePath();
 };
 
-#endif // COREUTILS_H
+#endif // PRESQUILE_CORE_COREUTILS_H

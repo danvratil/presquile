@@ -17,8 +17,8 @@
  *
  */
 
-#ifndef PQQMLLOADER_H
-#define PQQMLLOADER_H
+#ifndef PRESQUILE_CORE_PQQMLLOADER_H
+#define PRESQUILE_CORE_PQQMLLOADER_H
 
 #include "presquile-core-export.h"
 
@@ -43,4 +43,4 @@ private:
     static PQQmlLoader *mInstance;
 };
 
-#endif // PQQMLLOADER_H
+#endif // PRESQUILE_CORE_PQQMLLOADER_H
