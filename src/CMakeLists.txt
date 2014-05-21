@@ -40,4 +40,4 @@ target_link_libraries(presquile
     PresquileCore
 )
 
-install(TARGETS presquile RUNTIME DESTINATION bin)
+install(TARGETS presquile ${INSTALL_TARGETS_DEFAULT_ARGS})
