@@ -21,8 +21,8 @@ generate_export_header(PresquileCore
 )
 
 set_target_properties(PresquileCore PROPERTIES
-    #VERSION ${PRESQUILE_VERSION_STRING}
-    #SOVERSION ${PRESQUILE_SOVERSION}
+    VERSION ${PRESQUILE_VERSION}
+    SOVERSION ${PRESQUILE_VERSION}
     EXPORT_NAME PresquileCore
 )
 
