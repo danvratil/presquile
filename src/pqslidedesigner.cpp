@@ -18,7 +18,6 @@
  */
 
 #include "pqslidedesigner.h"
-#include "core/coreutils.h"
 #include "core/pqqmlloader.h"
 #include "editors/propertyeditor.h"
 

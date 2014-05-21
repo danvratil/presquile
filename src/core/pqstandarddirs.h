@@ -17,18 +17,27 @@
  *
  */
 
-#ifndef PRESQUILE_CORE_COREUTILS_H
-#define PRESQUILE_CORE_COREUTILS_H
+#ifndef PRESQUILE_CORE_PQSTANDARDDIRS_H
+#define PRESQUILE_CORE_PQSTANDARDDIRS_H
 
 #include "presquile-core-export.h"
 
 #include <QString>
 
-class PRESQUILECORE_EXPORT CoreUtils
+class PRESQUILECORE_EXPORT PQStandardDirs
 {
 
 public:
-    static QString resourcePath();
+    enum QMLImportType {
+        Animation,
+        Component,
+        Internal,
+        Skeleton
+    };
+
+    static QString qmlImportFile(const QString &qmlFileName, QMLImportType importType);
+
+    static QString qmlImportDir(QMLImportType importType);
 };
 
-#endif // PRESQUILE_CORE_COREUTILS_H
+#endif // PRESQUILE_CORE_PQSTANDARDDIRS_H

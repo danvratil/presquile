@@ -19,6 +19,7 @@
  */
 
 #include "pqqmlloader.h"
+#include "pqstandarddirs.h"
 
 #include <QMutex>
 #include <QStringBuilder>
@@ -28,7 +29,6 @@
 #include <QDebug>
 #include <QFile>
 
-#include "coreutils.h"
 
 //#include "pqtext.h"
 
@@ -63,7 +63,7 @@ PQQmlLoader::~PQQmlLoader()
 
 QDeclarativeItem* PQQmlLoader::componentInstance(QDeclarativeEngine *engine, const QString& componentName)
 {
-    if (!QFile::exists(CoreUtils::resourcePath() % QLatin1String("/qml/components/") % componentName % QLatin1String(".qml"))) {
+    if (!QFile::exists(PQStandardDirs::qmlImportFile(componentName % QLatin1String(".qml"), PQStandardDirs::Component))) {
         qWarning() << componentName << "source file does not exist";
         return 0;
     }
@@ -75,7 +75,7 @@ QDeclarativeItem* PQQmlLoader::componentInstance(QDeclarativeEngine *engine, con
        append("{ }");
 
     QDeclarativeComponent component(engine, this);
-    component.setData(ba, QUrl::fromLocalFile(CoreUtils::resourcePath() % QLatin1String("/qml/components/")));
+    component.setData(ba, QUrl::fromLocalFile(PQStandardDirs::qmlImportDir(PQStandardDirs::Component)));
 
     QObject *instance = component.create(engine->rootContext());
     if (!instance) {

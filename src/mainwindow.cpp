@@ -28,7 +28,7 @@
 
 #include "editors/animationsequenceeditor.h"
 
-#include "core/coreutils.h"
+#include "core/pqstandarddirs.h"
 #include "core/pqslidesmodel.h"
 #include "core/pqbaseitem.h"
 
@@ -339,7 +339,7 @@ void MainWindow::slotRunFromCurrentSlide()
 void MainWindow::slotAddSlide()
 {
     //const QString path = CoreUtils::resourcePath() % QLatin1String("/qml/internals/Slide.qml");
-    const QString path = CoreUtils::resourcePath() % QLatin1String("/qml/skeleton/PQSlide.qml");
+    const QString path = PQStandardDirs::qmlImportFile(QLatin1String("PQSlide.qml"), PQStandardDirs::Skeleton);
     PQSlide::Ptr slide(new PQSlide(path, mSlidesDesigner->engine(), this));
     mSlidesModel->appendSlide(slide);
 }

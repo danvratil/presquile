@@ -30,7 +30,7 @@
 #include <QDeclarativeEngine>
 #include <QPointer>
 
-#include "core/coreutils.h"
+#include "core/pqstandarddirs.h"
 
 Q_DECLARE_METATYPE(QPointer<QObject>);
 
@@ -83,7 +83,7 @@ QObject* AnimationSelectDialog::selectedAnimation() const
 
 QObject* AnimationSelectDialog::getObject(const QString& qmlFile)
 {
-    QDeclarativeComponent component(mEngine, CoreUtils::resourcePath() % QLatin1String("/qml/animations/") % qmlFile);
+    QDeclarativeComponent component(mEngine, PQStandardDirs::qmlImportDir(PQStandardDirs::Animation));
     QObject *ptr = component.create(mEngine->rootContext());
 
     if (ptr == 0) {
