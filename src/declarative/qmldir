@@ -1,0 +1,26 @@
+# plugin first, needed by others
+plugin pqdeclarativeplugin
+
+# list public qml files
+# presentation skeleton
+PQPresentation          qml/skeleton/PQPresentation.qml
+PQSlide                 qml/skeleton/PQSlide.qml
+
+# animations
+ColorAnimation          qml/animations/ColorAnimation.qml
+NumberAnimation         qml/animations/NumberAnimation.qml
+ParallelAnimation       qml/animations/ParallelAnimation.qml
+PauseAnimation          qml/animations/PauseAnimation.qml
+PropertyAnimation       qml/animations/PropertyAnimation.qml
+RotationAnimation       qml/animations/RotationAnimation.qml
+SpringAnimation         qml/animations/SpringAnimation.qml
+
+# components
+PQAnimatedImage         qml/components/PQAnimatedImage.qml
+PQImage                 qml/components/PQImage.qml
+PQRectangle             qml/components/PQRectangle.qml
+PQResizable             qml/components/PQResizable.qml
+PQText                  qml/components/PQText.qml
+
+# internal QML
+internal Slide          qml/internals/Slide.qml

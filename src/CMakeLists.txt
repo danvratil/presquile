@@ -1,15 +1,6 @@
-set(pqplugin_HEADERS
-  qml/pqplugin.h
+add_subdirectory(declarative)
 
-  qml/pqbaseitem.h
-  qml/pqqmlmanager.h
-  qml/pqitemframe.h
-)
-
-foreach(header ${pqplugin_HEADERS})
-  string(REPLACE ".h" ".cpp" src ${header})
-  set(pqplugin_SRCS ${pqplugin_SRCS} ${src})
-endforeach(header)
+include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 set(presquile_SRCS
     animationselectdialog.cpp
@@ -35,20 +26,8 @@ set(presquile_SRCS
     panels/pqslidesviewpanel.cpp
     panels/pqslidepropertiespanel.cpp
     panels/pqcomponentspanel.cpp
-
-    ${pqplugin_SRCS}
 )
 
-#set(CMAKE_AUTOMOC ON)
-
-include_directories(${CMAKE_CURRENT_BINARY_DIR})
-
-#qt4_wrap_cpp(pqplugin_MOC ${pqplugin_HEADERS})
-qt4_automoc(${pqplugin_SRCS})
-qt4_automoc(${presquile_SRCS})
-
-#add_library(pqplugin MODULE ${pqplugin_SRCS} ${pqplugin_MOC})
-add_library(pqplugin MODULE ${pqplugin_SRCS})
 add_executable(presquile ${presquile_SRCS})
 
 target_link_libraries(presquile
@@ -58,6 +37,4 @@ target_link_libraries(presquile
     ${QT_QTDESIGNER_LIBRARY}
 )
 
-
-install(TARGETS pqplugin presquile RUNTIME DESTINATION bin
-                                   LIBRARY DESTINATION "${MODULE_DIR}/plugin")
+install(TARGETS presquile RUNTIME DESTINATION bin)
