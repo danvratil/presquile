@@ -40,18 +40,25 @@ public:
     /** @brief Name of the object as understood by QML */
     QString qmlName() const;
 
-    /** @brief String containing the serialized object */
-    QString serialize(const unsigned &baseIndentSize = 0, const QString &indentStep = QLatin1String("  ")) const;
+    /** @brief String containing the serialized object
+     *
+     * Serializes the object into valid QML string.
+     * @param baseIndentSize Number of indenting steps
+     * @return Serialized QML object
+     */
+    QString serialize(const unsigned &baseIndentSize = 0) const;
 
 private:
     /** @brief Serializes one property of QML object */
-    QString serializeProperty(const QDeclarativeProperty &property, unsigned indentSize, const QString &indentStep = QLatin1String("  ")) const;
+    QString serializeProperty(const QDeclarativeProperty &property, unsigned indentSize) const;
     /** @brief Serializes one complete QML object */
-    QString serializeObject(const QObject *object, unsigned indentSize, const QString &indentStep = QLatin1String("  ")) const;
+    QString serializeObject(const QObject *object, unsigned indentSize) const;
 
 
     /** @brief Extra properties that are not edited in properties editor, but still should be serialized */
     QStringList extraProperties;
+
+    static QString sIndentStep;
 };
 
 // Inline methods

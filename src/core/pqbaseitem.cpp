@@ -1,16 +1,16 @@
 /** PQBaseItem -- Base class of serializable components
  *  Copyright (C) 2014 Jan Stanek <khardix@gmail.com>
- *  
+ *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 2 of the License, or
  *  (at your option) any later version.
- *  
+ *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
- *  
+ *
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -21,13 +21,15 @@
 #include <QDeclarativeProperty>
 #include <QDeclarativeListReference>
 
+QString PQBaseItem::sIndentStep = QLatin1String("  ");
+
 PQBaseItem::PQBaseItem(QDeclarativeItem *parent): QDeclarativeItem(parent)
 {
     // Fill extra properties
     extraProperties.append(QLatin1String("transform")); // it has its own extra editor
 }
 
-QString PQBaseItem::serializeProperty(const QDeclarativeProperty &property, unsigned indentSize, const QString &indentStep) const
+QString PQBaseItem::serializeProperty(const QDeclarativeProperty &property, unsigned indentSize) const
 {
     QString value, rawValue;
 
@@ -47,7 +49,7 @@ QString PQBaseItem::serializeProperty(const QDeclarativeProperty &property, unsi
     } else if (property.propertyTypeCategory() == QDeclarativeProperty::Object) { // Complex Object type
         const QVariant variantValue = property.read();
         if (variantValue.isValid() && !variantValue.isNull()) {
-            value = serializeObject(variantValue.value<QObject *>(), indentSize, indentStep);
+            value = serializeObject(variantValue.value<QObject *>(), indentSize);
         }
     } else if (property.propertyTypeCategory() == QDeclarativeProperty::List) { // List of objects
         const QDeclarativeListReference list = qvariant_cast<QDeclarativeListReference>(property.read());
@@ -55,23 +57,23 @@ QString PQBaseItem::serializeProperty(const QDeclarativeProperty &property, unsi
         value = QLatin1String("[\n"); // open list
         for (int itemIndex = 0, c = list.count(); itemIndex < c; ++itemIndex) {
             QObject *item = list.at(itemIndex);
-            value += serializeObject(item, indentSize+1, indentStep);
+            value += serializeObject(item, indentSize+1);
             if (itemIndex + 1 != list.count()) {
                 value += QLatin1Char(','); // separator
             }
             value += QLatin1Char('\n');
         }
-        value += indentStep.repeated(indentSize) + QLatin1String("]"); // close list
+        value += sIndentStep.repeated(indentSize) + QLatin1String("]"); // close list
     }
 
     if (!value.isEmpty()) {
-        return indentStep.repeated(indentSize) + property.name() + QLatin1String(": ") + value + QLatin1Char('\n');
+        return sIndentStep.repeated(indentSize) + property.name() + QLatin1String(": ") + value + QLatin1Char('\n');
     }
 
     return QString();
 }
 
-QString PQBaseItem::serializeObject(const QObject *object, unsigned indentSize, const QString &indentStep)
+QString PQBaseItem::serializeObject(const QObject *object, unsigned indentSize) const
 {
     QString value;
     const QMetaObject *objectInfo;
@@ -93,25 +95,18 @@ QString PQBaseItem::serializeObject(const QObject *object, unsigned indentSize, 
         }
     }
 
-    value += indentStep.repeated(indentSize) + objectName + QLatin1String(" {\n"); // open object
+    value += sIndentStep.repeated(indentSize) + objectName + QLatin1String(" {\n"); // open object
     for (int i = objectInfo->propertyOffset(); i < objectInfo->propertyCount(); ++i) {
         value += serializeProperty(QDeclarativeProperty(const_cast<QObject *>(object),
                                                         QString::fromLatin1(objectInfo->property(i).name())),
-                                   indentSize + 1,
-                                   indentStep);
+                                   indentSize + 1);
     }
-    value += indentStep.repeated(indentSize) + QLatin1String("}"); // close object
+    value += sIndentStep.repeated(indentSize) + QLatin1String("}"); // close object
 
     return value;
 }
 
-/**
- * Serializes the object into valid QML string.
- * @param baseIndentSize Number of indenting steps
- * @param indentStep String representing the indent, default to two spaces
- * @return Serialized QML object
- */
-QString PQBaseItem::serialize(const unsigned &baseIndentSize, const QString &indentStep) const
+QString PQBaseItem::serialize(const unsigned &baseIndentSize) const
 {
     unsigned indentSize = baseIndentSize;
 
@@ -121,17 +116,17 @@ QString PQBaseItem::serialize(const unsigned &baseIndentSize, const QString &ind
     QStringList properties(property("_PQProperties").toStringList());
 
     // Open self declaration
-    outStream << indentStep.repeated(indentSize) << qmlName() << QLatin1String(" {") << endl;
+    outStream << sIndentStep.repeated(indentSize) << qmlName() << QLatin1String(" {") << endl;
     ++indentSize;
 
     Q_FOREACH(const QString &currentPropertyName, properties+extraProperties) {
         QDeclarativeProperty currentProperty(const_cast<PQBaseItem *>(this), currentPropertyName);
-        outStream << serializeProperty(currentProperty, indentSize, indentStep);
+        outStream << serializeProperty(currentProperty, indentSize);
     }
 
     // Close self declaration
     --indentSize;
-    outStream << indentStep.repeated(indentSize) << QLatin1Char('}') << endl;
+    outStream << sIndentStep.repeated(indentSize) << QLatin1Char('}') << endl;
 
     return output;
 }
