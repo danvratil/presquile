@@ -7,6 +7,7 @@ set(core_SRCS
     pqslidesmodel.cpp
     pqqmlloader.cpp
     pqstandarddirs.cpp
+    pqserializer.cpp
 )
 
 

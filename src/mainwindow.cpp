@@ -30,7 +30,7 @@
 
 #include "core/pqstandarddirs.h"
 #include "core/pqslidesmodel.h"
-#include "core/pqbaseitem.h"
+#include "core/pqserializer.h"
 
 #include <QStatusBar>
 #include <QAction>
@@ -257,49 +257,8 @@ void MainWindow::slotSavePresentation()
         return;
     }
     QTextStream output(&saveFile);
-    output << "import QtQuick 1.0" << endl;
-    output << "import Presquile 1.0" << endl;
-    output << endl;
-
-    output << "PQPresentation {" << endl; // start presentation
-
-    // Open slides list - one indentation step
-    output << indentStep << "slides: [" << endl;
-
-    // Iterate over slides - two indentation steps
-    for (int i = 0; i<slidesModel()->rowCount(); ++i) {
-        const PQSlide::Ptr currentSlide = slidesModel()->slideAt(i);
-        // Each slide must be wrapped in Component to prevent instantiating it on presentation load
-        output << indentStep.repeated(2) << "Component {" << endl;
-        output << indentStep.repeated(3) << "PQSlide {" << endl;
-
-        QDeclarativeItem *container = currentSlide->rootObject()->findChild<QDeclarativeItem*>(QLatin1String("slideRootFocusScope"));
-        if (!container) {
-            qWarning("Invalid slide - no children container!");
-        }
-
-        const QList<QGraphicsItem*> data = container->childItems();
-        // Iterate over the slide contents - three indentation steps
-        for (QList<QGraphicsItem*>::const_iterator iter(data.begin()); iter < data.end(); ++iter) {
-            PQBaseItem *child = qgraphicsitem_cast<PQBaseItem*>(*iter);
-            if (!child) {
-                qWarning("Invalid children");
-                continue;
-            }
-
-            child->serialize(output, 4);
-        }
-
-        output << indentStep.repeated(3) << "}" << endl;
-        output << indentStep.repeated(2) << "}" << endl;
-        if (i + 1 < slidesModel()->rowCount()) {
-            output << ','; // separator
-        }
-        output << endl;
-    }
-
-    output << indentStep << ']' << endl; // close slides list
-    output << '}' << endl; // close presentation
+    PQSerializer::serialize(output, slidesModel());
+    output.flush();
 
     saveFile.close();
 }

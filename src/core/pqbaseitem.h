@@ -58,8 +58,6 @@ private:
 
     /** @brief Extra properties that are not edited in properties editor, but still should be serialized */
     QStringList extraProperties;
-
-    static QString sIndentStep;
 };
 
 // Inline methods
