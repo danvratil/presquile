@@ -59,9 +59,9 @@ QString PQStandardDirs::qmlImportDir(PQStandardDirs::QMLImportType importType)
         // FIXME: Only really works on UNIX
         const QList<QByteArray> importPaths = qgetenv("QML_IMPORT_PATH").split(':');
         Q_FOREACH (const QByteArray &importPath, importPaths) {
-            QDir dir(importPath + "/Presquile");
+            QDir dir(QString::fromLatin1(QByteArray(importPath + "/Presquile")));
             if (dir.exists()) {
-                d->qmlImportPath = QString::fromLatin1(importPath + "/Presquile");
+                d->qmlImportPath = dir.absolutePath();
                 qDebug() << "PQStandardDirs::resourcePath()" << d->qmlImportPath;
                 basePath = d->qmlImportPath;
                 break;

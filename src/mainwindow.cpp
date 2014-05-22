@@ -233,7 +233,7 @@ void MainWindow::slotOpenPresentation()
 
 void MainWindow::slotSavePresentation()
 {
-    const QString indentStep("  ");
+    const QString indentStep(QLatin1String("  "));
 
     QPointer<QFileDialog> dlg(new QFileDialog(this, tr("Save Presentation")));
     dlg->setAcceptMode(QFileDialog::AcceptSave);

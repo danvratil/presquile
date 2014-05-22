@@ -37,6 +37,9 @@ class PQSlidesViewPanel : public QDockWidget
     explicit PQSlidesViewPanel(MainWindow* parent = 0, Qt::WindowFlags flags = 0);
     virtual ~PQSlidesViewPanel();
 
+  public Q_SLOTS:
+    void updateItem();
+
   Q_SIGNALS:
     void slideCreated(const PQSlide::Ptr &slide);
     void slideActivated(const PQSlide::Ptr &slide);
@@ -48,8 +51,6 @@ class PQSlidesViewPanel : public QDockWidget
     QListView *mSlidesListwidget;
     QTimer *mRedrawTimer;
 
-public slots:
-    void updateItem();
 };
 
 #endif // PQSLIDESVIEWPANEL_H

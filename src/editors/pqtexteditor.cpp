@@ -140,28 +140,28 @@ QString PQTextEditor::plainText() const
 void PQTextEditor::slotToggleBold()
 {
     QTextCharFormat format;
-    format.setFontWeight(mActions.value("bold")->isChecked() ? QFont::Bold : QFont::Normal);
+    format.setFontWeight(mActions.value(QLatin1String("bold"))->isChecked() ? QFont::Bold : QFont::Normal);
     mergeFormatOnWordOrSelection(format);
 }
 
 void PQTextEditor::slotToggleItalic()
 {
     QTextCharFormat format;
-    format.setFontItalic(mActions.value("italic")->isChecked());
+    format.setFontItalic(mActions.value(QLatin1String("italic"))->isChecked());
     mergeFormatOnWordOrSelection(format);
 }
 
 void PQTextEditor::slotToggleStrikethrough()
 {
     QTextCharFormat format;
-    format.setFontStrikeOut(mActions.value("strikethrough")->isChecked());
+    format.setFontStrikeOut(mActions.value(QLatin1String("strikethrough"))->isChecked());
     mergeFormatOnWordOrSelection(format);
 }
 
 void PQTextEditor::slotToggleUnderline()
 {
     QTextCharFormat format;
-    format.setFontUnderline(mActions.value("underline")->isChecked());
+    format.setFontUnderline(mActions.value(QLatin1String("underline"))->isChecked());
     mergeFormatOnWordOrSelection(format);
 }
 

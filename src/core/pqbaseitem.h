@@ -35,9 +35,9 @@ class PRESQUILECORE_EXPORT PQBaseItem : public QDeclarativeItem
     Q_OBJECT
 
     /** @brief Serializes one property of QML object */
-    static QString serializeProperty(const QDeclarativeProperty &property, unsigned indentSize, const QString &indentStep = "  ");
+    static QString serializeProperty(const QDeclarativeProperty &property, unsigned indentSize, const QString &indentStep = QLatin1String("  "));
     /** @brief Serializes one complete QML object */
-    static QString serializeObject(const QObject *object, unsigned indentSize, const QString &indentStep = "  ");
+    static QString serializeObject(const QObject *object, unsigned indentSize, const QString &indentStep = QLatin1String("  "));
 public:
     explicit PQBaseItem(QDeclarativeItem *parent = 0);
 
@@ -45,7 +45,7 @@ public:
     QString qmlName() const;
 
     /** @brief String containing the serialized object */
-    QString serialize(const unsigned &baseIndentSize = 0, const QString &indentStep = "  ") const;
+    QString serialize(const unsigned &baseIndentSize = 0, const QString &indentStep = QLatin1String("  ")) const;
 
 private:
     /** @brief Extra properties that are not edited in properties editor, but still should be serialized */
@@ -60,7 +60,7 @@ private:
  * @return Actual QML name of the object
  */
 inline QString PQBaseItem::qmlName() const {
-  return QString(metaObject()->className()).remove(QRegExp("_QMLTYPE_[0-9]+$"));
+  return QString::fromLatin1(metaObject()->className()).remove(QRegExp(QLatin1String("_QMLTYPE_[0-9]+$")));
 }
 
 #endif // PRESQUILE_CORE_PQBASEITEM_H

@@ -58,7 +58,7 @@ void PQSlidesModelDelegate::paint(QPainter* painter, const QStyleOptionViewItem&
     painter->save();
 
     QDeclarativeItem *slideRoot = qobject_cast<QDeclarativeItem*>(slide->rootObject());
-    QDeclarativeItem *slideRect = slideRoot->findChild<QDeclarativeItem*>("slideRect");
+    QDeclarativeItem *slideRect = slideRoot->findChild<QDeclarativeItem*>(QLatin1String("slideRect"));
     QRect rect = QRect(slideRect->x(), slideRect->y(), slideRect->width(), slideRect->height());
 
     QSize itemSize = sizeHint(option, index);

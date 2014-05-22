@@ -87,19 +87,19 @@ void PropertiesEditor::setObject(QObject *object)
     while (metaObject) {
         for (int ii = 0; ii < count; ii++) {
             QMetaProperty property = metaObject->property(ii);
-
-            if (processed.contains(property.name())) {
+            const QString propName = QString::fromLatin1(property.name());
+            if (processed.contains(propName)) {
                 continue;
             }
 
             /* If the properties list is not empty, then accept only properties
             * from that list. */
-            if (!properties.isEmpty() && !properties.contains(property.name())) {
+            if (!properties.isEmpty() && !properties.contains(propName)) {
                 continue;
             }
 
             /* Don't display our internal properties or properties we can't edit */
-            if (QString(property.name()).startsWith(QLatin1String("_PQ")) ||
+            if (propName.startsWith(QLatin1String("_PQ")) ||
                 !supportedTypes.contains(property.type())) {
                 continue;
             }
@@ -109,7 +109,7 @@ void PropertiesEditor::setObject(QObject *object)
             setVerticalHeaderItem(row, new QTableWidgetItem(QString()));
 
             QTableWidgetItem *propertyNameItem = new QTableWidgetItem;
-            propertyNameItem->setText(property.name());
+            propertyNameItem->setText(propName);
             propertyNameItem->setData(PropertyIndexRole, ii);
             propertyNameItem->setFlags(propertyNameItem->flags() ^ Qt::ItemIsEditable);
             setItem(row, 0, propertyNameItem);
@@ -122,7 +122,7 @@ void PropertiesEditor::setObject(QObject *object)
 
             setEditorWidget(row);
 
-            processed << property.name();
+            processed << propName;
         }
 
         metaObject = metaObject->superClass();

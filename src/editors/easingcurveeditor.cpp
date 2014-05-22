@@ -105,7 +105,7 @@ EasingCurveEditor::EasingCurveEditor(QWidget* parent)
               continue;
         }
 
-        mTypeCombo->addItem(metaEnum.key(ii), metaEnum.value(ii));
+        mTypeCombo->addItem(QString::fromLatin1(metaEnum.key(ii)), metaEnum.value(ii));
     }
     mTypeCombo->model()->sort(0, Qt::AscendingOrder);
 

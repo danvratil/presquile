@@ -110,7 +110,7 @@ void PropertiesEditorItem::prepareWidget()
     } else if (mProperty.type() == QVariant::EasingCurve) {
         QPushButton *button = new QPushButton(parent());
         QEasingCurve curve = mProperty.read(mObject.data()).toEasingCurve();
-        button->setText(curve.staticMetaObject.enumerator(0).valueToKey(curve.type()));
+        button->setText(QString::fromLatin1(curve.staticMetaObject.enumerator(0).valueToKey(curve.type())));
         connect(button, SIGNAL(clicked(bool)), SLOT(slotOpenEasingCurveEditor()));
         editor = qobject_cast< QWidget* >(button);
 
@@ -251,7 +251,7 @@ void PropertiesEditorItem::slotOpenEasingCurveEditor()
         mProperty.write(mObject.data(), curve);
 
         QPushButton *button = qobject_cast<QPushButton*>(mWidget.data());
-        button->setText(curve.staticMetaObject.enumerator(0).valueToKey(curve.type()));
+        button->setText(QString::fromLatin1(curve.staticMetaObject.enumerator(0).valueToKey(curve.type())));
     }
 
     delete editor;
@@ -356,7 +356,7 @@ void PropertiesEditorItem::slotPropertyValueChanged()
     } else if (mProperty.type() == QVariant::EasingCurve) {
         QPushButton *button = qobject_cast<QPushButton*>(mWidget.data());
         QEasingCurve curve = mProperty.read(mObject.data()).toEasingCurve();
-        button->setText(curve.staticMetaObject.enumerator(0).valueToKey(curve.type()));
+        button->setText(QString::fromLatin1(curve.staticMetaObject.enumerator(0).valueToKey(curve.type())));
 
     } else if (mProperty.type() == QVariant::Font) {
         QFontComboBox *comboBox = qobject_cast<QFontComboBox*>(mWidget.data());
