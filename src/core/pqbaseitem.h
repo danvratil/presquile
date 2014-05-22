@@ -34,10 +34,6 @@ class PRESQUILECORE_EXPORT PQBaseItem : public QDeclarativeItem
 {
     Q_OBJECT
 
-    /** @brief Serializes one property of QML object */
-    static QString serializeProperty(const QDeclarativeProperty &property, unsigned indentSize, const QString &indentStep = QLatin1String("  "));
-    /** @brief Serializes one complete QML object */
-    static QString serializeObject(const QObject *object, unsigned indentSize, const QString &indentStep = QLatin1String("  "));
 public:
     explicit PQBaseItem(QDeclarativeItem *parent = 0);
 
@@ -48,6 +44,12 @@ public:
     QString serialize(const unsigned &baseIndentSize = 0, const QString &indentStep = QLatin1String("  ")) const;
 
 private:
+    /** @brief Serializes one property of QML object */
+    QString serializeProperty(const QDeclarativeProperty &property, unsigned indentSize, const QString &indentStep = QLatin1String("  ")) const;
+    /** @brief Serializes one complete QML object */
+    QString serializeObject(const QObject *object, unsigned indentSize, const QString &indentStep = QLatin1String("  ")) const;
+
+
     /** @brief Extra properties that are not edited in properties editor, but still should be serialized */
     QStringList extraProperties;
 };
