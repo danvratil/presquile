@@ -240,11 +240,15 @@ void MainWindow::slotSavePresentation()
     dlg->setFileMode(QFileDialog::AnyFile);
     dlg->setFilter(tr("QML source (*.qml)"));
 
-    if (!dlg->exec()) return; // No file to save to
+    if (!dlg->exec()) {
+        return; // No file to save to
+    }
 
     QStringList files = dlg->selectedFiles();
-    if (files.isEmpty()) return;
-    QString saveFileName = files.first();
+    if (files.isEmpty()) {
+        return;
+    }
+    const QString saveFileName = files.first();
 
     // Open the save file and write header
     QFile saveFile(saveFileName);
@@ -263,30 +267,35 @@ void MainWindow::slotSavePresentation()
     output << indentStep << "slides: [" << endl;
 
     // Iterate over slides - two indentation steps
-    for (int i(0); i<slidesModel()->rowCount(); ++i) {
-      PQSlide::Ptr currentSlide = slidesModel()->slideAt(i);
-      // Each slide must be wrapped in Component to prevent instantiating it on presentation load
-      output << indentStep.repeated(2) << "Component { PQSlide {" << endl;
-      QDeclarativeItem *container =
-              currentSlide->rootObject()->findChild<QDeclarativeItem*>(QLatin1String("slideRootFocusScope"));
+    for (int i = 0; i<slidesModel()->rowCount(); ++i) {
+        const PQSlide::Ptr currentSlide = slidesModel()->slideAt(i);
+        // Each slide must be wrapped in Component to prevent instantiating it on presentation load
+        output << indentStep.repeated(2) << "Component {" << endl;
+        output << indentStep.repeated(3) << "PQSlide {" << endl;
 
-      if (!container) qWarning("Invalid slide - no children container!");
-
-      const QList<QGraphicsItem*> data = container->childItems();
-      // Iterate over the slide contents - three indentation steps
-      for (QList<QGraphicsItem*>::const_iterator iter(data.begin()); iter < data.end(); ++iter) {
-        PQBaseItem *child = qgraphicsitem_cast<PQBaseItem*>(*iter);
-        if (!child) {
-          qWarning("Invalid children");
-          continue;
+        QDeclarativeItem *container = currentSlide->rootObject()->findChild<QDeclarativeItem*>(QLatin1String("slideRootFocusScope"));
+        if (!container) {
+            qWarning("Invalid slide - no children container!");
         }
 
-        output << child->serialize(3);
-      }
+        const QList<QGraphicsItem*> data = container->childItems();
+        // Iterate over the slide contents - three indentation steps
+        for (QList<QGraphicsItem*>::const_iterator iter(data.begin()); iter < data.end(); ++iter) {
+            PQBaseItem *child = qgraphicsitem_cast<PQBaseItem*>(*iter);
+            if (!child) {
+                qWarning("Invalid children");
+                continue;
+            }
 
-      output << indentStep.repeated(2) << "} }"; // close slide and Component
-      if (i+1 < slidesModel()->rowCount()) output << ','; // separator
-      output << endl;
+            child->serialize(output, 4);
+        }
+
+        output << indentStep.repeated(3) << "}" << endl;
+        output << indentStep.repeated(2) << "}" << endl;
+        if (i + 1 < slidesModel()->rowCount()) {
+            output << ','; // separator
+        }
+        output << endl;
     }
 
     output << indentStep << ']' << endl; // close slides list

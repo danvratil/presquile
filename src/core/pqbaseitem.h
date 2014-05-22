@@ -23,6 +23,7 @@
 #include <QString>
 
 class QDeclarativeProperty;
+class QTextStream;
 
 /**
  * Ancestor for all presentation QML objects.
@@ -43,16 +44,16 @@ public:
     /** @brief String containing the serialized object
      *
      * Serializes the object into valid QML string.
+     * @param stream Stream to write into
      * @param baseIndentSize Number of indenting steps
-     * @return Serialized QML object
      */
-    QString serialize(const unsigned &baseIndentSize = 0) const;
+    void serialize(QTextStream &stream, const unsigned &baseIndentSize = 0) const;
 
 private:
     /** @brief Serializes one property of QML object */
-    QString serializeProperty(const QDeclarativeProperty &property, unsigned indentSize) const;
+    void serializeProperty(QTextStream &stream, const QDeclarativeProperty &property, unsigned indentSize) const;
     /** @brief Serializes one complete QML object */
-    QString serializeObject(const QObject *object, unsigned indentSize) const;
+    void serializeObject(QTextStream &stream, const QObject *object, unsigned indentSize) const;
 
 
     /** @brief Extra properties that are not edited in properties editor, but still should be serialized */

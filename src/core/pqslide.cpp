@@ -37,6 +37,9 @@ PQSlide::PQSlide(const QString& filePath, QDeclarativeEngine *engine, QObject* p
 
     /* mScene takes ownership of the instance */
     mRootObject = mComponent->create(mContext);
+    if (mComponent->isError()) {
+        qFatal("%s", qPrintable(mComponent->errorString()));
+    }
     QDeclarativeItem *item = qobject_cast<QDeclarativeItem*>(mRootObject.data());
 
     /* FIXME: This is a hack to force initial size of the slide. Maybe in this

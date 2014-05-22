@@ -78,11 +78,11 @@ QString PQStandardDirs::qmlImportDir(PQStandardDirs::QMLImportType importType)
 
     switch (importType) {
     case Animation:
-        return basePath % QLatin1String("/animations");
+        return basePath % QLatin1String("/qml/animations");
     case Component:
-        return basePath % QLatin1String("/components");
+        return basePath % QLatin1String("/qml/components");
     case Skeleton:
-        return basePath % QLatin1String("/skeleton");
+        return basePath % QLatin1String("/qml/skeleton");
     }
 
     Q_ASSERT(false);

@@ -29,57 +29,56 @@ PQBaseItem::PQBaseItem(QDeclarativeItem *parent): QDeclarativeItem(parent)
     extraProperties.append(QLatin1String("transform")); // it has its own extra editor
 }
 
-QString PQBaseItem::serializeProperty(const QDeclarativeProperty &property, unsigned indentSize) const
+void PQBaseItem::serializeProperty(QTextStream &stream, const QDeclarativeProperty &property, unsigned indentSize) const
 {
-    QString value, rawValue;
-
+    QString str;
+    QTextStream outStream(&str);
     if (property.propertyTypeCategory() == QDeclarativeProperty::Normal) { // Normal value property
         const int propertyType = property.propertyType();
         const QString propertyValue = property.read().toString();
         if (propertyType >= QVariant::Bool && propertyType <= QVariant::Double) { // Numerical, unquoted values
-            value = propertyValue;
+            outStream << propertyValue;
         } else {
             if (!propertyValue.isEmpty()) {
-                value = propertyValue;
+                QString value = propertyValue;
                 value.replace(QLatin1Char('\\'), QLatin1String("\\\\")) // escape backslashes in rich text
                      .replace(QLatin1Char('"'), QLatin1String("\\\"")); // escape quotes
                 value = QLatin1Char('"') % value % QLatin1Char('"');
+                outStream << value;
             }
         }
     } else if (property.propertyTypeCategory() == QDeclarativeProperty::Object) { // Complex Object type
         const QVariant variantValue = property.read();
         if (variantValue.isValid() && !variantValue.isNull()) {
-            value = serializeObject(variantValue.value<QObject *>(), indentSize);
+            serializeObject(outStream, variantValue.value<QObject *>(), indentSize);
         }
     } else if (property.propertyTypeCategory() == QDeclarativeProperty::List) { // List of objects
         const QDeclarativeListReference list = qvariant_cast<QDeclarativeListReference>(property.read());
 
-        value = QLatin1String("[\n"); // open list
+        outStream << QLatin1String("[\n"); // open list
         for (int itemIndex = 0, c = list.count(); itemIndex < c; ++itemIndex) {
             QObject *item = list.at(itemIndex);
-            value += serializeObject(item, indentSize+1);
+            serializeObject(outStream, item, indentSize+1);
             if (itemIndex + 1 != list.count()) {
-                value += QLatin1Char(','); // separator
+                outStream << QLatin1Char(','); // separator
             }
-            value += QLatin1Char('\n');
+            outStream << QLatin1Char('\n');
         }
-        value += sIndentStep.repeated(indentSize) + QLatin1String("]"); // close list
+        outStream << sIndentStep.repeated(indentSize) << QLatin1String("]"); // close list
     }
 
-    if (!value.isEmpty()) {
-        return sIndentStep.repeated(indentSize) + property.name() + QLatin1String(": ") + value + QLatin1Char('\n');
+    if (!str.isEmpty()) {
+        stream << sIndentStep.repeated(indentSize) << property.name() << QLatin1String(": ") << str << QLatin1Char('\n');
     }
-
-    return QString();
 }
 
-QString PQBaseItem::serializeObject(const QObject *object, unsigned indentSize) const
+void PQBaseItem::serializeObject(QTextStream &stream, const QObject *object, unsigned indentSize) const
 {
     QString value;
     const QMetaObject *objectInfo;
 
     if (object == 0) {
-        return value; // empty string
+        return; // empty string
     }
     objectInfo = object->metaObject();
 
@@ -95,40 +94,34 @@ QString PQBaseItem::serializeObject(const QObject *object, unsigned indentSize) 
         }
     }
 
-    value += sIndentStep.repeated(indentSize) + objectName + QLatin1String(" {\n"); // open object
+    stream << sIndentStep.repeated(indentSize) << objectName << QLatin1String(" {\n");
     for (int i = objectInfo->propertyOffset(); i < objectInfo->propertyCount(); ++i) {
-        value += serializeProperty(QDeclarativeProperty(const_cast<QObject *>(object),
-                                                        QString::fromLatin1(objectInfo->property(i).name())),
-                                   indentSize + 1);
+        serializeProperty(stream,
+                          QDeclarativeProperty(const_cast<QObject *>(object),
+                                               QString::fromLatin1(objectInfo->property(i).name())),
+                          indentSize + 1);
     }
-    value += sIndentStep.repeated(indentSize) + QLatin1String("}"); // close object
-
-    return value;
+    stream << sIndentStep.repeated(indentSize) << QLatin1String("}"); // close object
 }
 
-QString PQBaseItem::serialize(const unsigned &baseIndentSize) const
+void PQBaseItem::serialize(QTextStream &stream, const unsigned &baseIndentSize) const
 {
     unsigned indentSize = baseIndentSize;
-
-    QString output; // Serialized object
-    QTextStream outStream(&output, QIODevice::WriteOnly);
 
     QStringList properties(property("_PQProperties").toStringList());
 
     // Open self declaration
-    outStream << sIndentStep.repeated(indentSize) << qmlName() << QLatin1String(" {") << endl;
+    stream << sIndentStep.repeated(indentSize) << qmlName() << QLatin1String(" {") << endl;
     ++indentSize;
 
     Q_FOREACH(const QString &currentPropertyName, properties+extraProperties) {
         QDeclarativeProperty currentProperty(const_cast<PQBaseItem *>(this), currentPropertyName);
-        outStream << serializeProperty(currentProperty, indentSize);
+        serializeProperty(stream, currentProperty, indentSize);
     }
 
     // Close self declaration
     --indentSize;
-    outStream << sIndentStep.repeated(indentSize) << QLatin1Char('}') << endl;
-
-    return output;
+    stream << sIndentStep.repeated(indentSize) << QLatin1Char('}') << endl;
 }
 
 #include "pqbaseitem.moc"
